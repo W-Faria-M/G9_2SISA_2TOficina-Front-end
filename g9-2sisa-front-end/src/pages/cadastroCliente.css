@@ -1,0 +1,115 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.cadastro-cliente-container {
+    display: flex;
+    height: 100vh; /* ocupa toda altura */
+    width: 100vw;
+    background: #000;
+}
+
+.cadastro-cliente-form {
+    flex: 1 1 50%;
+    width: 100%;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centraliza vertical */
+    align-items: center;
+    background: #111;
+    color: #fff;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.cadastro-cliente-form h1 {
+    color: #f57c00;
+    font-family: "Share Tech", sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.cadastro-cliente-form h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.formCad {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    max-width: 420px; /* limite pra não esticar demais */
+    margin-bottom: 24px;
+}
+
+.formCad input {
+    flex: 1 1 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #f57c00;
+    background: #fff;
+    color: #000;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.formCad input::placeholder {
+    color: #f57c00;
+    font-family: "Share Tech", sans-serif;
+}
+
+.formCad input:nth-child(1), 
+.formCad input:nth-child(2) {
+    flex: 1 1 48%;
+}
+
+.cadastro-cliente-form button {
+    width: 70%;
+    padding: 12px 0;
+    background: #137a5c;
+    color: #fff;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 12px;
+    margin: 0 auto 18px auto;
+    cursor: pointer;
+    font-family: "Share Tech", sans-serif;
+    transition: background 0.2s;
+}
+
+.cadastro-cliente-form button:hover {
+    background: #0e5e47;
+}
+
+.cadastro-cliente-form p {
+    font-size: 1rem;
+    text-align: center;
+    color: #fff;
+    margin-top: -40px; ;
+}
+
+.cadastro-cliente-form a {
+    color: #2196f3;
+    text-decoration: none;
+}
+
+.cadastro-cliente-image {
+    flex: 1 1 50%;
+    display: flex;
+    align-items: stretch;
+}
+
+.cadastro-cliente-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-left: 3px solid #f57c00;
+}

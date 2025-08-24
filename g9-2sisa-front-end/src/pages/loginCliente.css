@@ -1,0 +1,137 @@
+#root {
+    height: 100vh;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.login-cliente-container {
+    display: flex;
+    height: calc(100vh - 98px);
+    margin-top: 100px;
+    width: 100vw;
+    background: #000;
+    overflow: hidden;
+}
+
+.login-cliente-image {
+    width: 50vw;
+    min-width: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.login-cliente-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-right: 3px solid #f57c00;
+    display: block;
+}
+
+.login-cliente-form {
+    width: 50vw;
+    height: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    color: #fff;
+    padding: 32px 24px;
+    box-sizing: border-box;
+}
+
+.login-cliente-form h1 {
+    color: #f57c00;
+    font-family: "Share Tech", sans-serif;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.login-cliente-form h2 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.login-formCad {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 18px;
+}
+
+.login-formCad input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #f57c00;
+    background: #fff;
+    color: #000;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+    font-family: "Share Tech", sans-serif;
+}
+
+.login-formCad input::placeholder {
+    color: #f57c00;
+    font-family: "Share Tech", sans-serif;
+}
+
+.login-recuperar {
+    text-align: left;
+    font-size: 0.98rem;
+    color: #fff;
+    margin-bottom: 18px;
+}
+
+.login-recuperar a {
+    color: #2196f3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-cliente-form button {
+    width: 70%;
+    padding: 12px 0;
+    background: #137a5c;
+    color: #fff;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 12px;
+    margin: 18px auto 18px auto;
+    cursor: pointer;
+    font-family: "Share Tech", sans-serif;
+    transition: background 0.2s;
+    display: block;
+}
+
+.login-cliente-form button:hover {
+    background: #0e5e47;
+}
+
+.login-novo {
+    color: #fff;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 18px;
+}
+
+.login-novo a {
+    color: #2196f3;
+    text-decoration: none;
+    font-weight: bold;
+}
