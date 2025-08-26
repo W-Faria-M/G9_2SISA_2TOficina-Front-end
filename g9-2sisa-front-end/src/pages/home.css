@@ -1,0 +1,64 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.home-container {
+    display: flex;
+    height: 100vh; /* ocupa toda altura */
+    width: 100vw;
+    background: #0D0D0D;
+}
+
+.secao-1{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin-top: 100px;
+
+    .esquerda{
+        width: 50%;
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        h2{
+            color:#F27405;
+            font-size: 25px;
+            text-align: center;
+        }
+
+        h4{
+            color:#F4F4F4;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        button{
+            background-color: #F27405;
+            color: #F4F4F4;
+            width: 37%;
+            font-size: 23px;
+            border-radius: 20px;
+        }
+    }
+    
+    .direita{
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img{
+             width: 75%;
+             border-radius: 10px;
+             
+        }
+    }
+    
+}
