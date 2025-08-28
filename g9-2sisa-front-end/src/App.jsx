@@ -15,7 +15,7 @@ function App() {
      {/* <Navbar /> */}
       {/* <CadastroCliente /> */}
       {/* <LoginCliente /> */}
-      {<Home /> }
+      {/* {<Home /> } */}
     </>
   )
 }
