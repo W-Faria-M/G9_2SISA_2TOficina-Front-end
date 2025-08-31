@@ -12,7 +12,7 @@ html, body {
 .login-cliente-container {
     display: flex;
     height: calc(100vh - 98px);
-    margin-top: 100px;
+    margin-top: 98px;
     width: 100vw;
     background: #000;
     overflow: hidden;
