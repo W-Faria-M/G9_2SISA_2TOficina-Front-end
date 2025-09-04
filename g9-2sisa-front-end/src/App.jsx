@@ -5,15 +5,17 @@ import LoginCliente from './pages/loginCliente'
 import Home from './pages/home'
 import LoginFuncionario from './pages/loginFuncionario';
 import RedirectMessage from './pages/redirect-message';
+import MenuHamburguer from "./components/menu-hamburguer";
 
 function App() {
 
   return (
     <>
+      {/* <MenuHamburguer /> */}
+     {/* <LoginFuncionario /> */}
     {/* <RedirectMessage />; */}
-    <LoginFuncionario />
      {/* <Navbar /> */}
-      {/* <CadastroCliente /> */}
+      <CadastroCliente />   
       {/* <LoginCliente /> */}
       {/* {<Home /> } */}
     </>

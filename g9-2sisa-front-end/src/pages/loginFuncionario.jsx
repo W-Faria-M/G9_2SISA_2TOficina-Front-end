@@ -3,8 +3,9 @@ import './loginFuncionario.css';
 
 const Form = () => {
   return (
+    <div className="login-funcionario-body">
     <div className="form-container">
-        <img src="src/assets/logo2T.jpg" className='logo' alt="" />
+        <img src="src/assets/logo2T.jpg" className='logoa ' alt="" />
       <p className="title"> "Olá novamente! Faça login e acompanhe a Oficina."</p>
       <form className="form">
         <div className="input-group">
@@ -21,6 +22,7 @@ const Form = () => {
         </div>
       </form>
 
+    </div>
     </div>
   );
 }
