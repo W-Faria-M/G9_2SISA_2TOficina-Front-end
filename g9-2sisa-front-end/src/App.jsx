@@ -16,8 +16,8 @@ function App() {
       {/* <MenuHamburguer /> */}
      {/* <LoginFuncionario /> */}
     {/* <RedirectMessage />; */}
-      <CadastroCliente />   
-    {/* <LoginFuncionario /> */}
+      {/* <CadastroCliente />    */}
+    <LoginFuncionario />
      <Navbar />
       {/* <LoginCliente /> */}
       {/* {<Home /> } */}
