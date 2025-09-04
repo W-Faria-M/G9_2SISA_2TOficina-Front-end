@@ -6,6 +6,8 @@ import Home from './pages/home'
 import LoginFuncionario from './pages/loginFuncionario';
 import RedirectMessage from './pages/redirect-message';
 import MenuHamburguer from "./components/menu-hamburguer";
+// import LoginFuncionario from './pages/loginFuncionario';
+// import RedirectMessage from './pages/redirect-message';
 
 function App() {
 
@@ -14,8 +16,9 @@ function App() {
       {/* <MenuHamburguer /> */}
      {/* <LoginFuncionario /> */}
     {/* <RedirectMessage />; */}
-     {/* <Navbar /> */}
       <CadastroCliente />   
+    {/* <LoginFuncionario /> */}
+     <Navbar />
       {/* <LoginCliente /> */}
       {/* {<Home /> } */}
     </>

@@ -1,0 +1,12 @@
+{
+  "clientes": [
+    {
+      "nome": "pedro",
+      "sobrenome": "vinicius",
+      "email": "pedrobr2134@gmail.com",
+      "telefone": "11958292430",
+      "senha": "1234",
+      "id": 1
+    }
+  ]
+}
