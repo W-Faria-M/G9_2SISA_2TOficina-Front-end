@@ -1,0 +1,109 @@
+.agendamentos-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f97316, #000);
+  color: white;
+  padding-bottom: 32px;
+}
+
+.titulo {
+  font-size: 1.75rem;
+  font-weight: bold;
+  padding: 24px 16px 0;
+  text-align: center;
+}
+
+.agendamentos-lista {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.card-agendamento {
+  background-color: #1f2937;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card-topo p {
+  margin: 4px 0;
+}
+
+.card-veiculo {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.card-data,
+.card-entrega {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+.card-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.status-tag {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-pendente {
+  background-color: #f97316;
+  color: white;
+}
+
+.status-concluido {
+  background-color: #10b981;
+  color: white;
+}
+
+.card-servico {
+  font-size: 0.875rem;
+  color: #fb923c;
+}
+
+.card-acoes {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-detalhes,
+.btn-cancelar {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-detalhes {
+  background-color: #fb923c;
+  color: white;
+}
+
+.btn-detalhes:hover {
+  background-color: #f97316;
+}
+
+.btn-cancelar {
+  background-color: transparent;
+  color: #f87171;
+  border: 1px solid #f87171;
+}
+
+.btn-cancelar:hover {
+  background-color: #f87171;
+  color: white;
+}

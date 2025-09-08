@@ -7,6 +7,14 @@
       "telefone": "11958292430",
       "senha": "1234",
       "id": 1
+    },
+    {
+      "nome": "Sabrina",
+      "sobrenome": "vinicius",
+      "email": "sabrininhaxt@gmail.com",
+      "telefone": "11958292430",
+      "senha": "1234",
+      "id": 2
     }
   ]
 }

@@ -1,0 +1,90 @@
+.filter-wrapper {
+  width: 100vw;
+  /* max-width: 640px; */
+  margin: 0 auto;
+}
+
+/* Botão Agendar alinhado à direita */
+.agendar-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 24px 0 12px 0;
+  padding: 16px;
+  margin-right: 20px;
+}
+
+.agendar-button {
+  background-color: #F4A100;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  justify-content: end;
+}
+
+.agendar-button:hover {
+  background-color: #d48800;
+}
+
+/* Barra de busca e filtro */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 15%;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 9999px;
+  padding: 8px 12px;
+  flex: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+}
+
+.search-icon {
+  color: #f97316;
+  margin-right: 8px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: white;
+  padding: 6px 0;
+  box-shadow: none;
+}
+
+.search-input::placeholder {
+  color: #fb923c;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffff;
+  color: #F4A100;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #f97316;
+  color: white;
+}
