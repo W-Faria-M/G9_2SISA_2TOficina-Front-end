@@ -102,6 +102,54 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <div className="secao-4">
+          <h2>Precisa de um serviço? Agende agora seu atendimento de forma rápida e prática.</h2>
+
+          <button>AGENDAR</button>
+      </div>
+
+      <div className="secao-5">
+          <h2> Está com dúvidas? Entre em contato:</h2>
+          <p>
+            Telefone: (11) 98861-9917 <br />
+            E-mail: contato@oficina.com
+          </p>
+            <div className="contact__down_bottom">
+        <div className="contact__down-content">
+          <a
+            href="https://wa.me/5511988619917"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact__whatsapp"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+              alt="WhatsApp"
+              className="contact__icon"
+            />
+            <span>(11) 98861-9917</span>
+          </a>
+          <a
+            href="https://instagram.com/2t.oficina"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact__instagram"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+              alt="Instagram"
+              className="contact__icon"
+            />
+            <span>@2T.OFICINA</span>
+          </a>
+        </div>
+      </div>
+
+      </div>
+
+      
+      
     </div>
   );
 }
