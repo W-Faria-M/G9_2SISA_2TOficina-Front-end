@@ -12,10 +12,6 @@ export default function FilterBar({ onSearch, onFilter }) {
 
     return (
         <div className="filter-wrapper">
-            <div className="agendar-container">
-                <button className="agendar-button">+ Agendar</button>
-            </div>
-
             <div className="filter-bar">
                 <div className="search-container">
                     <Search className="search-icon" size={20} />
@@ -27,11 +23,13 @@ export default function FilterBar({ onSearch, onFilter }) {
                         className="search-input"
                     />
                 </div>
-
                 <button onClick={onFilter} className="filter-button">
                     <Filter size={18} />
                     Filtrar
                 </button>
+            </div>
+            <div className="agendar-container">
+                <button className="agendar-button">+ Agendar</button>
             </div>
         </div>
     );

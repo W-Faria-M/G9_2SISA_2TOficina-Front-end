@@ -11,9 +11,9 @@ function App() {
 
   return (
     <>
-    {/* <RedirectMessage />; */}
-    {/* <LoginFuncionario /> */}
-     {/* <Navbar /> */}
+      {/* <RedirectMessage />; */}
+      {/* <LoginFuncionario /> */}
+      {/* <Navbar /> */}
       {/* <CadastroCliente /> */}
       {/* <LoginCliente /> */}
       <AgendamentosFeitos />

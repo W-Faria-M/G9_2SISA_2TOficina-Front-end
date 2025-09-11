@@ -1,16 +1,16 @@
 .filter-wrapper {
   width: 100vw;
-  /* max-width: 640px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 0 auto;
+  flex-direction: row;
+  padding: 16px 95px;
 }
 
-/* Botão Agendar alinhado à direita */
 .agendar-container {
-  display: flex;
-  justify-content: flex-end;
-  margin: 24px 0 12px 0;
-  padding: 16px;
-  margin-right: 20px;
+  margin: 0;
+  padding: 0 0 0 20px;
 }
 
 .agendar-button {
@@ -30,12 +30,13 @@
   background-color: #d48800;
 }
 
-/* Barra de busca e filtro */
 .filter-bar {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 15%;
+  width: auto;
+  margin-right: 1px;
+
 }
 
 .search-container {
