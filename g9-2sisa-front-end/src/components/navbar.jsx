@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./navbar.css";
 import logo2t from "../assets/logo2T.jpg";
 
@@ -17,18 +18,18 @@ export default function Navbar() {
 
       {/* Menu Desktop */}
       <ul className="navbar__center">
-        <li><a href="#">Início</a></li>
-        <li><a href="#">Quem Somos</a></li>
-        <li><a href="#">Serviços</a></li>
-        <li><a href="#">Contato</a></li>
+        <li><Link to="/">Início</Link></li>
+        <li><Link to="/quem-somos">Quem Somos</Link></li>
+        <li><Link to="/servicos">Serviços</Link></li>
+        <li><Link to="/contato">Contato</Link></li>
       </ul>
 
       <div className="navbar__right">
-        <a href="#">Agendamento</a>
+        <Link to="/agendamentos-feitos">Agendamento</Link>
         <span className="navbar__separator">|</span>
-        <a href="#">Login</a>
+        <Link to="/login-cliente">Login</Link>
         <span className="navbar__separator">|</span>
-        <a href="#" className="cadastro">Cadastro</a>
+        <Link to="/cadastro-cliente" className="cadastro">Cadastro</Link>
       </div>
 
       {/* Botão Hamburger (aparece só no mobile) */}
@@ -40,13 +41,13 @@ export default function Navbar() {
 
       {/* Menu Mobile */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <a href="#">Início</a>
-        <a href="#">Quem Somos</a>
-        <a href="#">Serviços</a>
-        <a href="#">Contato</a>
-        <a href="#">Agendamento</a>
-        <a href="#">Login</a>
-        <a href="#" className="cadastro">Cadastro</a>
+        <Link to="/">Início</Link>
+        <Link to="/quem-somos">Quem Somos</Link>
+        <Link to="/servicos">Serviços</Link>
+        <Link to="/contato">Contato</Link>
+        <Link to="/agendamentos-feitos">Agendamento</Link>
+        <Link to="/login-cliente">Login</Link>
+        <Link to="/cadastro-cliente" className="cadastro">Cadastro</Link>
       </div>
 
       {/* Barra de Contato (fixa abaixo da navbar) */}

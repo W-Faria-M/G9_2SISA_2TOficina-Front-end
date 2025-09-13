@@ -113,3 +113,12 @@ html, body {
     object-fit: cover;
     border-left: 3px solid #f57c00;
 }
+
+.link-aqui {
+  color: #2196f3;
+  text-decoration: none; /* Remove o sublinhado */
+  font-weight: bold;
+}
+.link-aqui:hover {
+  text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+}

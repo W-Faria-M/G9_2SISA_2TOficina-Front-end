@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Importa o Link do React Router
 import "./cadastroCliente.css";
 
 export default function CadastroCliente() {
@@ -137,11 +138,13 @@ export default function CadastroCliente() {
                     {errors.confirmarSenha && <span style={{ color: "orange" }}>{errors.confirmarSenha}</span>}
                 </div>
                 <button type="submit">CADASTRAR</button><br /><br />
-                <p>Já tem um conta? Clique aqui para fazer login</p>
+                <p>
+                    Já tem uma conta? Clique <Link to="/login-cliente" className="link-aqui">aqui</Link> para fazer login.
+                </p>
             </form>
             <div className="cadastro-cliente-image">
                 <img src="src/assets/backgroundImageCadastro.png" alt="image-cadastro" />
             </div>
         </div>
-    )
+    );
 }
