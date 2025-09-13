@@ -1,0 +1,91 @@
+.filter-wrapper {
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  flex-direction: row;
+  padding: 16px 95px;
+}
+
+.agendar-container {
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+
+.agendar-button {
+  background-color: #F4A100;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  justify-content: end;
+}
+
+.agendar-button:hover {
+  background-color: #d48800;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: auto;
+  margin-right: 1px;
+
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 9999px;
+  padding: 8px 12px;
+  flex: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+}
+
+.search-icon {
+  color: #f97316;
+  margin-right: 8px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: white;
+  padding: 6px 0;
+  box-shadow: none;
+}
+
+.search-input::placeholder {
+  color: #fb923c;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffff;
+  color: #F4A100;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #f97316;
+  color: white;
+}

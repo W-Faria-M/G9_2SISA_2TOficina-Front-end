@@ -4,6 +4,7 @@ html, body {
     padding: 0;
     /* overflow: hidden; */
     overflow: visible;
+    overflow-x: hidden;
     background-color: #0D0D0D;
 }
 
@@ -11,6 +12,8 @@ html, body {
     margin-top: 50px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     /* height: 100vh; ocupa toda altura */
     width: 100vw;
     background: #0D0D0D;
@@ -158,7 +161,171 @@ html, body {
         }
 
         h1{
-            color: #F4F4F4;
+            color: #F27405;
         }
     }
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 500px;
+
+    .carousel-track {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1250px; 
+      height: 400px;
+      overflow: hidden; 
+      gap: 16px; 
+    }
+
+    .item {
+      position: relative; 
+      width: 250px;
+      height: 320px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(223, 121, 87, 0.289);
+      overflow: hidden;
+      transition: all 0.5s ease;
+      flex-shrink: 0; 
+    }
+
+
+
+    .item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .item.center {
+      transform: scale(1.1);
+      z-index: 3;
+    }
+
+    .item.side {
+      transform: scale(0.9);
+      opacity: 0.7;
+      z-index: 2;
+    }
+
+    .item.hidden {
+      display: none;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .indicators {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: gray;
+      transition: background 0.3s;
+    }
+
+    .dot.active {
+      background: orange;
+    }
+}
+
+
+
+  .secao-4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 70%;
+    height: 500px;
+    border-top: #F27405 solid 2px;
+    border-bottom: #F27405 solid 2px;
+    color: #F4F4F4;
+
+    button {
+      background-color: #F27405;
+      color: #F4F4F4;
+      width: 250px;
+      height: 50px;
+      font-size: 25px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none; 
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+  }
+
+.secao-5 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 500px;
+  color: #F4F4F4;
+}
+
+.contact__down_bottom {
+  position: relative;
+  top: 50px; 
+  left: 0;
+  width: 100%;
+  background: #F27405;
+  color: #fff;
+  z-index: 999;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  border-top: 3px solid #000;
+}
+
+.contact__down-content {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+  padding-right: 24px;
+}
+
+.contact__icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.contact__whatsapp span {
+  color: #fff;
+  text-decoration: underline;
+  margin-right: 10px;
+}
+
+.contact__instagram span {
+  color: #fff;
+  font-weight: 400;
 }

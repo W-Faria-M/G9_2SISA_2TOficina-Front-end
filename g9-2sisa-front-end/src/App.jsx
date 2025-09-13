@@ -6,6 +6,7 @@ import Home from './pages/home'
 import LoginFuncionario from './pages/loginFuncionario';
 import RedirectMessage from './pages/redirect-message';
 import MenuHamburguer from "./components/menu-hamburguer";
+import AgendamentosFeitos from './pages/agendamentosFeitos'
 // import LoginFuncionario from './pages/loginFuncionario';
 // import RedirectMessage from './pages/redirect-message';
 
@@ -17,9 +18,9 @@ function App() {
      {/* <LoginFuncionario /> */}
     {/* <RedirectMessage />; */}
       {/* <CadastroCliente />    */}
-    <LoginFuncionario />
-     <Navbar />
+      {/* <Navbar /> */}
       {/* <LoginCliente /> */}
+      <AgendamentosFeitos />
       {/* {<Home /> } */}
     </>
   )
