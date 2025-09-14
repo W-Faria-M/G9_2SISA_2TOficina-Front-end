@@ -1,0 +1,101 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+    overflow: visible;
+    overflow-x: hidden;
+    background-color: #0D0D0D;
+} 
+
+.servico-page {
+  width: 100vw;
+  height: 800px;
+  background: #F4F4F4;
+  color: black;
+  padding-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ABAS{
+    margin-top: 30px;
+    position: relative;
+    left: -300px;
+    display: flex;
+    width: 600px;
+    justify-content: space-evenly;
+    
+        .select{
+                background-color: hsla(16, 96%, 48%, 0.20);
+                width: 300px;
+                height: 80px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            
+        }
+        .no-select{
+                
+                width: 300px;
+                height: 70px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            button{
+                font-size: 25px;
+                text-align: center;
+                background: none;
+            }
+        }
+
+        .Filtos{
+            display: flex;
+            justify-content: center;
+            width: 50%;
+        }
+
+        .services-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px;
+      font-family: Arial, sans-serif;
+      width: 80%;
+    }
+
+    .service-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9b39b;
+      border-radius: 40px;
+      padding: 20px 30px;
+    }
+
+    .service-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-detalhes {
+      background: white;
+      border: 2px solid orange;
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-weight: bold;
+      color: orange;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-detalhes:hover {
+      background: orange;
+      color: white;
+    }
+}
