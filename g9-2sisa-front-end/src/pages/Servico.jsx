@@ -3,16 +3,40 @@ import FilterBar from "../components/filterBar";
 import ServiceCard from "../components/ServiceCard";
 import CategoriaCard from "../components/CategoriaCard";
 import PopupServico from "../components/PopupServico";
+import DetalhesServico from "../components/DetalhesServico"; // ✅ novo popup
 import "./Servico.css";
 
 export default function AgendamentosFeitos() {
   const [activeTab, setActiveTab] = useState("servicos");
   const [services, setServices] = useState([
-    { id: 1, nome: "Troca de óleo", status: "Ativo", categoria: "Manutenção Preventiva" },
-    { id: 2, nome: "Troca de Pneus", status: "Inativo", categoria: "Pneus e Rodas" },
-    { id: 3, nome: "Substituição de Velas", status: "Ativo", categoria: "Manutenção Corretiva" },
+    {
+      id: 1,
+      nome: "Troca de óleo",
+      status: "Ativo",
+      categoria: "Manutenção Preventiva",
+      rapido: true,
+      descricao: "Troca do óleo do motor para manter a lubrificação correta."
+    },
+    {
+      id: 2,
+      nome: "Troca de Pneus",
+      status: "Inativo",
+      categoria: "Pneus e Rodas",
+      rapido: false,
+      descricao: "Substituição de pneus com balanceamento incluso."
+    },
+    {
+      id: 3,
+      nome: "Substituição de Velas",
+      status: "Ativo",
+      categoria: "Manutenção Corretiva",
+      rapido: true,
+      descricao: "Troca de velas para melhor desempenho do motor."
+    },
   ]);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const [isPopupAddOpen, setIsPopupAddOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState(null); // ✅ serviço clicado
 
   const categorias = [...new Set(services.map(s => s.categoria))];
 
@@ -44,9 +68,9 @@ export default function AgendamentosFeitos() {
         </div>
       </div>
 
-      {/* Botão para abrir popup */}
+      {/* Botão para abrir popup de adicionar */}
       {activeTab === "servicos" && (
-        <button className="adicionar-button" onClick={() => setIsPopupOpen(true)}>
+        <button className="adicionar-button" onClick={() => setIsPopupAddOpen(true)}>
           + Adicionar
         </button>
       )}
@@ -61,7 +85,12 @@ export default function AgendamentosFeitos() {
       <div className="services-container">
         {activeTab === "servicos" &&
           services.map((s) => (
-            <ServiceCard key={s.id} nome={s.nome} categoria={s.categoria} />
+            <ServiceCard
+              key={s.id}
+              nome={s.nome}
+              categoria={s.categoria}
+              onDetalhes={() => setSelectedService(s)} // ✅ abre popup de detalhes
+            />
           ))
         }
 
@@ -74,9 +103,16 @@ export default function AgendamentosFeitos() {
 
       {/* Popup de adicionar serviço */}
       <PopupServico
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
+        isOpen={isPopupAddOpen}
+        onClose={() => setIsPopupAddOpen(false)}
         onConfirm={handleAddServico}
+      />
+
+      {/* Popup de detalhes */}
+      <DetalhesServico
+        isOpen={!!selectedService}
+        onClose={() => setSelectedService(null)}
+        servico={selectedService}
       />
     </div>
   );
