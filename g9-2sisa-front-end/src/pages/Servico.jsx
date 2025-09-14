@@ -2,17 +2,35 @@ import { useState } from "react";
 import FilterBar from "../components/filterBar";
 import ServiceCard from "../components/ServiceCard";
 import CategoriaCard from "../components/CategoriaCard";
+import PopupServico from "../components/PopupServico";
 import "./Servico.css";
 
 export default function AgendamentosFeitos() {
   const [activeTab, setActiveTab] = useState("servicos");
-  const [services] = useState([
+  const [services, setServices] = useState([
     { id: 1, nome: "Troca de óleo", status: "Ativo", categoria: "Manutenção Preventiva" },
     { id: 2, nome: "Troca de Pneus", status: "Inativo", categoria: "Pneus e Rodas" },
     { id: 3, nome: "Substituição de Velas", status: "Ativo", categoria: "Manutenção Corretiva" },
   ]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const categorias = [...new Set(services.map(s => s.categoria))];
+
+  // Função para adicionar novo serviço
+  const handleAddServico = (novoServico) => {
+    setServices([
+      ...services,
+      {
+        id: services.length + 1,
+        nome: novoServico.nome,
+        categoria: novoServico.categoria,
+        rapido: novoServico.rapido === "true",
+        ativo: novoServico.ativo,
+        descricao: novoServico.descricao,
+        status: novoServico.ativo ? "Ativo" : "Inativo"
+      }
+    ]);
+  };
 
   return (
     <div className="servico-page">
@@ -25,6 +43,13 @@ export default function AgendamentosFeitos() {
           <button onClick={() => setActiveTab("categorias")}>CATEGORIAS</button>
         </div>
       </div>
+
+      {/* Botão para abrir popup */}
+      {activeTab === "servicos" && (
+        <button className="adicionar-button" onClick={() => setIsPopupOpen(true)}>
+          + Adicionar
+        </button>
+      )}
 
       {/* Barra de filtro aparece em qualquer aba */}
       <FilterBar
@@ -46,6 +71,13 @@ export default function AgendamentosFeitos() {
           ))
         }
       </div>
+
+      {/* Popup de adicionar serviço */}
+      <PopupServico
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onConfirm={handleAddServico}
+      />
     </div>
   );
 }
