@@ -1,44 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import CadastroCliente from "./pages/cadastroCliente";
+import MenuHamburguer from "./components/menu-hamburguer"; 
 import LoginCliente from "./pages/loginCliente";
 import Home from "./pages/home";
 import LoginFuncionario from "./pages/loginFuncionario";
 import RedirectMessage from "./pages/redirect-message";
-import MenuHamburguer from "./components/menu-hamburguer";
 import AgendamentosFeitos from "./pages/agendamentosFeitos";
+import DetalhesAgendamento from "./components/detalhesAgendamento";
+import Servico from "./pages/Servico";
 
 function App() {
+  const [detalheSelecionado, setDetalheSelecionado] = useState(null);
+
   return (
     <Router>
-      {/* <MenuHamburguer /> Menu Hamburguer visível em todas as páginas */}
       <Routes>
         <Route
           path="/"
           element={
             <>
-              <Navbar /> {/* Navbar visível na Home */}
+              <Navbar />
               <Home />
             </>
-          }/>
-        <Route path="/cadastro-cliente" 
-        element={
+          }
+        />
+        <Route
+          path="/cadastro-cliente"
+          element={
             <>
-              <Navbar /> {/* Navbar visível apenas no CadastroCliente */}
-              <CadastroCliente /> 
+              <Navbar />
+              <CadastroCliente />
             </>
-          }/>
-        <Route path="/login-cliente"  element={
+          }
+        />
+        <Route
+          path="/login-cliente"
+          element={
             <>
-              <Navbar /> {/* Navbar visível no LoginCliente */}
-              <LoginCliente /> 
+              <Navbar />
+              <LoginCliente />
             </>
-          }/>
-
+          }
+        />
         <Route path="/login-funcionario" element={<LoginFuncionario />} />
         <Route path="/redirect-message" element={<RedirectMessage />} />
-        <Route path="/agendamentos-feitos" element={<AgendamentosFeitos />} />
+        <Route
+          path="/agendamentos-feitos"
+          element={
+            <>
+            
+              <MenuHamburguer />
+              <AgendamentosFeitos
+                onDetalhes={(agendamento) => setDetalheSelecionado(agendamento)}
+              />
+              {detalheSelecionado && (
+                <DetalhesAgendamento
+                  agendamento={detalheSelecionado}
+                  onClose={() => setDetalheSelecionado(null)}
+                />
+              )}
+            </>
+          }
+        />
+        <Route path="/servico" element={<Servico />} />
       </Routes>
     </Router>
   );

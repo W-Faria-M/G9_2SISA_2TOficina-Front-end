@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './loginFuncionario.css';
+import { useNavigate } from 'react-router-dom'; 
 import logoImage from '../assets/logo2T.jpg'; 
 
 const LoginFuncionario = () => {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [error, setError] = useState("");
+  const navigate = useNavigate(); 
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,7 +28,7 @@ const LoginFuncionario = () => {
       if (data.length > 0) {
         alert("Login realizado com sucesso!");
         localStorage.setItem("funcionarioLogado", JSON.stringify(data[0]));
-        // window.location.href = "/painel-funcionario"; // redirecionamento opcional
+        navigate("/servico");
       } else {
         setError("Email ou senha inválidos.");
       }

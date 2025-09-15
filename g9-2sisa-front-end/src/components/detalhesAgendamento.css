@@ -1,0 +1,83 @@
+.detalhes-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.detalhes-popup {
+  background: #181818;
+  border-radius: 16px;
+  padding: 32px 32px 24px 32px;
+  width: 900px;
+  max-width: 95vw;
+  color: #fff;
+  position: relative;
+}
+
+.detalhes-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #f02c1a;
+  cursor: pointer;
+}
+
+.detalhes-titulo {
+  text-align: center;
+  color: #f97316;
+  font-size: 2rem;
+  margin-bottom: 32px;
+}
+
+.detalhes-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.detalhes-status .status-tag {
+  background: #fff;
+  color: #f97316;
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.detalhes-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.tab-btn {
+  background: #d48800;
+  color: #fff;
+  border: none;
+  border-radius: 10px 10px 0 0;
+  padding: 8px 24px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: #f97316;
+}
+
+.detalhes-descricao {
+  background: #f97316;
+  color: #fff;
+  border-radius: 0 0 10px 10px;
+  padding: 24px;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
