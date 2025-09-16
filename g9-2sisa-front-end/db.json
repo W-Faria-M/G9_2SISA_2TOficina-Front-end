@@ -9,12 +9,30 @@
       "id": 1
     },
     {
-      "nome": "Sabrina",
-      "sobrenome": "vinicius",
-      "email": "sabrininhaxt@gmail.com",
-      "telefone": "11958292430",
+      "nome": "Matheus",
+      "sobrenome": "Fermoselle",
+      "email": "matheus.vsilva@sptech.com",
+      "telefone": "11940352230",
       "senha": "1234",
       "id": 2
+    },
+    {
+      "nome": "Gabriel",
+      "sobrenome": "Faria",
+      "email": "faria@g.com",
+      "telefone": "11940352230",
+      "senha": "123456",
+      "id": 3
+    }
+  ],"funcionarios": [
+    {
+      "nome": "Gianluca",
+      "sobrenome": "Carvalho",
+      "email": "gianluca@gmail.com",
+      "telefone": "11958292430",
+      "cargo": "Dono",
+      "senha": "Dono123",
+      "id": 1
     }
   ]
 }

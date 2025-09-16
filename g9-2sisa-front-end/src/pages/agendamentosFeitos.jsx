@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FilterBar from "../components/filterBar";
 import "./AgendamentosFeitos.css";
 
-export default function AgendamentosFeitos({onDetalhes}) {
+export default function AgendamentosFeitos({ onDetalhes }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [agendamentos, setAgendamentos] = useState([
     {
@@ -32,12 +32,15 @@ export default function AgendamentosFeitos({onDetalhes}) {
       status: "Esperando Atendimento",
       servico: "Troca de Óleo",
     },
-    
   ]);
 
   const filteredAgendamentos = agendamentos.filter((ag) =>
     ag.veiculo.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleCancelar = (id) => {
+    setAgendamentos((prev) => prev.filter((ag) => ag.id !== id));
+  };
 
   return (
     <div className="agendamentos-page">
@@ -52,7 +55,9 @@ export default function AgendamentosFeitos({onDetalhes}) {
         {filteredAgendamentos.map((ag) => (
           <div key={ag.id} className="card-agendamento">
             <div className="card-topo">
-              <p className="card-veiculo">Nº {ag.id} | {ag.veiculo}</p>
+              <p className="card-veiculo">
+                Nº {ag.id} | {ag.veiculo}
+              </p>
               <p className="card-data">
                 Agendamento {ag.data} - {ag.hora}
               </p>
@@ -63,15 +68,28 @@ export default function AgendamentosFeitos({onDetalhes}) {
 
             <div className="card-lateral">
               <div className="card-status">
-                <span className={`status-tag ${ag.status === "Concluído" ? "status-concluido" : "status-pendente"}`}>
+                <span
+                  className={`status-tag ${
+                    ag.status === "Concluído"
+                      ? "status-concluido"
+                      : "status-pendente"
+                  }`}
+                >
                   {ag.status}
                 </span>
               </div>
               <span className="card-servico">Serviço: {ag.servico}</span>
               <div className="card-acoes">
-                <button className="btn-detalhes" onClick={(() => onDetalhes(ag))}>Detalhes</button>
+                <button className="btn-detalhes" onClick={() => onDetalhes(ag)}>
+                  Detalhes
+                </button>
                 {ag.status !== "Concluído" && (
-                  <button className="btn-cancelar">Cancelar</button>
+                  <button
+                    className="btn-cancelar"
+                    onClick={() => handleCancelar(ag.id)}
+                  >
+                    Cancelar
+                  </button>
                 )}
               </div>
             </div>

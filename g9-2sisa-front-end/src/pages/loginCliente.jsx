@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Importa o Link do React Router
 import "./loginCliente.css";
 import loginImage from "../assets/image-login.png";
 
@@ -58,7 +59,7 @@ export default function LoginCliente() {
                 </div>
                 <button type="submit">ENTRAR</button>
                 <div className="login-novo">
-                    Novo por aqui? Clique <a href="#">aqui</a> e crie sua conta agora.
+                    Novo por aqui? Clique <Link to="/cadastro-cliente" className="link-aqui">aqui</Link> e crie sua conta agora.
                 </div>
             </form>
         </div>
