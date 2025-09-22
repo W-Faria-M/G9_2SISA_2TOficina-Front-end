@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./detalhesAgendamento.css";
+import { formatarData } from "../helpers/utils";
 
 export default function DetalhesAgendamento({ agendamento, onClose }) {
   const [tab, setTab] = useState("descricao");
@@ -13,7 +14,7 @@ export default function DetalhesAgendamento({ agendamento, onClose }) {
         <div className="detalhes-info">
           <div>
             <p><b>Nº {agendamento.id} | {agendamento.veiculo}</b></p>
-            <p>Agendamento {agendamento.data} - {agendamento.hora}</p>
+            <p>Agendamento {formatarData(agendamento.data)} - {agendamento.hora}</p>
             <p>Tempo previsto para entrega: {agendamento.tempoEntrega}</p>
           </div>
           <div>

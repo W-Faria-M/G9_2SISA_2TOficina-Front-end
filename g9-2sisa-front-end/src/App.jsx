@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import CadastroCliente from "./pages/cadastroCliente";
-import MenuHamburguer from "./components/menu-hamburguer"; 
+// import MenuHamburguer from "./components/menu-hamburguer";
 import LoginCliente from "./pages/loginCliente";
 import Home from "./pages/home";
 import LoginFuncionario from "./pages/loginFuncionario";
@@ -51,7 +51,7 @@ function App() {
           element={
             <>
             
-              <MenuHamburguer />
+              {/* <MenuHamburguer /> */}
               <AgendamentosFeitos
                 onDetalhes={(agendamento) => setDetalheSelecionado(agendamento)}
               />

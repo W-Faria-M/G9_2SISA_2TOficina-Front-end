@@ -1,86 +1,56 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Importa o Link do React Router
+import { Link } from "react-router-dom";
 import "./cadastroCliente.css";
+import {
+    validateForm,
+    createFormChangeHandler,
+    createFormSubmitHandler,
+    apiRequest
+} from "../helpers/utils";
 
 export default function CadastroCliente() {
-    const [form, setForm] = useState({
-        nome: "",
-        sobrenome: "",
-        email: "",
-        telefone: "",
-        senha: "",
-        confirmarSenha: ""
+  const [form, setForm] = useState({
+    nome: "",
+    sobrenome: "",
+    email: "",
+    telefone: "",
+    senha: "",
+    confirmarSenha: ""
+  });
+  const [errors, setErrors] = useState({});
+
+  const fieldsToValidate = [
+    "nome",
+    "sobrenome",
+    "email",
+    "telefone",
+    "senha",
+    "confirmarSenha"
+  ];
+
+  const handleChange = createFormChangeHandler(form, setForm, setErrors);
+
+  const onSubmitCallback = async (formState) => {
+    await apiRequest("http://localhost:3001/clientes", "POST", {
+      nome: formState.nome,
+      sobrenome: formState.sobrenome,
+      email: formState.email,
+      telefone: formState.telefone,
+      senha: formState.senha
     });
-    const [errors, setErrors] = useState({});
+    alert("Cadastro realizado!");
+    setForm({
+      nome: "",
+      sobrenome: "",
+      email: "",
+      telefone: "",
+      senha: "",
+      confirmarSenha: ""
+    });
+    setErrors({});
+  };
 
-    function validate() {
-        const newErrors = {};
-
-        if (!form.nome.trim()) newErrors.nome = "Nome é obrigatório";
-        if (!form.sobrenome.trim()) newErrors.sobrenome = "Sobrenome é obrigatório";
-
-        if (!form.email.trim()) {
-            newErrors.email = "Email é obrigatório";
-        } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email)) {
-            newErrors.email = "Email inválido";
-        }
-
-        if (!form.telefone.trim()) {
-            newErrors.telefone = "Telefone é obrigatório";
-        } else if (!/^\d{8,}$/.test(form.telefone)) {
-            newErrors.telefone = "Telefone inválido";
-        }
-
-        if (!form.senha) {
-            newErrors.senha = "Senha é obrigatória";
-        } else if (form.senha.length < 4) {
-            newErrors.senha = "Senha deve ter pelo menos 4 caracteres";
-        }
-
-        if (!form.confirmarSenha) {
-            newErrors.confirmarSenha = "Confirme sua senha";
-        } else if (form.senha !== form.confirmarSenha) {
-            newErrors.confirmarSenha = "As senhas não coincidem";
-        }
-
-        return newErrors;
-    }
-
-    function handleChange(e) {
-        setForm({ ...form, [e.target.name]: e.target.value });
-        setErrors({ ...errors, [e.target.name]: undefined });
-    }
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        const validationErrors = validate();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
-
-        await fetch("http://localhost:3001/clientes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                nome: form.nome,
-                sobrenome: form.sobrenome,
-                email: form.email,
-                telefone: form.telefone,
-                senha: form.senha
-            })
-        });
-        alert("Cadastro realizado!");
-        setForm({
-            nome: "",
-            sobrenome: "",
-            email: "",
-            telefone: "",
-            senha: "",
-            confirmarSenha: ""
-        });
-        setErrors({});
-    }
+  const handleSubmit = createFormSubmitHandler(form, setErrors, onSubmitCallback, fieldsToValidate);
 
     return (
         <div className="cadastro-cliente-container">
