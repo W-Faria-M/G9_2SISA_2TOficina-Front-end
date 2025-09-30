@@ -1,26 +1,27 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./loginCliente.css";
 import loginImage from "../assets/image-login.png";
+import { createFormChangeHandler, validateField, apiRequest } from "../helpers/utils";
 
 export default function LoginCliente() {
     const [form, setForm] = useState({ email: "", senha: "" });
     const [error, setError] = useState("");
 
-    function handleChange(e) {
-        setForm({ ...form, [e.target.name]: e.target.value });
-        setError("");
-    }
+    const handleChange = createFormChangeHandler(form, setForm, () => setError(""));
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if (!form.email || !form.senha) {
-            setError("Preencha todos os campos.");
+        const emailError = validateField("email", form.email);
+        const senhaError = validateField("senha", form.senha);
+        if (emailError || senhaError) {
+            setError(emailError || senhaError || "Preencha todos os campos.");
             return;
         }
-        const res = await fetch(
-            `http://localhost:3001/clientes?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`
+        const data = await apiRequest(
+            `http://localhost:3001/clientes?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`,
+            "GET"
         );
-        const data = await res.json();
         if (data.length > 0) {
             alert("Login realizado com sucesso!");
         } else {
@@ -58,7 +59,7 @@ export default function LoginCliente() {
                 </div>
                 <button type="submit">ENTRAR</button>
                 <div className="login-novo">
-                    Novo por aqui? Clique <a href="#">aqui</a> e crie sua conta agora.
+                    Novo por aqui? Clique <Link to="/cadastro-cliente" className="link-aqui">aqui</Link> e crie sua conta agora.
                 </div>
             </form>
         </div>

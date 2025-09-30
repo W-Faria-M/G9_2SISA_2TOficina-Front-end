@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Search, Filter } from "lucide-react";
 import "./FilterBar.css";
 
-export default function FilterBar({ onSearch, onFilter }) {
+export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acaoText }) {
     const [search, setSearch] = useState("");
 
     const handleSearch = (e) => {
@@ -28,8 +28,8 @@ export default function FilterBar({ onSearch, onFilter }) {
                     Filtrar
                 </button>
             </div>
-            <div className="agendar-container">
-                <button className="agendar-button">+ Agendar</button>
+            <div className="acao-container">
+                <button className="acao-button" onClick={onOpenAgendarModal}>{acaoText}</button>
             </div>
         </div>
     );

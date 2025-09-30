@@ -1,6 +1,7 @@
 import "./DetalhesServico.css";
+import { booleanToYesNo } from "../helpers/utils";
 
-export default function DetalhesServico({ isOpen, onClose, servico }) {
+export default function DetalhesServico({ isOpen, onClose, servico, onEditar }) {
   if (!isOpen || !servico) return null;
 
   return (
@@ -19,10 +20,16 @@ export default function DetalhesServico({ isOpen, onClose, servico }) {
         </div>
 
         <p><strong>Categoria:</strong> {servico.categoria}</p>
-        <p><strong>É rápido:</strong> {servico.rapido ? "Sim" : "Não"}</p>
+  <p><strong>É rápido:</strong> {booleanToYesNo(servico.rapido)}</p>
 
         <div className="descricao-box">
           {servico.descricao}
+        </div>
+
+        <div style={{ marginTop: '16px', textAlign: 'right' }}>
+          <button className="btn-detalhes" onClick={() => onEditar(servico)}>
+            EDITAR
+          </button>
         </div>
       </div>
     </div>

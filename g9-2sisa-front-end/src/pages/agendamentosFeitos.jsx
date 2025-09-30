@@ -1,43 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FilterBar from "../components/filterBar";
+import CadastroAgendamento from "../components/CadastroAgendamento";
 import "./AgendamentosFeitos.css";
+import "./modalAgendar.css";
+import { apiRequest, formatarData } from "../helpers/utils";
 
-export default function AgendamentosFeitos({onDetalhes}) {
+export default function AgendamentosFeitos({ onDetalhes }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [agendamentos, setAgendamentos] = useState([
-    {
-      id: 1,
-      veiculo: "Moto (Yamaha MT-07)",
-      data: "10/09/2025",
-      hora: "14:00",
-      tempoEntrega: "16:00",
-      status: "Esperando Atendimento",
-      servico: "Troca de Óleo",
-    },
-    {
-      id: 2,
-      veiculo: "Moto (Honda CB500)",
-      data: "08/09/2025",
-      hora: "10:00",
-      tempoEntrega: "12:00",
-      status: "Concluído",
-      servico: "Troca de Óleo",
-    },
-    {
-      id: 3,
-      veiculo: "Moto (CB 300R)",
-      data: "11/09/2025",
-      hora: "14:00",
-      tempoEntrega: "15:00",
-      status: "Esperando Atendimento",
-      servico: "Troca de Óleo",
-    },
-    
-  ]);
+  const [agendamentos, setAgendamentos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a visibilidade do modal
+
+  useEffect(() => {
+    fetchAgendamentos();
+  }, []);
+
+  const fetchAgendamentos = async () => {
+    try {
+      const data = await apiRequest("http://localhost:3001/agendamentos", "GET");
+      setAgendamentos(data);
+    } catch (error) {
+      setError("Erro ao carregar agendamentos: " + error.message);
+      console.error("Erro ao carregar agendamentos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelAgendamento = async (id) => {
+    if (window.confirm("Tem certeza que deseja cancelar este agendamento?")) {
+      try {
+        await apiRequest(`http://localhost:3001/agendamentos/${id}`, "DELETE");
+        setAgendamentos(agendamentos.filter((ag) => ag.id !== id));
+        alert("Agendamento cancelado com sucesso!");
+      } catch (error) {
+        setError("Erro ao cancelar agendamento: " + error.message);
+        console.error("Erro ao cancelar agendamento:", error);
+        alert("Erro ao cancelar agendamento.");
+      }
+    }
+  };
+
+  const handleAgendamentoSuccess = () => {
+    setIsModalOpen(false); // Fecha o modal
+    fetchAgendamentos(); // Recarrega a lista de agendamentos
+  };
 
   const filteredAgendamentos = agendamentos.filter((ag) =>
-    ag.veiculo.toLowerCase().includes(searchTerm.toLowerCase())
+    ag.data.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) {
+    return <div className="agendamentos-page">Carregando agendamentos...</div>;
+  }
+
+  if (error) {
+    return <div className="agendamentos-page" style={{ color: 'red' }}>{error}</div>;
+  }
 
   return (
     <div className="agendamentos-page">
@@ -46,38 +66,53 @@ export default function AgendamentosFeitos({onDetalhes}) {
       <FilterBar
         onSearch={(value) => setSearchTerm(value)}
         onFilter={() => alert("Abrir filtros avançados")}
+        acaoText="+ Agendar"
+        onOpenAgendarModal={() => setIsModalOpen(true)} // Passa a função para abrir o modal
       />
 
       <div className="agendamentos-lista">
-        {filteredAgendamentos.map((ag) => (
-          <div key={ag.id} className="card-agendamento">
-            <div className="card-topo">
-              <p className="card-veiculo">Nº {ag.id} | {ag.veiculo}</p>
-              <p className="card-data">
-                Agendamento {ag.data} - {ag.hora}
-              </p>
-              <p className="card-entrega">
-                Tempo previsto para entrega: {ag.tempoEntrega}
-              </p>
-            </div>
+        {filteredAgendamentos.length === 0 ? (
+          <p>Nenhum agendamento encontrado.</p>
+        ) : (
+          filteredAgendamentos.map((ag) => (
+            <div key={ag.id} className="card-agendamento">
+              <div className="card-topo">
+                <p className="card-veiculo">Veículo: {ag.veiculo}</p>
+                <p className="card-data">
+                  Agendamento {formatarData(ag.data)} - {ag.hora}
+                </p>
+                <p className="card-entrega">
+                  Tempo previsto para entrega: {ag.tempoEntrega}
+                </p>
+              </div>
 
-            <div className="card-lateral">
-              <div className="card-status">
-                <span className={`status-tag ${ag.status === "Concluído" ? "status-concluido" : "status-pendente"}`}>
-                  {ag.status}
-                </span>
-              </div>
-              <span className="card-servico">Serviço: {ag.servico}</span>
-              <div className="card-acoes">
-                <button className="btn-detalhes" onClick={(() => onDetalhes(ag))}>Detalhes</button>
-                {ag.status !== "Concluído" && (
-                  <button className="btn-cancelar">Cancelar</button>
-                )}
+              <div className="card-lateral">
+                <div className="card-status">
+                  <span className={`status-tag ${ag.status === "Concluído" ? "status-concluido" : "status-pendente"}`}>
+                    {ag.status}
+                  </span>
+                </div>
+                <span className="card-servico">Serviço: {ag.servico}</span>
+                <div className="card-acoes">
+                  <button className="btn-detalhes" onClick={(() => onDetalhes(ag))}>Detalhes</button>
+                  {ag.status !== "Concluído" && (
+                    <button className="btn-cancelar" onClick={() => handleCancelAgendamento(ag.id)}>Cancelar</button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>X</button>
+            <CadastroAgendamento onSuccess={handleAgendamentoSuccess} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

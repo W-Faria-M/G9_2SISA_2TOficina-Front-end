@@ -3,6 +3,7 @@ import './loginFuncionario.css';
 
 const RedirectMessage = () => {
   return (
+    <div className="login-funcionario-body">
     <div className="redirect-container">
       <div className="message-box">
         <p className="redirect-message">
@@ -11,6 +12,7 @@ const RedirectMessage = () => {
         </p>
       </div>
     </div>
+     </div>
   );
 };
 
