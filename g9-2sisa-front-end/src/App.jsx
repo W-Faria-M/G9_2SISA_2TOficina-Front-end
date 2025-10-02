@@ -15,7 +15,7 @@ function App() {
     <>
       {/* <RedirectMessage />; */}
       {/* <LoginFuncionario /> */}
-      {/* <Navbar /> */}
+      <Navbar />
       {/* <CadastroCliente /> */}
       {/* <LoginCliente /> */}
       {/* <AgendamentosFeitos
@@ -25,7 +25,7 @@ function App() {
         agendamento={detalheSelecionado}
         onClose={() => setDetalheSelecionado(null)}
       /> */}
-      {/* {<Home /> } */}
+      {<Home /> }
     </>
   )
 }
