@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./cadastroCliente.css";
 import {
-    validateForm,
     createFormChangeHandler,
     createFormSubmitHandler,
     apiRequest
@@ -12,45 +11,54 @@ export default function CadastroCliente() {
   const [form, setForm] = useState({
     nome: "",
     sobrenome: "",
-    email: "",
     telefone: "",
+    email: "",
     senha: "",
     confirmarSenha: ""
   });
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState({});
 
   const fieldsToValidate = [
     "nome",
     "sobrenome",
-    "email",
     "telefone",
+    "email",
     "senha",
     "confirmarSenha"
   ];
 
-  const handleChange = createFormChangeHandler(form, setForm, setErrors);
+  const handleChange = createFormChangeHandler(form, setForm, setError);
 
   const onSubmitCallback = async (formState) => {
-    await apiRequest("http://localhost:3001/clientes", "POST", {
-      nome: formState.nome,
-      sobrenome: formState.sobrenome,
-      email: formState.email,
-      telefone: formState.telefone,
-      senha: formState.senha
-    });
-    alert("Cadastro realizado!");
-    setForm({
-      nome: "",
-      sobrenome: "",
-      email: "",
-      telefone: "",
-      senha: "",
-      confirmarSenha: ""
-    });
-    setErrors({});
+    try {
+      const data =await apiRequest("http://localhost:8080/usuarios", "POST", {
+        tipoUsuario: {id: 1},
+        nome: formState.nome,
+        sobrenome: formState.sobrenome,
+        telefone: formState.telefone,
+        email: formState.email,
+        senha: formState.senha
+      });
+      alert(`Cadastro realizado! Seja bem-vindo(a) ${data.nome}.`);
+      setForm({
+        nome: "",
+        sobrenome: "",
+        telefone: "",
+        email: "",
+        senha: "",
+        confirmarSenha: ""
+      });
+    setError({});
+    } catch (error) {
+        if (error.message.includes("400")) {
+            setError({ email: "Email já cadastrado." });
+        } else {
+            console.error("Erro ao cadastrar cliente:", error);
+        }
+    }
   };
 
-  const handleSubmit = createFormSubmitHandler(form, setErrors, onSubmitCallback, fieldsToValidate);
+  const handleSubmit = createFormSubmitHandler(form, setError, onSubmitCallback, fieldsToValidate);
 
     return (
         <div className="cadastro-cliente-container">
@@ -61,11 +69,11 @@ export default function CadastroCliente() {
                     <input
                         type="text"
                         name="nome"
-                        placeholder="Nome Completo"
+                        placeholder="Nome"
                         value={form.nome}
                         onChange={handleChange}
                     />
-                    {errors.nome && <span style={{ color: "orange" }}>{errors.nome}</span>}
+                    {error.nome && <span style={{ color: "orange" }}>{error.nome}</span>}
                     <input
                         type="text"
                         name="sobrenome"
@@ -73,15 +81,7 @@ export default function CadastroCliente() {
                         value={form.sobrenome}
                         onChange={handleChange}
                     />
-                    {errors.sobrenome && <span style={{ color: "orange" }}>{errors.sobrenome}</span>}
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                    />
-                    {errors.email && <span style={{ color: "orange" }}>{errors.email}</span>}
+                    {error.sobrenome && <span style={{ color: "orange" }}>{error.sobrenome}</span>}
                     <input
                         type="text"
                         name="telefone"
@@ -89,7 +89,15 @@ export default function CadastroCliente() {
                         value={form.telefone}
                         onChange={handleChange}
                     />
-                    {errors.telefone && <span style={{ color: "orange" }}>{errors.telefone}</span>}
+                    {error.telefone && <span style={{ color: "orange" }}>{error.telefone}</span>}
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={form.email}
+                        onChange={handleChange}
+                    />
+                    {error.email && <span style={{ color: "orange" }}>{error.email}</span>}
                     <input
                         type="password"
                         name="senha"
@@ -97,7 +105,7 @@ export default function CadastroCliente() {
                         value={form.senha}
                         onChange={handleChange}
                     />
-                    {errors.senha && <span style={{ color: "orange" }}>{errors.senha}</span>}
+                    {error.senha && <span style={{ color: "orange" }}>{error.senha}</span>}
                     <input
                         type="password"
                         name="confirmarSenha"
@@ -105,7 +113,7 @@ export default function CadastroCliente() {
                         value={form.confirmarSenha}
                         onChange={handleChange}
                     />
-                    {errors.confirmarSenha && <span style={{ color: "orange" }}>{errors.confirmarSenha}</span>}
+                    {error.confirmarSenha && <span style={{ color: "orange" }}>{error.confirmarSenha}</span>}
                 </div>
                 <button type="submit">CADASTRAR</button><br /><br />
                 <p>

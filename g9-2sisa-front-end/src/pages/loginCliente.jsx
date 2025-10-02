@@ -18,14 +18,23 @@ export default function LoginCliente() {
             setError(emailError || senhaError || "Preencha todos os campos.");
             return;
         }
-        const data = await apiRequest(
-            `http://localhost:3001/clientes?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`,
-            "GET"
+        try {
+            const data = await apiRequest(
+            // `http://localhost:3001/clientes?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`,
+            "http://localhost:8080/usuarios/login",
+            "POST",
+            { email: form.email, senha: form.senha }
         );
-        if (data.length > 0) {
+        if (data.logado == true) {
+            sessionStorage.setItem("usuarioId", data.usuarioId);
             alert("Login realizado com sucesso!");
-        } else {
-            setError("Email ou senha inválidos.");
+        }
+        } catch (error) {
+            if (error.message.includes("401")) {
+                setError("Email ou senha inválidos.");
+            } else {
+                setError("Erro inesperado. Tente novamente.");
+            }
         }
     }
 
