@@ -33,14 +33,14 @@ export default function Navbar() {
       </div>
 
       {/* Botão Hamburger (aparece só no mobile) */}
-      {/* <div className="hamburger" onClick={toggleMenu}>
+      <div className="hamburger" onClick={toggleMenu}>
         <span></span>
         <span></span>
         <span></span>
-      </div> */}
+      </div>
 
       {/* Menu Mobile */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+      {/* <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <Link to="/">Início</Link>
         <Link to="/quem-somos">Quem Somos</Link>
         <Link to="/servicos">Serviços</Link>
@@ -48,7 +48,7 @@ export default function Navbar() {
         <Link to="/agendamentos-feitos">Agendamento</Link>
         <Link to="/login-cliente">Login</Link>
         <Link to="/cadastro-cliente" className="cadastro">Cadastro</Link>
-      </div>
+      </div> */}
 
       {/* Barra de Contato (fixa abaixo da navbar) */}
       <div className="contact__down">
