@@ -33,11 +33,11 @@ export default function Navbar() {
       </div>
 
       {/* Botão Hamburger (aparece só no mobile) */}
-      {/* <div className="hamburger" onClick={toggleMenu}>
+      <div className="hamburger" onClick={toggleMenu}>
         <span></span>
         <span></span>
         <span></span>
-      </div> */}
+      </div>
 
       {/* Menu Mobile */}
       {/* <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
