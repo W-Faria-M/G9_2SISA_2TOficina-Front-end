@@ -11,72 +11,80 @@ import AgendamentosFeitos from "./pages/agendamentosFeitos";
 import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
 import SobreAgendamento from "./pages/sobreAgendamentos";
+import FilterBar from "./components/filterBar";
+import GestaoAgendamentos from "./components/GestaoAgendamentos";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Navbar />
-              <Home />
-            </>
-          }
-        />
-        <Route
-          path="/cadastro-cliente"
-          element={
-            <>
-              <Navbar />
-              <CadastroCliente />
-            </>
-          }
-        />
-        <Route
-          path="/login-cliente"
-          element={
-            <>
-              <Navbar />
-              <LoginCliente />
-            </>
-          }
-        />
-        <Route path="/login-funcionario" element={<LoginFuncionario />} />
-        <Route path="/redirect-message" element={<RedirectMessage />} />
-        <Route
-          path="/agendamentos-feitos"
-          element={
-            <>
-            
-              {/* <MenuHamburguer /> */}
-              <AgendamentosFeitos
-                onDetalhes={(agendamento) => setDetalheSelecionado(agendamento)}
-              />
-              {detalheSelecionado && (
-                <DetalhesAgendamento
-                  agendamento={detalheSelecionado}
-                  onClose={() => setDetalheSelecionado(null)}
-                />
-              )}
-            </>
-          }
-        />
-        <Route path="/servico" element={<Servico />} />
-         <Route
-          path="/agendamento"
-          element={
-            <>
-              <Navbar />
-              <SobreAgendamento />
-            </>
-          }
-        />
-      </Routes>
-    </Router>
+    // <Router>
+    //   <Routes>
+    //     <Route
+    //       path="/"
+    //       element={
+    //         <>
+    //           <Navbar />
+    //           <Home />
+    //         </>
+    //       }
+    //     />
+    //     <Route
+    //       path="/cadastro-cliente"
+    //       element={
+    //         <>
+    //           <Navbar />
+    //           <CadastroCliente />
+    //         </>
+    //       }
+    //     />
+    //     <Route
+    //       path="/login-cliente"
+    //       element={
+    //         <>
+    //           <Navbar />
+    //           <LoginCliente />
+    //         </>
+    //       }
+    //     />
+    //     <Route path="/login-funcionario" element={<LoginFuncionario />} />
+    //     <Route path="/redirect-message" element={<RedirectMessage />} />
+    //     <Route
+    //       path="/agendamentos-feitos"
+    //       element={
+    //         <>
+
+    //           {/* <MenuHamburguer /> */}
+    //           <AgendamentosFeitos
+    //             onDetalhes={(agendamento) => setDetalheSelecionado(agendamento)}
+    //           />
+    //           {detalheSelecionado && (
+    //             <DetalhesAgendamento
+    //               agendamento={detalheSelecionado}
+    //               onClose={() => setDetalheSelecionado(null)}
+    //             />
+    //           )}
+    //         </>
+    //       }
+    //     />
+    //     <Route path="/servico" element={<Servico />} />
+    //      <Route
+    //       path="/agendamento"
+    //       element={
+    //         <>
+    //           <Navbar />
+    //           <SobreAgendamento />
+    //         </>
+    //       }
+    //     />
+    //   </Routes>
+    // </Router>
+
+    <>
+      {/* <FilterBar /> */}
+      <GestaoAgendamentos />
+    </>
+
   );
 }
 
