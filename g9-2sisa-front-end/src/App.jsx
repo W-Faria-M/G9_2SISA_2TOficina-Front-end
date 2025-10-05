@@ -10,6 +10,7 @@ import RedirectMessage from "./pages/redirect-message";
 import AgendamentosFeitos from "./pages/agendamentosFeitos";
 import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
+import SobreAgendamento from "./pages/sobreAgendamentos";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
@@ -65,6 +66,15 @@ function App() {
           }
         />
         <Route path="/servico" element={<Servico />} />
+         <Route
+          path="/agendamento"
+          element={
+            <>
+              <Navbar />
+              <SobreAgendamento />
+            </>
+          }
+        />
       </Routes>
     </Router>
   );
