@@ -12,7 +12,8 @@ import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
 import SobreAgendamento from "./pages/sobreAgendamentos";
 import FilterBar from "./components/filterBar";
-import GestaoAgendamentos from "./components/GestaoAgendamentos";
+import Menu from "./components/menu-hamburguer";
+import GestaoAgendamentos from "./pages/GestaoAgendamentos";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
@@ -83,6 +84,8 @@ function App() {
     <>
       {/* <FilterBar /> */}
       <GestaoAgendamentos />
+      {/* <AgendamentosFeitos /> */}
+      <Menu />
     </>
 
   );

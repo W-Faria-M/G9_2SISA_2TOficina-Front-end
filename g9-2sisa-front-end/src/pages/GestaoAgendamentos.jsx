@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./GestaoAgendamentos.css";
-import FilterBar from "./filterBar";
+import FilterBar from "../components/filterBar";
+import DetalhesAgendamentoModal from "../components/DetalhesAgendamentoModal";
+import EditarAgendamentoModal from "../components/EditarAgendamentoModal";
 
 export default function GestaoAgendamentos() {
   const [agendamentos, setAgendamentos] = useState([]);
@@ -9,6 +11,7 @@ export default function GestaoAgendamentos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
+  const [editarSelecionado, setEditarSelecionado] = useState(null);
 
   useEffect(() => {
     fetchAgendamentos();
@@ -40,30 +43,31 @@ export default function GestaoAgendamentos() {
     return data; 
   };
 
-  const handleDetalhes = (agendamento) => {
-    console.log("Detalhes do agendamento:", agendamento);
+   const handleDetalhes = (agendamento) => {
     setDetalheSelecionado(agendamento);
   };
 
-  const handleEditar = async (agendamento) => {
-    console.log("Editar agendamento:", agendamento);
-    alert(`Editar agendamento: ${agendamento.veiculo}`);
+  const handleEditar = (agendamento) => {
+    setEditarSelecionado(agendamento);
   };
 
-  const handleCancelAgendamento = async (id) => {
-    if (!window.confirm("Deseja realmente cancelar este agendamento?")) return;
-    
+
+
+  const handleSalvarEdicao = async (agendamentoEditado) => {
     try {
-      const response = await fetch(`http://localhost:3001/agendamentos/${id}`, {
-        method: 'DELETE'
+      const response = await fetch(`http://localhost:3001/agendamentos/${agendamentoEditado.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(agendamentoEditado)
       });
-      if (!response.ok) throw new Error('Erro ao cancelar agendamento');
       
-      setAgendamentos(agendamentos.filter(ag => ag.id !== id));
-      alert('Agendamento cancelado com sucesso!');
+      if (!response.ok) throw new Error('Erro ao atualizar agendamento');
+      
+      await fetchAgendamentos();
+      alert('Agendamento atualizado com sucesso!');
     } catch (err) {
-      console.error('Erro ao cancelar:', err);
-      alert('Erro ao cancelar agendamento');
+      console.error('Erro ao atualizar:', err);
+      alert('Erro ao atualizar agendamento');
     }
   };
 
@@ -135,9 +139,17 @@ export default function GestaoAgendamentos() {
       )}
 
       {detalheSelecionado && (
-        <DetalhesAgendamento
+        <DetalhesAgendamentoModal
           agendamento={detalheSelecionado}
           onClose={() => setDetalheSelecionado(null)}
+        />
+      )}
+
+      {editarSelecionado && (
+        <EditarAgendamentoModal
+          agendamento={editarSelecionado}
+          onClose={() => setEditarSelecionado(null)}
+          onSave={handleSalvarEdicao}
         />
       )}
     </div>

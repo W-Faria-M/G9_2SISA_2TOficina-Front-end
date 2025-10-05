@@ -44,7 +44,9 @@
       "hora": "14:00",
       "tempoEntrega": "16:00",
       "status": "Esperando Atendimento",
-      "servico": "Troca de Óleo"
+      "servico": "Troca de Óleo",
+      "cliente": "Pedro",
+      "dataInicio": "10/09/2025"
     },
     {
       "id": "2",
