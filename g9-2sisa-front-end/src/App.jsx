@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import CadastroCliente from "./pages/cadastroCliente";
-// import MenuHamburguer from "./components/menu-hamburguer";
+import MenuHamburguer from "./components/menu-hamburguer";
 import LoginCliente from "./pages/loginCliente";
 import Home from "./pages/home";
 import LoginFuncionario from "./pages/loginFuncionario";
@@ -12,82 +12,83 @@ import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
 import SobreAgendamento from "./pages/sobreAgendamentos";
 import FilterBar from "./components/filterBar";
-import Menu from "./components/menu-hamburguer";
 import GestaoAgendamentos from "./pages/GestaoAgendamentos";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
 
   return (
-    // <Router>
-    //   <Routes>
-    //     <Route
-    //       path="/"
-    //       element={
-    //         <>
-    //           <Navbar />
-    //           <Home />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/cadastro-cliente"
-    //       element={
-    //         <>
-    //           <Navbar />
-    //           <CadastroCliente />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/login-cliente"
-    //       element={
-    //         <>
-    //           <Navbar />
-    //           <LoginCliente />
-    //         </>
-    //       }
-    //     />
-    //     <Route path="/login-funcionario" element={<LoginFuncionario />} />
-    //     <Route path="/redirect-message" element={<RedirectMessage />} />
-    //     <Route
-    //       path="/agendamentos-feitos"
-    //       element={
-    //         <>
-
-    //           {/* <MenuHamburguer /> */}
-    //           <AgendamentosFeitos
-    //             onDetalhes={(agendamento) => setDetalheSelecionado(agendamento)}
-    //           />
-    //           {detalheSelecionado && (
-    //             <DetalhesAgendamento
-    //               agendamento={detalheSelecionado}
-    //               onClose={() => setDetalheSelecionado(null)}
-    //             />
-    //           )}
-    //         </>
-    //       }
-    //     />
-    //     <Route path="/servico" element={<Servico />} />
-    //      <Route
-    //       path="/agendamento"
-    //       element={
-    //         <>
-    //           <Navbar />
-    //           <SobreAgendamento />
-    //         </>
-    //       }
-    //     />
-    //   </Routes>
-    // </Router>
-
     <>
-      {/* <FilterBar /> */}
-      <GestaoAgendamentos />
-      {/* <AgendamentosFeitos /> */}
-      <Menu />
-    </>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <Home />
+              </>
+            }
+          />
+          <Route
+            path="/cadastro-cliente"
+            element={
+              <>
+                <Navbar />
+                <CadastroCliente />
+              </>
+            }
+          />
+          <Route
+            path="/login-cliente"
+            element={
+              <>
+                <Navbar />
+                <LoginCliente />
+              </>
+            }
+          />
+          <Route path="/login-funcionario" element={<LoginFuncionario />} />
+          <Route path="/redirect-message" element={<RedirectMessage />} />
+          <Route
+            path="/agendamentos-feitos"
+            element={
+              <>
+                <MenuHamburguer />
+                <AgendamentosFeitos
+                  onDetalhes={(agendamento) =>
+                    setDetalheSelecionado(agendamento)
+                  }
+                />
+                {detalheSelecionado && (
+                  <DetalhesAgendamento
+                    agendamento={detalheSelecionado}
+                    onClose={() => setDetalheSelecionado(null)}
+                  />
+                )}
+              </>
+            }
+          />
+          <Route path="/servico" element={<Servico />} />
+          <Route
+            path="/agendamento"
+            element={
+              <>
+                <Navbar />
+                <SobreAgendamento />
+              </>
+            }
+          />
+        </Routes>
+      </Router>
 
+      <>
+        <FilterBar />
+        <GestaoAgendamentos />
+        <AgendamentosFeitos />
+        <MenuHamburguer />
+      </>
+    </>
   );
 }
 

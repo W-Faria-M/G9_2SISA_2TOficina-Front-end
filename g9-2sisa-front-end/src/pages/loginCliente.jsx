@@ -28,6 +28,7 @@ export default function LoginCliente() {
         if (data.logado == true) {
             sessionStorage.setItem("usuarioId", data.usuarioId);
             alert("Login realizado com sucesso!");
+            window.location.href = "/agendamentos-feitos";
         }
         } catch (error) {
             if (error.message.includes("401")) {
