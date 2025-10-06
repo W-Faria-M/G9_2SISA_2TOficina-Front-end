@@ -48,6 +48,7 @@ export default function CadastroCliente() {
         senha: "",
         confirmarSenha: ""
       });
+      window.location.href = "/login-cliente";
     setError({});
     } catch (error) {
         if (error.message.includes("400")) {
