@@ -25,6 +25,8 @@ export default function Navbar() {
       </ul>
 
       <div className="navbar__right">
+        <Link to="/agendamento">Agendamentos</Link>
+        <span className="navbar__separator">|</span>
         <Link to="/login-cliente">Login</Link>
         <span className="navbar__separator">|</span>
         <Link to="/cadastro-cliente" className="cadastro">Cadastro</Link>
