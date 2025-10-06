@@ -1,0 +1,344 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.agendamento-container {
+  min-height: 100vh;
+  width: 100vw;
+  background: #0D0D0D; /* Mesma cor de fundo da home */
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contact Bar */
+.contact-bar {
+  background-color: #F27405; /* Mesma cor laranja da home */
+  padding: 0.5rem 2rem;
+  text-align: right;
+  width: 100%;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.contact-info span {
+  color: white;
+  font-weight: bold;
+}
+
+/* Main Content */
+.agendamento-main {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.texto-agendar {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-weight: bold;
+}
+
+/* Como Agendar Section */
+.como-agendar h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #F27405; /* Mesma cor laranja da home */
+}
+
+.agendar-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  align-items: start;
+}
+
+.agendar-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: #F4F4F4; /* Mesma cor de texto da home */
+}
+
+.btn-agendar {
+  background-color: #F27405; /* Mesma cor laranja da home */
+  color: #F4F4F4;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 20px; /* Mesmo border-radius da home */
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+
+.btn-agendar:hover {
+  background-color: #e55a00;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Passos Grid */
+/* ...existing code... */
+
+/* Passos Grid */
+.passos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem; /* Aumentando o gap entre os itens */
+  margin-top: -4rem;
+}
+
+.passo-item {
+  text-align: center;
+}
+
+.passo-placeholder {
+  width: 250px; /* Aumentando de 180px para 250px */
+  height: 180px; /* Aumentando de 120px para 180px */
+  background-color: #555;
+  border-radius: 8px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  overflow: hidden; /* Para garantir que a imagem não saia da div */
+  border: 3px solid #F27405; /* Aumentando a borda de 2px para 3px */
+  position: relative;
+}
+
+/* Estilo para as imagens dentro dos passos */
+.passo-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Mantém a proporção da imagem dentro da div */
+  border-radius: 6px;
+}
+
+/* Estilo para placeholders vazios */
+.passo-placeholder:empty::before {
+  content: "EM BREVE";
+  color: #F27405;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.passo-item span {
+  font-weight: bold;
+  color: #F27405;
+  font-size: 1.2rem; /* Aumentando um pouco o tamanho da fonte */
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .agendar-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .passos-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .passo-placeholder {
+    width: 150px; /* Menor em mobile */
+    height: 100px;
+  }
+
+  .contact-info,
+  .contact__down-content {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .contact-bar {
+    text-align: center;
+  }
+
+  .agendamento-main {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .passos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .passo-placeholder {
+    width: 200px; /* Maior quando em uma coluna */
+    height: 130px;
+  }
+  
+  .como-agendar h2 {
+    font-size: 1.5rem;
+  }
+}
+/* Processo Text */
+.processo-text {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.processo-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  color: #F4F4F4; /* Mesma cor de texto da home */
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  margin: 4rem 0;
+  padding: 2rem;
+  border-top: 2px solid #F27405; /* Mesma cor laranja da home */
+  border-bottom: 2px solid #F27405;
+  width: 100%;
+}
+
+.cta-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #F4F4F4; /* Mesma cor de texto da home */
+}
+
+.btn-agendar-cta {
+  background-color: #F27405; /* Mesma cor laranja da home */
+  color: #F4F4F4;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 20px; /* Mesmo border-radius da home */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  transition: transform 0.5s ease;
+}
+
+.btn-agendar-cta:hover {
+  background-color: #e55a00;
+  color: #fff;
+   transform: scale(1.1);
+}
+
+/* Contato Section */
+.contato-section {
+  text-align: center;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.contato-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #F4F4F4; /* Mesma cor de texto da home */
+}
+
+.contato-info p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #F4F4F4; /* Mesma cor de texto da home */
+}
+
+/* Footer Contact Bar - Mesmo estilo da home */
+.contact__down_bottom {
+  position: relative;
+  top: 50px; 
+  left: 0;
+  width: 100%;
+  background: #F27405;
+  color: #fff;
+  z-index: 999;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  border-top: 3px solid #000;
+}
+
+.contact__down-content {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+  padding-right: 24px;
+}
+
+.contact__icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.contact__whatsapp span {
+  color: #fff;
+  text-decoration: underline;
+  margin-right: 10px;
+}
+
+.contact__instagram span {
+  color: #fff;
+  font-weight: 400;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .agendar-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .passos-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .contact-info,
+  .contact__down-content {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .contact-bar {
+    text-align: center;
+  }
+
+  .agendamento-main {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .passos-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .como-agendar h2 {
+    font-size: 1.5rem;
+  }
+}

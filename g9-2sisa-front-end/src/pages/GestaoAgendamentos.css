@@ -1,0 +1,236 @@
+.gestao-agendamentos-page {
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.gestao-agendamentos-titulo {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin: 0 0 55px 0;
+  padding-top: 50px;
+  padding-left: 235px;
+  color: #333;
+}
+
+.gestao-agendamentos-lista {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  padding-top: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.gestao-agendamentos-card {
+  background-color: #fff;
+  border: 2px solid #f39c12;
+  border-radius: 12px;
+  padding: 24px 32px;
+  margin: 12px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 95%;
+  margin-left: 60px;
+  min-width: 350px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+}
+
+.gestao-agendamentos-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gestao-agendamentos-card-topo {
+  flex: 1;
+}
+
+.gestao-agendamentos-card-topo p {
+  margin: 0 0 22px 0;
+}
+
+.gestao-agendamentos-card-veiculo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.gestao-agendamentos-card-cliente,
+.gestao-agendamentos-card-data-inicio {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.gestao-agendamentos-card-lateral {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.gestao-agendamentos-card-status {
+  margin-top: 0;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.gestao-agendamentos-status-tag {
+  padding: 6px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.gestao-agendamentos-status-pendente {
+  background-color: #f39c12;
+  color: #fff;
+}
+
+.gestao-agendamentos-status-concluido {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.gestao-agendamentos-card-servico {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.gestao-agendamentos-card-acoes {
+  display: flex;
+  gap: 12px;
+  margin-top: 0;
+}
+
+.gestao-agendamentos-btn-detalhes,
+.gestao-agendamentos-btn-editar,
+.gestao-agendamentos-btn-cancelar {
+  padding: 8px 24px;
+  border-radius: 9999px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.gestao-agendamentos-btn-detalhes {
+  background: #f39c12;
+  color: #fff;
+}
+
+.gestao-agendamentos-btn-detalhes:hover {
+  background: #e67e22;
+}
+
+.gestao-agendamentos-btn-editar {
+  background: #f39c12;
+  color: #fff;
+}
+
+.gestao-agendamentos-btn-editar:hover {
+  background: #e67e22;
+}
+
+.gestao-agendamentos-btn-cancelar {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.gestao-agendamentos-btn-cancelar:hover {
+  background: #c0392b;
+}
+
+.gestao-agendamentos-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.gestao-agendamentos-modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.gestao-agendamentos-modal-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.gestao-agendamentos-modal-close-button:hover {
+  background: #c0392b;
+}
+
+.gestao-agendamentos-page .acao-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .gestao-agendamentos-titulo {
+    padding-left: 20px;
+    font-size: 1.5rem;
+  }
+
+  .gestao-agendamentos-card {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .gestao-agendamentos-card-lateral {
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .gestao-agendamentos-card-acoes {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .gestao-agendamentos-btn-detalhes,
+  .gestao-agendamentos-btn-editar,
+  .gestao-agendamentos-btn-cancelar {
+    flex: 1;
+    min-width: 100px;
+  }
+}
