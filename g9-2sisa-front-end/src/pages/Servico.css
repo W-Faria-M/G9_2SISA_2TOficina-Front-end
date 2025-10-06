@@ -47,6 +47,7 @@ html, body {
             }
 
             button{
+                color: black;
                 font-size: 25px;
                 text-align: center;
                 background: none;
@@ -98,6 +99,23 @@ html, body {
       background: orange;
       color: white;
     }
+
+    .btn-remover {
+      margin-left: 10px;
+      background: white;
+      border: 2px solid #DF3535;
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-weight: bold;
+      color: #DF3535;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-remover:hover {
+      background: #DF3535;
+      color: white;
+    }
 }
 
 .adicionar-button{
@@ -112,5 +130,4 @@ html, body {
   position: relative;
   top:63px;
   left: 530px;
-
 }

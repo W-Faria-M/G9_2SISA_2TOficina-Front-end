@@ -9,12 +9,104 @@
       "id": 1
     },
     {
-      "nome": "Sabrina",
-      "sobrenome": "vinicius",
-      "email": "sabrininhaxt@gmail.com",
-      "telefone": "11958292430",
+      "nome": "Matheus",
+      "sobrenome": "Fermoselle",
+      "email": "matheus.vsilva@sptech.com",
+      "telefone": "11940352230",
       "senha": "1234",
       "id": 2
+    },
+    {
+      "nome": "Gabriel",
+      "sobrenome": "Faria",
+      "email": "faria@g.com",
+      "telefone": "11940352230",
+      "senha": "123456",
+      "id": 3
+    }
+  ],
+  "funcionarios": [
+    {
+      "nome": "Gianluca",
+      "sobrenome": "Carvalho",
+      "email": "gianluca@gmail.com",
+      "telefone": "11958292430",
+      "cargo": "Dono",
+      "senha": "Dono123",
+      "id": 1
+    }
+  ],
+  "agendamentos": [
+    {
+      "id": 1,
+      "veiculo": "Yamaha MT-07",
+      "data": "10/09/2025",
+      "hora": "14:00",
+      "tempoEntrega": "16:00",
+      "status": "Esperando Atendimento",
+      "servico": "Troca de Óleo"
+    },
+    {
+      "id": 2,
+      "veiculo": "Yamaha MT-07",
+      "data": "08/09/2025",
+      "hora": "10:00",
+      "tempoEntrega": "12:00",
+      "status": "Concluído",
+      "servico": "Troca de Óleo"
+    },
+    {
+      "id": 3,
+      "veiculo": "Yamaha MT-07",
+      "data": "11/09/2025",
+      "hora": "14:00",
+      "tempoEntrega": "15:00",
+      "status": "Esperando Atendimento",
+      "servico": "Troca de Óleo"
+    }
+  ],
+  "servicos": [
+    {
+      "id": 1,
+      "nome": "Troca de Troca",
+      "categoria": "Manutenção Preventiva",
+      "rapido": "true",
+      "ativo": true,
+      "descricao": "Troca do óleo do motor para manter a lubrificação correta."
+    },
+    {
+      "id": 2,
+      "nome": "Troca de Pneus",
+      "status": "Inativo",
+      "categoria": "Pneus e Rodas",
+      "rapido": false,
+      "descricao": "Substituição de pneus com balanceamento incluso."
+    },
+    {
+      "id": 3,
+      "nome": "Substituição de Velas",
+      "status": "Ativo",
+      "categoria": "Manutenção Corretiva",
+      "rapido": true,
+      "descricao": "Troca de velas para melhor desempenho do motor."
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "nome": "Manutenção Preventiva"
+    },
+    {
+      "id": 2,
+      "nome": "Pneus e Rodas"
+    },
+    {
+      "id": 3,
+      "nome": "Manutenção Corretiva"
+    },
+    {
+      "id": 4,
+      "nome": "Elétrico"
     }
   ]
 }
