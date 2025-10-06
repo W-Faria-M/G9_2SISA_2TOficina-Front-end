@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import CadastroCliente from "./pages/cadastroCliente";
-// import MenuHamburguer from "./components/menu-hamburguer";
 import LoginCliente from "./pages/loginCliente";
 import Home from "./pages/home";
 import LoginFuncionario from "./pages/loginFuncionario";
@@ -10,6 +9,7 @@ import RedirectMessage from "./pages/redirect-message";
 import AgendamentosFeitos from "./pages/agendamentosFeitos";
 import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
+import Perfil from "./pages/perfil"; // ✅ import do perfil
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
@@ -50,8 +50,7 @@ function App() {
           path="/agendamentos-feitos"
           element={
             <>
-            
-              {/* <MenuHamburguer /> */}
+              <Navbar />
               <AgendamentosFeitos
                 onDetalhes={(agendamento) => setDetalheSelecionado(agendamento)}
               />
@@ -64,7 +63,18 @@ function App() {
             </>
           }
         />
-        <Route path="/servico" element={<Servico />} />
+        <Route
+          path="/servico"
+          element={
+            <>
+              <Navbar />
+              <Servico />
+            </>
+          }
+        />
+
+        {/* ✅ Rota de perfil sem Navbar */}
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
     </Router>
   );
