@@ -20,7 +20,6 @@ export default function LoginCliente() {
         }
         try {
             const data = await apiRequest(
-            // `http://localhost:3001/clientes?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`,
             "http://localhost:8080/usuarios/login",
             "POST",
             { email: form.email, senha: form.senha }
