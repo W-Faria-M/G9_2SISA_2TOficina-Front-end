@@ -1,75 +1,115 @@
-import React from "react";
-import "./Perfil.css";
+import "./perfil.css"
 
-const Perfil = () => {
+export default function Perfil() {
   return (
-    <div className="perfil-container">
-      <h2>Perfil</h2>
-      <p className="subtitulo">Personalize sua experiência</p>
+    <div className="perfil-page-wrapper">
+      <header className="perfil-page-header">
+        <h1>Perfil</h1>
+        <p>Personalize sua experiência</p>
+      </header>
 
-      <div className="perfil-content">
-        {/* Coluna esquerda - Informações */}
-        <div className="perfil-info">
-          <h3>Suas Informações</h3>
-          <div className="foto-container">
-            <img
-              src="/default-avatar.png"
-              alt="Foto do usuário"
-              className="foto-usuario"
-            />
-            <span className="editar-foto">✏️</span>
+      <div className="perfil-page-content">
+        {/* Left Panel - User Information */}
+        <div className="perfil-info-panel">
+          <h2>Suas Informações</h2>
+
+          <div className="perfil-photo-container">
+            <div className="perfil-photo-circle">
+              <img src="/profile-placeholder.jpg" alt="Foto de perfil" />
+            </div>
+            <button className="perfil-edit-photo-btn" aria-label="Editar foto">
+              ✏️
+            </button>
           </div>
-          <p className="nome">nome dos Santos Silva</p>
-          <p className="email">nome@email.com</p>
-          <p className="telefone">Telefone: +55 (11) 9 4002 - 8922</p>
-          <p className="endereco">Endereço: Ainda não adicionado</p>
-          <button className="btn-editar">EDITAR</button>
+
+          <div className="perfil-info-item">
+            <p className="perfil-info-label">nome dos Santos Silva</p>
+          </div>
+
+          <div className="perfil-info-item">
+            <p className="perfil-info-label">nome@email.com</p>
+          </div>
+
+          <div className="perfil-info-item">
+            <p className="perfil-info-label">Telefone: + 55 (11) 9 4002 - 8922</p>
+          </div>
+
+          <div className="perfil-info-item">
+            <p className="perfil-info-label">Endereço: Ainda não adicionado</p>
+          </div>
+
+          <button className="perfil-btn-editar">EDITAR</button>
         </div>
 
-        {/* Coluna direita */}
-        <div className="perfil-dados">
-          <div className="cards-servicos">
-            <div className="card">
-              <h4>Serviços a serem realizados:</h4>
-              <span className="numero">1</span>
-              <button className="btn-secundario">AGENDAMENTOS</button>
+        {/* Right Panel - Services and Motorcycles */}
+        <div className="perfil-main-panel">
+          {/* Services Section */}
+          <div className="perfil-services-section">
+            <div className="perfil-service-card">
+              <p className="perfil-service-label">Serviços e serem realizados</p>
+              <p className="perfil-service-number">1</p>
             </div>
-            <div className="card">
-              <h4>Serviços já realizados:</h4>
-              <span className="numero">2</span>
-              <button className="btn-primario">+ AGENDAR</button>
+
+            <div className="perfil-service-card">
+              <p className="perfil-service-label">Serviços já realizados</p>
+              <p className="perfil-service-number">2</p>
             </div>
           </div>
 
-          {/* Lista de motos */}
-          <div className="motos-section">
-            <h3>Suas Motos</h3>
-            <div className="lista-motos">
-              <div className="moto-card">
-                <p>Marca: Nome Marca</p>
-                <p>Modelo: Nome Modelo</p>
-                <p>Ano: AAAA</p>
-                <p>Km: X km</p>
-                <p>Placa: ABC 1234</p>
+          <div className="perfil-action-buttons">
+            <button className="perfil-btn-reagendar">AGENDAMENTOS</button>
+            <button className="perfil-btn-agendar">+ AGENDAR</button>
+          </div>
+
+          {/* Motorcycles Section */}
+          <div className="perfil-motos-section">
+            <h2>Suas Motos</h2>
+
+            <div className="perfil-motos-grid">
+              <div className="perfil-moto-card">
+                <p>
+                  <strong>Marca:</strong> Nome Marca
+                </p>
+                <p>
+                  <strong>Modelo:</strong> Nome Modelo
+                </p>
+                <p>
+                  <strong>Ano:</strong> AAAA
+                </p>
+                <p>
+                  <strong>Km:</strong> x km
+                </p>
+                <p>
+                  <strong>Placa:</strong> ABC 1234
+                </p>
               </div>
-              <div className="moto-card">
-                <p>Marca: Nome Marca</p>
-                <p>Modelo: Nome Modelo</p>
-                <p>Ano: AAAA</p>
-                <p>Km: X km</p>
-                <p>Placa: XYZ 0987</p>
+
+              <div className="perfil-moto-card">
+                <p>
+                  <strong>Marca:</strong> Nome Marca
+                </p>
+                <p>
+                  <strong>Modelo:</strong> Nome Mode
+                </p>
+                <p>
+                  <strong>Ano:</strong> AAAA
+                </p>
+                <p>
+                  <strong>Km:</strong> x km
+                </p>
+                <p>
+                  <strong>Placa:</strong> XYZ 0987
+                </p>
               </div>
             </div>
 
-            <div className="acoes-motos">
-              <button className="btn-adicionar">ADICIONAR</button>
-              <button className="btn-remover">REMOVER</button>
+            <div className="perfil-moto-buttons">
+              <button className="perfil-btn-adicionar">ADICIONAR</button>
+              <button className="perfil-btn-remover">REMOVER</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
-
-export default Perfil;
+  )
+}

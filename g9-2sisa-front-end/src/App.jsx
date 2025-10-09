@@ -9,7 +9,7 @@ import RedirectMessage from "./pages/redirect-message";
 import AgendamentosFeitos from "./pages/agendamentosFeitos";
 import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
-import Perfil from "./pages/perfil"; // ✅ import do perfil
+import Perfil from "./pages/perfil";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
