@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './loginFuncionario.css';
 import { useNavigate } from 'react-router-dom';
 import logoImage from '../assets/logo2T.jpg';
-import { createFormChangeHandler, validateField, apiRequest } from "../helpers/utils";
+import axios from 'axios';
+import { createFormChangeHandler, validateField } from "../helpers/utils";
 
 const LoginFuncionario = () => {
   const [form, setForm] = useState({ email: "", senha: "" });
@@ -20,20 +21,30 @@ const LoginFuncionario = () => {
       return;
     }
     try {
-      const data = await apiRequest(
-        `http://localhost:3001/funcionarios?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`,
-        "GET"
-      );
-      if (data.length > 0) {
+      // Chama o endpoint de login do backend
+      const response = await axios.post('http://localhost:8080/usuarios/login', {
+        email: form.email,
+        senha: form.senha
+      });
+
+      // A API do backend retorna um objeto tipo LoginRes: { usuarioId: number | null, logado: boolean }
+      const data = response.data;
+      if (data && data.logado) {
         alert("Login realizado com sucesso!");
-        localStorage.setItem("funcionarioLogado", JSON.stringify(data[0]));
+        // Armazenamos o objeto de resposta. Se precisar do usuário completo, buscar depois por ID.
+        localStorage.setItem("funcionarioLogado", JSON.stringify(data));
         navigate("/servico");
       } else {
         setError("Email ou senha inválidos.");
       }
     } catch (error) {
       console.error("Erro na requisição:", error);
-      setError("Erro ao conectar com o servidor.");
+      if (error.response && error.response.status === 401) {
+        setError("Email ou senha inválidos.");
+        return;
+      }
+      const message = error?.response?.data?.message || "Erro ao conectar com o servidor.";
+      setError(message);
     }
   }
 
