@@ -81,13 +81,6 @@ function App() {
           />
         </Routes>
       </Router>
-
-      <>
-        <FilterBar />
-        <GestaoAgendamentos />
-        <AgendamentosFeitos />
-        <MenuHamburguer />
-      </>
     </>
   );
 }
