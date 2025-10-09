@@ -24,7 +24,7 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
   const fetchAgendamentos = async (usuarioId) => {
     try {
-      const data = await apiRequest(`http://localhost:8080/agendamentos?usuarioId=${usuarioId}`, "GET");
+      const data = await apiRequest(`http://localhost:8080/agendamentos?usuarioId=${usuarioId}`);
       // Se data for null, undefined ou array vazio, inicializa como array vazio
       setAgendamentos(Array.isArray(data) ? data : []);
     } catch (error) {
