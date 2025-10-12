@@ -11,6 +11,7 @@ import AgendamentosFeitos from "./pages/agendamentosFeitos";
 import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
 import SobreAgendamento from "./pages/sobreAgendamentos";
+import ModalTransicao from "./components/ModalTransicao";
 import FilterBar from "./components/filterBar";
 import GestaoAgendamentos from "./pages/GestaoAgendamentos";
 
@@ -36,6 +37,10 @@ function App() {
               <>
                 <Navbar />
                 <CadastroCliente />
+                <ModalTransicao
+                  isOpen={true}
+                  onClose={() => { }}
+                />
               </>
             }
           />
@@ -45,6 +50,10 @@ function App() {
               <>
                 <Navbar />
                 <LoginCliente />
+                <ModalTransicao
+                  isOpen={true}
+                  onClose={() => { }}
+                />
               </>
             }
           />
