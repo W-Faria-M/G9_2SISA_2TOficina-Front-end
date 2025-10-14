@@ -48,6 +48,69 @@ html, body {
     text-align: center;
 }
 
+
+.kpi4-box {
+    border: 3px solid #F27405;
+    width: 220px;
+    border-radius: 10px;
+    background: #f9f9f9;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kpi4-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.kpi4-dia-box {
+    margin-bottom: 10px;
+    border-bottom: 1px solid orange;
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.kpi4-dia-label {
+    font-weight: bold;
+}
+
+.kpi4-circles {
+    display: flex;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.kpi4-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #aaa;
+    background: #d3d3d3;
+}
+
+.kpi4-legend {
+    margin-top: 10px;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.kpi4-legend-circle {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 4px;
+    border: 1px solid #aaa;
+    background: #d3d3d3;
+}
+
 .line{
     width: 80%;
     height: 2px;
