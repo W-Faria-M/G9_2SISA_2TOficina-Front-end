@@ -6,11 +6,12 @@ import Home from './pages/home'
 import AgendamentosFeitos from './pages/agendamentosFeitos'
 import DetalhesAgendamento from './components/detalhesAgendamento'
 import Servico from './pages/Servico'
+import Dash from './pages/dash'
 // import LoginFuncionario from './pages/loginFuncionario';
 // import RedirectMessage from './pages/redirect-message';
 
 function App() {
-  const [detalheSelecionado, setDetalheSelecionado] = useState(null);
+  // const [detalheSelecionado, setDetalheSelecionado] = useState(null);
 
   return (
     <>
@@ -27,7 +28,8 @@ function App() {
         onClose={() => setDetalheSelecionado(null)}
       /> */}
       {/* {<Home /> } */}
-      <Servico/>
+      {/* <Servico/> */}
+      <Dash />
     </>
   )
 }
