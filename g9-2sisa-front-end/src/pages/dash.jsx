@@ -11,7 +11,7 @@ export default function Dash() {
       <div className="dash-esquerda">
         {/* <KPI1/> */}
         {/* <KPI2/> */}
-        {/* <KPI3/> */}
+        <KPI3/>
         <KPI4/>
       </div>
       <div className="dash-direita"></div>
