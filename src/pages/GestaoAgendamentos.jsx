@@ -20,10 +20,28 @@ export default function GestaoAgendamentos() {
   const fetchAgendamentos = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/agendamentos');
+      const response = await fetch('http://localhost:8080/agendamentos');
+
       if (!response.ok) throw new Error('Erro ao buscar agendamentos');
+
       const data = await response.json();
-      setAgendamentos(data);
+
+
+      const agendamentosMapeados = data.map(ag => ({
+        id: ag.agendamentoId,
+        veiculo: ag.nomeVeiculo,
+        username: ag.usuarioId,
+        data: ag.dataAgendamento,
+        hora: ag.horaAgendamento,
+        horaRetirada: ag.horaRetirada,
+        status: ag.status,
+        servico: ag.servicos,
+        descricao: ag.descricao,
+        observacao: ag.observacao
+      }));
+
+      console.log('Agendamentos mapeados:', agendamentosMapeados);
+      setAgendamentos(agendamentosMapeados);
       setError(null);
     } catch (err) {
       setError(err.message);
@@ -40,10 +58,10 @@ export default function GestaoAgendamentos() {
   );
 
   const formatarData = (data) => {
-    return data; 
+    return data;
   };
 
-   const handleDetalhes = (agendamento) => {
+  const handleDetalhes = (agendamento) => {
     setDetalheSelecionado(agendamento);
   };
 
@@ -55,14 +73,28 @@ export default function GestaoAgendamentos() {
 
   const handleSalvarEdicao = async (agendamentoEditado) => {
     try {
-      const response = await fetch(`http://localhost:3001/agendamentos/${agendamentoEditado.id}`, {
+
+      const payload = {
+        agendamentoId: agendamentoEditado.id,
+        nomeVeiculo: agendamentoEditado.veiculo,
+        usuarioId: agendamentoEditado.username,
+        dataAgendamento: agendamentoEditado.data,
+        horaAgendamento: agendamentoEditado.hora,
+        horaRetirada: agendamentoEditado.horaRetirada,
+        status: agendamentoEditado.status,
+        servicos: agendamentoEditado.servico,
+        descricao: agendamentoEditado.descricao,
+        observacao: agendamentoEditado.observacao
+      };
+
+      const response = await fetch(`http://localhost:8080/agendamentos/${agendamentoEditado.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(agendamentoEditado)
+        body: JSON.stringify(payload)
       });
-      
+
       if (!response.ok) throw new Error('Erro ao atualizar agendamento');
-      
+
       await fetchAgendamentos();
       alert('Agendamento atualizado com sucesso!');
     } catch (err) {
@@ -73,7 +105,7 @@ export default function GestaoAgendamentos() {
 
   const handleAgendamentoSuccess = () => {
     setIsModalOpen(false);
-    fetchAgendamentos(); 
+    fetchAgendamentos();
   };
 
   if (loading) {

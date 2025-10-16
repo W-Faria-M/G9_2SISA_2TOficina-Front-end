@@ -50,6 +50,17 @@ function App() {
             }
           />
           <Route path="/login-funcionario" element={<LoginFuncionario />} />
+
+          <Route 
+            path="/gestao-agendamentos"
+            element={
+              <>
+                <MenuHamburguer />
+                <GestaoAgendamentos />
+              </>
+            }/>
+
+
           <Route path="/redirect-message" element={<RedirectMessage />} />
           <Route
             path="/agendamentos-feitos"
