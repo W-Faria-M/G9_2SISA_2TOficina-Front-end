@@ -37,10 +37,6 @@ function App() {
               <>
                 <Navbar />
                 <CadastroCliente />
-                <ModalTransicao
-                  isOpen={true}
-                  onClose={() => { }}
-                />
               </>
             }
           />
@@ -50,10 +46,6 @@ function App() {
               <>
                 <Navbar />
                 <LoginCliente />
-                <ModalTransicao
-                  isOpen={true}
-                  onClose={() => { }}
-                />
               </>
             }
           />

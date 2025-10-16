@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react';
 import './ModalTransicao.css';
 import motoIcon from '../assets/moto-icon.png'
 
-export default function ModalTransicao({ isOpen, onClose, mensagem }) {
+export default function ModalTransicao({ isOpen, onClose, tipo }) {
     const [showMoto, setShowMoto] = useState(false);
+    const mensagens = {
+        cadastro: "Seu cadastro foi realizado com sucesso! Você será redirecionado à página de Login...",
+        login: "Seu Login foi efetuado com sucesso! Você está sendo redirecionado..."
+    };
 
     useEffect(() => {
         if (isOpen) {
@@ -19,7 +23,7 @@ export default function ModalTransicao({ isOpen, onClose, mensagem }) {
     return (
         <div className='container-card'>
             <div className='card-father'>
-                <p>Seu cadastro foi realizado com sucesso! Você será redirecionado à página de Login...</p>
+                <p>{mensagens[tipo] || mensagens.cadastro}</p>
 
                 <div className="moto-container">
                     <img 

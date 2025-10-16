@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ModalTransicao from "../components/ModalTransicao";
 import "./cadastroCliente.css";
 import {
     createFormChangeHandler,
@@ -8,58 +9,66 @@ import {
 } from "../helpers/utils";
 
 export default function CadastroCliente() {
-  const [form, setForm] = useState({
-    nome: "",
-    sobrenome: "",
-    telefone: "",
-    email: "",
-    senha: "",
-    confirmarSenha: ""
-  });
-  const [error, setError] = useState({});
-
-  const fieldsToValidate = [
-    "nome",
-    "sobrenome",
-    "telefone",
-    "email",
-    "senha",
-    "confirmarSenha"
-  ];
-
-  const handleChange = createFormChangeHandler(form, setForm, setError);
-
-  const onSubmitCallback = async (formState) => {
-    try {
-      const data =await apiRequest("http://localhost:8080/usuarios", "POST", {
-        tipoUsuario: {id: 1},
-        nome: formState.nome,
-        sobrenome: formState.sobrenome,
-        telefone: formState.telefone,
-        email: formState.email,
-        senha: formState.senha
-      });
-      alert(`Cadastro realizado! Seja bem-vindo(a) ${data.nome}.`);
-      setForm({
+    const [form, setForm] = useState({
         nome: "",
         sobrenome: "",
         telefone: "",
         email: "",
         senha: "",
         confirmarSenha: ""
-      });
-      window.location.href = "/login-cliente";
-    setError({});
-    } catch (error) {
-        if (error.message.includes("400")) {
-            setError({ email: "Email já cadastrado." });
-        } else {
-            console.error("Erro ao cadastrar cliente:", error);
-        }
-    }
-  };
+    });
+    const [error, setError] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSubmit = createFormSubmitHandler(form, setError, onSubmitCallback, fieldsToValidate);
+
+    const fieldsToValidate = [
+        "nome",
+        "sobrenome",
+        "telefone",
+        "email",
+        "senha",
+        "confirmarSenha"
+    ];
+
+    const handleChange = createFormChangeHandler(form, setForm, setError);
+
+    const onSubmitCallback = async (formState) => {
+        try {
+            const data = await apiRequest("http://localhost:8080/usuarios", "POST", {
+                tipoUsuario: { id: 1 },
+                nome: formState.nome,
+                sobrenome: formState.sobrenome,
+                telefone: formState.telefone,
+                email: formState.email,
+                senha: formState.senha
+            });
+
+            setIsModalOpen(true);
+
+            setForm({
+                nome: "",
+                sobrenome: "",
+                telefone: "",
+                email: "",
+                senha: "",
+                confirmarSenha: ""
+            });
+
+            setTimeout(() => {
+                window.location.href = "/login-cliente";
+            }, 3000);
+
+            setError({});
+        } catch (error) {
+            if (error.message.includes("400")) {
+                setError({ email: "Email já cadastrado." });
+            } else {
+                console.error("Erro ao cadastrar cliente:", error);
+            }
+        }
+    };
+
+    const handleSubmit = createFormSubmitHandler(form, setError, onSubmitCallback, fieldsToValidate);
 
     return (
         <div className="cadastro-cliente-container">
@@ -124,6 +133,12 @@ export default function CadastroCliente() {
             <div className="cadastro-cliente-image">
                 <img src="src/assets/backgroundImageCadastro.png" alt="image-cadastro" />
             </div>
+
+            <ModalTransicao
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                tipo="cadastro"
+            />
         </div>
     );
 }
