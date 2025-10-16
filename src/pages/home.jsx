@@ -20,7 +20,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="home-container">
+    <div id="topo" className="home-container">
       {/* Seção 1 */}
       <div className="secao-1">
         <div className="esquerda">
@@ -40,8 +40,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Seção 2 */}
-      <div className="secao-2">
+      {/* Seção 2 - Quem Somos + título Serviços */}
+      <div id="quem-somos" className="secao-2">
         <div className="Gian">
           <img src="src/assets/Gian.png" alt="" />
           <div className="quadrado">
@@ -66,11 +66,11 @@ export default function Home() {
               que sua moto esteja sempre pronta para rodar.
             </div>
           </div>
-          <h1>Nossos Serviços</h1>
+          <h1 id="servicos">Nossos Serviços</h1>
         </div>
       </div>
 
-      {/* Carrossel */}
+      {/* Carrossel (parte dos serviços) */}
       <div className="carousel">
         <div className="carousel-track">
           {images.map((img, i) => {
@@ -103,13 +103,15 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Seção Agendar */}
       <div className="secao-4">
           <h2>Precisa de um serviço? Agende agora seu atendimento de forma rápida e prática.</h2>
 
           <button>AGENDAR</button>
       </div>
 
-      <div className="secao-5">
+      {/* Contato */}
+      <div id="contato" className="secao-5">
           <h2> Está com dúvidas? Entre em contato:</h2>
           <p>
             Telefone: (11) 98861-9917 <br />

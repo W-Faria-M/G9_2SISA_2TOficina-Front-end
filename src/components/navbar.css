@@ -39,7 +39,12 @@
   list-style: none;
 }
 
+.contact__down-content a {
+  display: flex;
+}
+
 .navbar__center li a {
+  display: contents;
   text-decoration: none;
   color: white;
 }
@@ -55,7 +60,7 @@
   color: white;
 }
 
-.navbar__right .cadastro {
+.navbar__right a.active {
   color: orange;
   font-weight: bold;
 }
