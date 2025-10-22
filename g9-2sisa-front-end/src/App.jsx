@@ -10,6 +10,7 @@ import AgendamentosFeitos from "./pages/agendamentosFeitos";
 import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
 import Perfil from "./pages/perfil";
+import MenuHamburguer from "./components/menu-hamburguer";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
@@ -74,7 +75,12 @@ function App() {
         />
 
         {/* ✅ Rota de perfil sem Navbar */}
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/perfil" element={
+            <>
+              <MenuHamburguer />
+              <Perfil />
+            </>
+          }/>
       </Routes>
     </Router>
   );
