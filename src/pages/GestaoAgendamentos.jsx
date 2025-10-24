@@ -4,6 +4,7 @@ import FilterBar from "../components/filterBar";
 import DetalhesAgendamentoModal from "../components/DetalhesAgendamentoModal";
 import EditarAgendamentoModal from "../components/EditarAgendamentoModal";
 
+
 export default function GestaoAgendamentos() {
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,11 +27,11 @@ export default function GestaoAgendamentos() {
 
       const data = await response.json();
 
-
       const agendamentosMapeados = data.map(ag => ({
         id: ag.agendamentoId,
         veiculo: ag.nomeVeiculo,
-        username: ag.usuarioId,
+        username: ag.nomeCliente,
+        usuarioId: ag.idUsuario,
         data: ag.dataAgendamento,
         hora: ag.horaAgendamento,
         horaRetirada: ag.horaRetirada,
@@ -69,39 +70,54 @@ export default function GestaoAgendamentos() {
     setEditarSelecionado(agendamento);
   };
 
-
-
-  const handleSalvarEdicao = async (agendamentoEditado) => {
+  const handleExcluirAgendamento = async (id) => {
     try {
-
-      const payload = {
-        agendamentoId: agendamentoEditado.id,
-        nomeVeiculo: agendamentoEditado.veiculo,
-        usuarioId: agendamentoEditado.username,
-        dataAgendamento: agendamentoEditado.data,
-        horaAgendamento: agendamentoEditado.hora,
-        horaRetirada: agendamentoEditado.horaRetirada,
-        status: agendamentoEditado.status,
-        servicos: agendamentoEditado.servico,
-        descricao: agendamentoEditado.descricao,
-        observacao: agendamentoEditado.observacao
-      };
-
-      const response = await fetch(`http://localhost:8080/agendamentos/${agendamentoEditado.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      const response = await fetch(`http://localhost:8080/agendamentos/${id}`, {
+        method: 'DELETE',
       });
 
-      if (!response.ok) throw new Error('Erro ao atualizar agendamento');
+      if (!response.ok) throw new Error('Erro ao excluir agendamento');
 
       await fetchAgendamentos();
-      alert('Agendamento atualizado com sucesso!');
+      alert('Agendamento excluído com sucesso!');
     } catch (err) {
-      console.error('Erro ao atualizar:', err);
-      alert('Erro ao atualizar agendamento');
+      console.error('Erro ao excluir:', err);
+      alert('Erro ao excluir agendamento');
     }
   };
+
+
+
+  // const handleSalvarEdicao = async (agendamentoEditado) => {
+  //   try {
+  //     const payload = {
+  //       agendamentoId: agendamentoEditado.id,
+  //       nomeVeiculo: agendamentoEditado.veiculo,
+  //       usuarioId: agendamentoEditado.cliente, 
+  //       dataAgendamento: agendamentoEditado.dataInicio, 
+  //       horaAgendamento: agendamentoEditado.hora || "00:00", 
+  //       horaRetirada: agendamentoEditado.horaRetirada || "00:00", 
+  //       status: agendamentoEditado.status,
+  //       servicos: agendamentoEditado.servico,
+  //       descricao: agendamentoEditado.descricao || "",
+  //       observacao: agendamentoEditado.observacao || ""
+  //     };
+
+  //     const response = await fetch(`http://localhost:8080/agendamentos/${agendamentoEditado.id}`, {
+  //       method: 'PUT',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(payload)
+  //     });
+
+  //     if (!response.ok) throw new Error('Erro ao atualizar agendamento');
+
+  //     await fetchAgendamentos();
+  //     alert('Agendamento atualizado com sucesso!');
+  //   } catch (err) {
+  //     console.error('Erro ao atualizar:', err);
+  //     alert('Erro ao atualizar agendamento: ' + err.message);
+  //   }
+  // };
 
   const handleAgendamentoSuccess = () => {
     setIsModalOpen(false);
@@ -181,7 +197,6 @@ export default function GestaoAgendamentos() {
         <EditarAgendamentoModal
           agendamento={editarSelecionado}
           onClose={() => setEditarSelecionado(null)}
-          onSave={handleSalvarEdicao}
         />
       )}
     </div>
