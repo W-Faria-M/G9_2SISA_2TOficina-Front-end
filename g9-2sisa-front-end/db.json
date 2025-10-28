@@ -49,7 +49,7 @@
     {
       "id": 2,
       "veiculo": "Honda CG",
-      "data": "14/10/2025",
+      "data": "27/10/2025",
       "hora": "10:30",
       "tempoEntrega": "12:00",
       "status": "Em Andamento",
@@ -58,7 +58,7 @@
     {
       "id": 3,
       "veiculo": "Yamaha MT-07",
-      "data": "14/10/2025",
+      "data": "27/10/2025",
       "hora": "13:00",
       "tempoEntrega": "14:00",
       "status": "Cancelado",
