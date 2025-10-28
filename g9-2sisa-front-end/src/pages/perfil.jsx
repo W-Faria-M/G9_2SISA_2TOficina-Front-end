@@ -1,115 +1,59 @@
-import "./perfil.css"
-
 export default function Perfil() {
   return (
-    <div className="perfil-page-wrapper">
-      <header className="perfil-page-header">
-        <h1>Perfil</h1>
-        <p>Personalize sua experiência</p>
-      </header>
-
-      <div className="perfil-page-content">
-        {/* Left Panel - User Information */}
-        <div className="perfil-info-panel">
-          <h2>Suas Informações</h2>
-
-          <div className="perfil-photo-container">
-            <div className="perfil-photo-circle">
-              <img src="/profile-placeholder.jpg" alt="Foto de perfil" />
-            </div>
-            <button className="perfil-edit-photo-btn" aria-label="Editar foto">
-              ✏️
-            </button>
-          </div>
-
-          <div className="perfil-info-item">
-            <p className="perfil-info-label">nome dos Santos Silva</p>
-          </div>
-
-          <div className="perfil-info-item">
-            <p className="perfil-info-label">nome@email.com</p>
-          </div>
-
-          <div className="perfil-info-item">
-            <p className="perfil-info-label">Telefone: + 55 (11) 9 4002 - 8922</p>
-          </div>
-
-          <div className="perfil-info-item">
-            <p className="perfil-info-label">Endereço: Ainda não adicionado</p>
-          </div>
-
-          <button className="perfil-btn-editar">EDITAR</button>
+    <div className="min-w-[100vw] min-h-screen bg-linear-to-b from-[#f97316] to-[#34313129] flex items-center justify-center overflow-y-auto">
+      <div className="flex flex-col gap-10 w-[85%] h-[90vh]">
+        <div className="flex flex-col">
+          <span className="text-4xl font-bold mb-8">Perfil</span>
+          <span className="text-lg text-black">Personalize sua experiência</span>
         </div>
+        <div className="w-full flex gap-30 justify-center">
+          <div className="w-2/7 min-h-125 border-2 border-black rounded-md bg-linear-to-b from-[#F27405] to-[#FFAB07]">
 
-        {/* Right Panel - Services and Motorcycles */}
-        <div className="perfil-main-panel">
-          {/* Services Section */}
-          <div className="perfil-services-section">
-            <div className="perfil-service-card">
-              <p className="perfil-service-label">Serviços e serem realizados</p>
-              <p className="perfil-service-number">1</p>
-            </div>
-
-            <div className="perfil-service-card">
-              <p className="perfil-service-label">Serviços já realizados</p>
-              <p className="perfil-service-number">2</p>
-            </div>
           </div>
-
-          <div className="perfil-action-buttons">
-            <button className="perfil-btn-reagendar">AGENDAMENTOS</button>
-            <button className="perfil-btn-agendar">+ AGENDAR</button>
-          </div>
-
-          {/* Motorcycles Section */}
-          <div className="perfil-motos-section">
-            <h2>Suas Motos</h2>
-
-            <div className="perfil-motos-grid">
-              <div className="perfil-moto-card">
-                <p>
-                  <strong>Marca:</strong> Nome Marca
-                </p>
-                <p>
-                  <strong>Modelo:</strong> Nome Modelo
-                </p>
-                <p>
-                  <strong>Ano:</strong> AAAA
-                </p>
-                <p>
-                  <strong>Km:</strong> x km
-                </p>
-                <p>
-                  <strong>Placa:</strong> ABC 1234
-                </p>
+          <div className="w-4/7 h-full flex flex-col">
+            <section className="w-full h-1/2 flex justify-center gap-20">
+              <section className="flex flex-col gap-5 items-center">
+                <div className="w-55 h-35 bg-[#F27405] rounded-lg"></div>
+                <button className="!h-8 !w-30 text-l flex items-center justify-center text-[#F4A100] !bg-white">Agendamentos</button>
+              </section>
+              <section className="flex flex-col gap-5 items-center">
+                <div className="w-55 h-35 bg-[#F28907] rounded-lg"></div>
+                <button className="!h-8 !w-30 text-l flex items-center justify-center text-white !bg-[#F4A100]">+ Agendar</button>
+              </section>
+            </section>
+            <section className="h-1/2 flex flex-col items-center gap-5">
+              <span className="text-2xl text-[#F27405]">Suas Motos</span>
+              <ul className="w-full min-h-35 justify-center overflow-x-auto flex gap-5 px-6">
+                <li className="w-60 bg-black/45 rounded-lg p-6">
+                  <p className="pl-4">Marca: Nome Marca</p>
+                  <p className="pl-4">Modelo: Nome Modelo</p>
+                  <p className="pl-4">Ano: AAAA</p>
+                  <p className="pl-4">Km: X km</p>
+                  <p className="pl-4">Placa: XYZ 0987</p>
+                </li>
+                <li className="w-60 bg-black/45 rounded-lg p-6">
+                  <p className="pl-1">Marca: Nome Marca</p>
+                  <p className="pl-4">Modelo: Nome Modelo</p>
+                  <p className="pl-4">Ano: AAAA</p>
+                  <p className="pl-4">Km: X km</p>
+                  <p className="pl-4">Placa: XYZ 0987</p>
+                </li>
+              </ul>
+              <div className="flex h-full items-end gap-10">
+                <button className="!h-7 !w-40 !rounded-full text-l flex items-center justify-center text-[#007A4D] !bg-white">
+                  Adicionar
+                </button>
+                <button className="!h-7 !w-40 !rounded-full text-l flex items-center justify-center text-[#DF3535] !bg-white">
+                  Remover
+                </button>
               </div>
-
-              <div className="perfil-moto-card">
-                <p>
-                  <strong>Marca:</strong> Nome Marca
-                </p>
-                <p>
-                  <strong>Modelo:</strong> Nome Mode
-                </p>
-                <p>
-                  <strong>Ano:</strong> AAAA
-                </p>
-                <p>
-                  <strong>Km:</strong> x km
-                </p>
-                <p>
-                  <strong>Placa:</strong> XYZ 0987
-                </p>
-              </div>
-            </div>
-
-            <div className="perfil-moto-buttons">
-              <button className="perfil-btn-adicionar">ADICIONAR</button>
-              <button className="perfil-btn-remover">REMOVER</button>
-            </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
+
+
+

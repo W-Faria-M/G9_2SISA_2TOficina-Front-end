@@ -153,14 +153,18 @@
   display: flex;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
+  width: 420px;
+justify-content: center;
 }
 
 .perfil-service-card {
   background: linear-gradient(135deg, #ff8c00 0%, #ff7700 100%);
   border-radius: 12px;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   flex: 1;
   text-align: center;
+  padding: 0.6rem 2rem; 
+
 }
 
 .perfil-service-label {
@@ -246,6 +250,7 @@
   background: rgba(101, 67, 33, 0.8);
   border-radius: 12px;
   padding: 1.5rem;
+  
 }
 
 .perfil-moto-card p {
