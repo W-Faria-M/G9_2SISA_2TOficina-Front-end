@@ -163,7 +163,7 @@ export default function Grafico2() {
 	};
 
 	return (
-		<div style={{ width: '100%', height: 270 }}>
+		<div style={{ width: '100%', height: 350 }}>
 			<Line data={{ labels, datasets }} options={options} />
 		</div>
 	);
