@@ -8,7 +8,7 @@ import { createFormChangeHandler, validateField } from "../helpers/utils";
 const LoginFuncionario = () => {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [error, setError] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = createFormChangeHandler(form, setForm, () => setError(""));
 
@@ -20,6 +20,9 @@ const LoginFuncionario = () => {
       setError(emailError || senhaError || "Preencha todos os campos.");
       return;
     }
+
+    console.log("Enviando:", { email: form.email, senha: form.senha });
+
     try {
       // Chama o endpoint de login do backend
       const response = await axios.post('http://localhost:8080/usuarios/login', {
@@ -28,12 +31,16 @@ const LoginFuncionario = () => {
       });
 
       // A API do backend retorna um objeto tipo LoginRes: { usuarioId: number | null, logado: boolean }
+
+      console.log("Resposta completa:", response);
+      console.log("Dados:", response.data);
+
       const data = response.data;
       if (data && data.logado) {
         alert("Login realizado com sucesso!");
         // Armazenamos o objeto de resposta. Se precisar do usuário completo, buscar depois por ID.
         localStorage.setItem("funcionarioLogado", JSON.stringify(data));
-        navigate("/servico");
+        navigate("/gestao-agendamentos");
       } else {
         setError("Email ou senha inválidos.");
       }

@@ -31,7 +31,7 @@ export default function GestaoAgendamentos() {
         id: ag.agendamentoId,
         veiculo: ag.nomeVeiculo,
         username: ag.nomeCliente,
-        usuarioId: ag.idUsuario,
+        usuarioId: ag.usuarioId,
         data: ag.dataAgendamento,
         hora: ag.horaAgendamento,
         horaRetirada: ag.horaRetirada,
@@ -85,39 +85,6 @@ export default function GestaoAgendamentos() {
       alert('Erro ao excluir agendamento');
     }
   };
-
-
-
-  // const handleSalvarEdicao = async (agendamentoEditado) => {
-  //   try {
-  //     const payload = {
-  //       agendamentoId: agendamentoEditado.id,
-  //       nomeVeiculo: agendamentoEditado.veiculo,
-  //       usuarioId: agendamentoEditado.cliente, 
-  //       dataAgendamento: agendamentoEditado.dataInicio, 
-  //       horaAgendamento: agendamentoEditado.hora || "00:00", 
-  //       horaRetirada: agendamentoEditado.horaRetirada || "00:00", 
-  //       status: agendamentoEditado.status,
-  //       servicos: agendamentoEditado.servico,
-  //       descricao: agendamentoEditado.descricao || "",
-  //       observacao: agendamentoEditado.observacao || ""
-  //     };
-
-  //     const response = await fetch(`http://localhost:8080/agendamentos/${agendamentoEditado.id}`, {
-  //       method: 'PUT',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(payload)
-  //     });
-
-  //     if (!response.ok) throw new Error('Erro ao atualizar agendamento');
-
-  //     await fetchAgendamentos();
-  //     alert('Agendamento atualizado com sucesso!');
-  //   } catch (err) {
-  //     console.error('Erro ao atualizar:', err);
-  //     alert('Erro ao atualizar agendamento: ' + err.message);
-  //   }
-  // };
 
   const handleAgendamentoSuccess = () => {
     setIsModalOpen(false);
