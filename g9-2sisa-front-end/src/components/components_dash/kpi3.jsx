@@ -5,7 +5,7 @@ export default function KPI3() {
     return (
         <>
             <div className="kpi3-box">
-                <h2 className="kpi3-title">Agendamentos <br /> para hoje:</h2>
+                <h2 className="kpi3-title">AGENDAMENTOS <br /> PARA HOJE:</h2>
                 <KPI3_1 />
             </div>
         </>

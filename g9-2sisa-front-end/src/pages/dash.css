@@ -89,10 +89,10 @@ html, body {
 }
 
 .kpi3-title{
-    font-size: 20px;
+     text-align: center;
     font-weight: bold;
-    color: #F27405;
-    margin: 10px 0;
+    margin-bottom: 15px;
+     margin-top: 15px;
 }
 
 
