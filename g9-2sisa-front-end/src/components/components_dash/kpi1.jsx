@@ -5,7 +5,7 @@ export default function KPI1() {
     const capacidadeMes = 150; // capacidade fixa
 
     useEffect(() => {
-        fetch("/db.json")
+        fetch("http://localhost:8080/agendamentos/kpi1")
             .then((res) => res.json())
             .then((data) => {
                 // Filtra agendamentos do mês atual
@@ -13,9 +13,10 @@ export default function KPI1() {
                 const mesAtual = hoje.getMonth() + 1;
                 const anoAtual = hoje.getFullYear();
                 const agendamentos = (data.agendamentos || []).filter(ag => {
-                    const [dia, mes, ano] = ag.data.split("/").map(Number);
-                    return mes === mesAtual && ano === anoAtual;
-                });
+                const dataAg = new Date(ag.dataAgendamento);
+                return dataAg.getMonth() + 1 === mesAtual && dataAg.getFullYear() === anoAtual;
+         });
+
                 setAgendamentosMes(agendamentos.length);
             });
     }, []);
