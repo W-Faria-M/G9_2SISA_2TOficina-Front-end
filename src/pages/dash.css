@@ -1,0 +1,243 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+    background-color: #0D0D0D;
+} 
+
+.dash-page {
+  width: 100vw;
+  min-height: 100vh;
+  background: #F4F4F4;
+  color: black;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  box-sizing: border-box;
+  align-items: end;
+
+
+  .dash-esquerda{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 700px;
+
+    .dash-topo{
+    display: flex;
+    width: 75%;
+    align-items: center;
+    justify-content: space-between;
+    }
+
+    h1{
+        font-size: 40px;
+        margin-left: -500px;
+        
+    }
+  }
+
+  .dash-direita{
+    width: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 600px;
+
+    /* background-color: #F27405; */
+  }
+}
+
+
+
+
+
+.kpi1-box{
+    border: 3px solid #F27405;
+    width: 260px;
+    height: 130px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: white;
+
+     .kpi1-value{
+        font-size: 28px;
+        font-weight: bold;
+        color: #F27405;
+     }    
+}
+
+.kpi3-box{
+    border: 3px solid #F27405;
+    width: 250px;
+    height: 600px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #F4F4F4;
+    text-align: center;
+    overflow: hidden;
+}
+
+.kpi3-title{
+     text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+     margin-top: 15px;
+}
+
+
+.kpi4-box {
+    border: 3px solid #F27405;
+    width: 220px;
+    border-radius: 10px;
+    background: #f9f9f9;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.kpi4-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.kpi4-dia-box {
+    margin-bottom: 10px;
+    border-bottom: 1px solid orange;
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.kpi4-dia-label {
+    font-weight: bold;
+}
+
+.kpi4-circles {
+    display: flex;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.kpi4-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #aaa;
+    background: #d3d3d3;
+}
+
+.kpi4-legend {
+    margin-top: 10px;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.kpi4-legend-circle {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 4px;
+    border: 1px solid #aaa;
+    background: #d3d3d3;
+}
+
+.line{
+    width: 80%;
+    height: 2px;
+    background-color: #F27405;
+    margin: 20px;
+}
+
+.kpi3-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-height: 80%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #F27405 #F4F4F4;
+}
+
+
+
+.graficos-tabs {
+	display: flex;
+	width: 500px;
+	margin: 0 auto;
+	position: relative;
+	top: 0;
+    left: -50px;
+	z-index: 3;
+}
+
+.graficos-tab {
+	flex: 1;
+	background: transparent;
+	border: 2px solid #F27405;
+	border-bottom: none;
+	border-radius: 12px 12px 0 0;
+	color: #F27405;
+	/* font-family: 'Montserrat', Arial, Helvetica, sans-serif; */
+	font-size: 1.5rem;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-align: center;
+	padding: 5px 0 0 0;
+	cursor: pointer;
+	outline: none;
+	margin: 0;
+	position: relative;
+    /* top: -5px; */
+	z-index: 3;
+	transition: background 0.2s, color 0.2s;
+}
+
+.graficos-tab.active {
+	background: #fff;
+	color: #F27405;
+	z-index: 4;
+}
+
+.graficos-container {
+	background: #fff;
+	/* font-family: 'Montserrat', Arial, Helvetica, sans-serif; */
+	border: 2px solid orange;
+	border-radius: 12px 12px 0 0;
+	width: 600px;
+	height: 380px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	padding: 0;
+	position: relative;
+	top: -2px;
+	display: flex;
+	flex-direction: column;
+}
+
+.graficos-content {
+	background: #fff;
+	min-height: 280px;
+	padding: 24px 16px 16px 16px;
+	border-radius: 0 0 8px 8px;
+	box-sizing: border-box;
+}

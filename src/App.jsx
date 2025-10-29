@@ -12,6 +12,7 @@ import DetalhesAgendamento from "./components/detalhesAgendamento";
 import Servico from "./pages/Servico";
 import SobreAgendamento from "./pages/sobreAgendamentos";
 import GestaoAgendamentos from "./pages/GestaoAgendamentos";
+import Dash from './pages/dash'
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
