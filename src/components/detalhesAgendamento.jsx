@@ -12,20 +12,29 @@ export default function DetalhesAgendamento({ agendamento, onClose }) {
         <button className="detalhes-close" onClick={onClose}>✕</button>
         <h2 className="detalhes-titulo">Detalhes</h2>
         <div className="detalhes-info">
-          <div>
-            <p><b>Nº {agendamento.id} | {agendamento.veiculo}</b></p>
-            <p>Agendamento {formatarData(agendamento.data)} - {agendamento.hora}</p>
-            <p>Tempo previsto para entrega: {agendamento.tempoEntrega}</p>
+          <div className="detalhes-direita">
+            <p><b>Nº {agendamento.agendamentoId} | {agendamento.nomeVeiculo}</b></p>
+            <p>Agendamento {formatarData(agendamento.dataAgendamento)} - {agendamento.horaAgendamento}</p>
+            <p>Tempo previsto para entrega: {agendamento.horaRetirada}</p>
           </div>
-          <div>
+          <div className="detalhes-esquerda">
             <div className="detalhes-status">
-              <span>Status: </span>
-              <span className="status-tag">{agendamento.status}</span>
+              <span className={`status-tag ${
+                    agendamento.status === "Concluído" ? "status-concluido" :
+                    agendamento.status === "Pendente" ? "status-pendente" : 
+                    agendamento.status === "Em Atendimento" ? "status-em-atendimento" :
+                    "status-cancelado"
+                    }`}>
+                    <span style={{ color: "black" }}>Status: </span>
+                    {agendamento.status}
+                  </span>
             </div>
             <div>
               <span>Serviços:</span>
               <ul>
-                <li>{agendamento.servico}</li>
+                {agendamento.servicos.split(',').map((servico, index) => (
+                  <li key={index}>{servico.trim()}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -46,9 +55,9 @@ export default function DetalhesAgendamento({ agendamento, onClose }) {
         </div>
         <div className="detalhes-descricao">
           {tab === "descricao" ? (
-            <>Descrições sobre o estado da moto...</>
+            <>{agendamento.descricao}</>
           ) : (
-            <>Aqui vão as observações do agendamento...</>
+            <>{agendamento.observacao}</>
           )}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./navbar.css";
 import logo2t from "../assets/logo2T.jpg";
 
@@ -18,18 +18,18 @@ export default function Navbar() {
 
       {/* Menu Desktop */}
       <ul className="navbar__center">
-        <li><Link to="/">Início</Link></li>
-        <li><Link to="/quem-somos">Quem Somos</Link></li>
-        <li><Link to="/servicos">Serviços</Link></li>
-        <li><Link to="/contato">Contato</Link></li>
+        <li><a href="/#topo">Início</a></li>
+        <li><a href="/#quem-somos">Quem Somos</a></li>
+        <li><a href="/#servicos">Serviços</a></li>
+        <li><a href="/#contato">Contato</a></li>
       </ul>
 
       <div className="navbar__right">
-        <Link to="/agendamentos-feitos">Agendamento</Link>
+        <NavLink to="/agendamento" className={({ isActive }) => isActive ? 'active' : undefined}>Agendamentos</NavLink>
         <span className="navbar__separator">|</span>
-        <Link to="/login-cliente">Login</Link>
+        <NavLink to="/login-cliente" className={({ isActive }) => isActive ? 'active' : undefined}>Login</NavLink>
         <span className="navbar__separator">|</span>
-        <Link to="/cadastro-cliente" className="cadastro">Cadastro</Link>
+        <NavLink to="/cadastro-cliente" className={({ isActive }) => isActive ? 'active' : undefined}>Cadastro</NavLink>
       </div>
 
       {/* Botão Hamburger (aparece só no mobile) */}
@@ -40,7 +40,7 @@ export default function Navbar() {
       </div> */}
 
       {/* Menu Mobile */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+      {/* <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <Link to="/">Início</Link>
         <Link to="/quem-somos">Quem Somos</Link>
         <Link to="/servicos">Serviços</Link>
@@ -48,7 +48,7 @@ export default function Navbar() {
         <Link to="/agendamentos-feitos">Agendamento</Link>
         <Link to="/login-cliente">Login</Link>
         <Link to="/cadastro-cliente" className="cadastro">Cadastro</Link>
-      </div>
+      </div> */}
 
       {/* Barra de Contato (fixa abaixo da navbar) */}
       <div className="contact__down">

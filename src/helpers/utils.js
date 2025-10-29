@@ -136,6 +136,26 @@ export const formatarData = (dateInput) => {
 };
 
 /**
+ * Formata uma hora pra ficar no padrão brasileiro (HH:MM). Bem útil pra mostrar pro usuário.
+ * @param {string|Hora} timeInput - A hora que a gente quer formatar.
+ * @returns {string} A hora bonitinha no formato HH:MM ou "--:--" se não houver horário.
+ */
+export const formatarHora = (timeInput) => {
+  // Se não tiver horário ou for vazio, retorna "--:--"
+  if (!timeInput || timeInput.trim() === "") {
+    return "--:--";
+  }
+  const date = new Date(`1970-01-01T${timeInput}`);
+  // Se a data for inválida, retorna "--:--"
+  if (isNaN(date.getTime())) {
+    return "--:--";
+  }
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+/**
  * Deixa a primeira letra de uma frase maiúscula. Pra deixar o texto mais apresentável.
  * @param {string} str - A frase que a gente quer arrumar.
  * @returns {string} A frase com a primeira letra maiúscula.

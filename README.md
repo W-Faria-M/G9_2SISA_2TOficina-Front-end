@@ -1,12 +1,20 @@
-# React + Vite
+# 📌 Sistema de Agendamento e Gestão para Oficinas de Moto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📖 Sobre o Projeto
 
-Currently, two official plugins are available:
+Este projeto tem como objetivo otimizar a gestão de uma oficina de motos por meio da digitalização do processo de agendamento de serviços. Com um sistema eficiente e automatizado, buscamos reduzir o tempo de espera dos clientes, melhorar a organização da oficina e aumentar a produtividade da equipe. O sistema se alinha aos Objetivos de Desenvolvimento Sustentável (ODS), especialmente ao **ODS 8**, que promove o crescimento econômico sustentável e o emprego decente.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Funcionalidades Principais
 
-## Expanding the ESLint configuration
+✅ Agendamento online de serviços
+✅ Gestão de clientes e histórico de atendimentos
+✅ Notificações automáticas para lembretes de serviço
+✅ Relatórios e indicadores de desempenho (KPIs)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📄 Licença
+
+Este projeto está sob a licença **MIT**. Sinta-se livre para usá-lo e modificá-lo conforme necessário.
+
+---
+
+🚀 Desenvolvido para otimizar a gestão de oficinas de motos e proporcionar um serviço mais eficiente e ágil para os clientes!

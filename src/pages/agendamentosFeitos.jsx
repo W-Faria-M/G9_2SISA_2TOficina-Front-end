@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import FilterBar from "../components/filterBar";
 import CadastroAgendamento from "../components/CadastroAgendamento";
-import "./AgendamentosFeitos.css";
+import "./agendamentosFeitos.css";
 import "./modalAgendar.css";
-import { apiRequest, formatarData } from "../helpers/utils";
+import { apiRequest, formatarData, formatarHora } from "../helpers/utils";
 
 export default function AgendamentosFeitos({ onDetalhes }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,16 +13,29 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a visibilidade do modal
 
   useEffect(() => {
-    fetchAgendamentos();
+    const usuarioId = sessionStorage.getItem("usuarioId");
+      if (!usuarioId) {
+        setError("Usuário não identificado. Faça login novamente.");
+        setLoading(false);
+        return;
+      }
+        fetchAgendamentos(usuarioId);
   }, []);
 
-  const fetchAgendamentos = async () => {
+  const fetchAgendamentos = async (usuarioId) => {
     try {
-      const data = await apiRequest("http://localhost:3001/agendamentos", "GET");
-      setAgendamentos(data);
+      const data = await apiRequest(`http://localhost:8080/agendamentos?usuarioId=${usuarioId}`);
+      // Se data for null, undefined ou array vazio, inicializa como array vazio
+      setAgendamentos(Array.isArray(data) ? data : []);
     } catch (error) {
-      setError("Erro ao carregar agendamentos: " + error.message);
-      console.error("Erro ao carregar agendamentos:", error);
+      // Se o erro for porque não há agendamentos (status 404 ou similar), 
+      // não exibe erro, apenas inicializa lista vazia
+      if (error.message.includes('404') || error.message.includes('não encontrado')) {
+        setAgendamentos([]);
+      } else {
+        setError("Erro ao carregar agendamentos: " + error.message);
+        console.error("Erro ao carregar agendamentos:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -44,11 +57,14 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
   const handleAgendamentoSuccess = () => {
     setIsModalOpen(false); // Fecha o modal
-    fetchAgendamentos(); // Recarrega a lista de agendamentos
+    const usuarioId = sessionStorage.getItem("usuarioId");
+    if (usuarioId) {
+      fetchAgendamentos(usuarioId); // Recarrega a lista de agendamentos
+    }
   };
 
   const filteredAgendamentos = agendamentos.filter((ag) =>
-    ag.data.toLowerCase().includes(searchTerm.toLowerCase())
+    ag.dataAgendamento.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -72,27 +88,45 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
       <div className="agendamentos-lista">
         {filteredAgendamentos.length === 0 ? (
-          <p>Nenhum agendamento encontrado.</p>
+          agendamentos.length === 0 ? (
+            <div className="sem-agendamentos">
+              <p>Você ainda não possui nenhum agendamento.</p>
+              <p>Seus agendamentos aparecerão listados aqui após realizar o primeiro agendamento.</p>
+              <p>Clique no botão "+ Agendar" acima para começar!</p>
+            </div>
+          ) : (
+            <div className="sem-agendamentos">
+              <p>Nenhum agendamento encontrado para a pesquisa.</p>
+              <p>Tente pesquisar por uma data diferente ou limpe o filtro de pesquisa.</p>
+            </div>
+          )
         ) : (
           filteredAgendamentos.map((ag) => (
-            <div key={ag.id} className="card-agendamento">
+            <div key={ag.agendamentoId} className="card-agendamento">
               <div className="card-topo">
-                <p className="card-veiculo">Veículo: {ag.veiculo}</p>
+                <p className="card-veiculo">Veículo: {ag.nomeVeiculo}</p>
                 <p className="card-data">
-                  Agendamento {formatarData(ag.data)} - {ag.hora}
+                  Data do Agendamento: {formatarData(ag.dataAgendamento)} - {formatarHora(ag.horaAgendamento)}
                 </p>
                 <p className="card-entrega">
-                  Tempo previsto para entrega: {ag.tempoEntrega}
+                  Hora prevista para retirada: {formatarHora(ag.horaRetirada)}
                 </p>
               </div>
 
               <div className="card-lateral">
                 <div className="card-status">
-                  <span className={`status-tag ${ag.status === "Concluído" ? "status-concluido" : "status-pendente"}`}>
+                  
+                  <span className={`status-tag ${
+                    ag.status === "Concluído" ? "status-concluido" :
+                    ag.status === "Pendente" ? "status-pendente" : 
+                    ag.status === "Em Atendimento" ? "status-em-atendimento" :
+                    "status-cancelado"
+                    }`}>
+                    <span style={{ color: "black" }}>Status: </span>
                     {ag.status}
                   </span>
                 </div>
-                <span className="card-servico">Serviço: {ag.servico}</span>
+                <span className="card-servico">Serviços: {ag.servicos}</span>
                 <div className="card-acoes">
                   <button className="btn-detalhes" onClick={(() => onDetalhes(ag))}>Detalhes</button>
                   {ag.status !== "Concluído" && (

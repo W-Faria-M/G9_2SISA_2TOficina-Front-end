@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.card-father {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #F27405;
+    font-size: 24px;
+    font-weight: bold;
+    width: 650px;
+    height: 350px;
+    border: 2px solid black;
+    background-color: white;
+    padding: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-father p {
+    margin-top: -120px;
+    text-align: center;
+    z-index: 2;
+}
+
+.moto-container {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+}
+
+.moto {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: -100px;
+    bottom: 0;
+    transition: none;
+    transform: scaleX(1)
+}
+
+.moto-animate {
+    animation: motoMove 2.5s ease-in-out forwards;
+}
+
+@keyframes motoMove {
+    0% {
+        left: -100px;
+    }
+    100% {
+        left: calc(100% + 20px);
+    }
+}
+
+.road {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        transparent 45%,
+        #ccc 45%,
+        #ccc 55%,
+        transparent 55%,
+        transparent 100%
+    );
+    background-size: 40px 2px;
+    animation: roadMove 1s linear infinite;
+}
+
+@keyframes roadMove {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 40px 0;
+    }
+}

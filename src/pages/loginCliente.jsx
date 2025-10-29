@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./loginCliente.css";
 import loginImage from "../assets/image-login.png";
+import ModalTransicao from "../components/ModalTransicao";
 import { createFormChangeHandler, validateField, apiRequest } from "../helpers/utils";
 
 export default function LoginCliente() {
     const [form, setForm] = useState({ email: "", senha: "" });
     const [error, setError] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleChange = createFormChangeHandler(form, setForm, () => setError(""));
 
@@ -18,14 +20,30 @@ export default function LoginCliente() {
             setError(emailError || senhaError || "Preencha todos os campos.");
             return;
         }
-        const data = await apiRequest(
-            `http://localhost:3001/clientes?email=${encodeURIComponent(form.email)}&senha=${encodeURIComponent(form.senha)}`,
-            "GET"
-        );
-        if (data.length > 0) {
-            alert("Login realizado com sucesso!");
-        } else {
-            setError("Email ou senha inválidos.");
+        try {
+            const data = await apiRequest(
+                "http://localhost:8080/usuarios/login",
+                "POST",
+                { email: form.email, senha: form.senha }
+            );
+            if (data.logado == true) {
+                sessionStorage.setItem("usuarioId", data.usuarioId);
+
+                setIsModalOpen(true);
+
+                setTimeout(() => {
+                    setIsModalOpen(false);
+                    window.location.href = "/agendamentos-feitos";
+                }, 3000);
+
+
+            }
+        } catch (error) {
+            if (error.message.includes("401")) {
+                setError("Email ou senha inválidos.");
+            } else {
+                setError("Erro inesperado. Tente novamente.");
+            }
         }
     }
 
@@ -62,6 +80,12 @@ export default function LoginCliente() {
                     Novo por aqui? Clique <Link to="/cadastro-cliente" className="link-aqui">aqui</Link> e crie sua conta agora.
                 </div>
             </form>
+
+            <ModalTransicao
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                tipo="login"
+            />
         </div>
     );
 }

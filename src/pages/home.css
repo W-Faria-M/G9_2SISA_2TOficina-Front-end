@@ -1,3 +1,14 @@
+:root {
+  --navbar-altura: 97px; /* ajuste conforme a altura real + espaço desejado */
+}
+
+#quem-somos,
+#servicos,
+#contato,
+#topo {
+  scroll-margin-top: var(--navbar-altura);
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -5,6 +16,7 @@ html, body {
     /* overflow: hidden; */
     overflow: visible;
     overflow-x: hidden;
+    scroll-behavior: smooth;
     background-color: #0D0D0D;
 }
 
@@ -114,7 +126,7 @@ html, body {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 5%;
+                padding: 4%;
                 color: #F4F4F4;
                 font-size: 24px;
             }
