@@ -7,7 +7,16 @@ export default function KPI3_1() {
         fetch("/db.json")
             .then((res) => res.json())
             .then((data) => {
-                setAgendamentos(data.agendamentos || []);
+                const all = data.agendamentos || [];
+                // formata data de hoje para dd/mm/yyyy para comparar com os registros
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, "0");
+                const mm = String(today.getMonth() + 1).padStart(2, "0");
+                const yyyy = today.getFullYear();
+                const todayStr = `${dd}/${mm}/${yyyy}`;
+
+                const todays = all.filter((ag) => ag.data === todayStr);
+                setAgendamentos(todays);
             });
     }, []);
 
