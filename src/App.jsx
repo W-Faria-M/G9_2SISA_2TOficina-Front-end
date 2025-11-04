@@ -59,6 +59,15 @@ function App() {
               </>
             }/>
 
+          <Route 
+            path="/analises"
+            element={
+              <>
+                <MenuHamburguer />
+                <Dash />
+              </>
+            }/>
+
 
           <Route path="/redirect-message" element={<RedirectMessage />} />
           <Route
