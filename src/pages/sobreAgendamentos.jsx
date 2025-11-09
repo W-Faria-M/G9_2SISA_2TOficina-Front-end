@@ -6,12 +6,12 @@ const SobreAgendamento = () => {
   return (
     <div className="agendamento-container">
       {/* Contact Bar */}
-      <div className="contact-bar">
+      {/* <div className="contact-bar">
         <div className="contact-info">
           <span>📱 (11) 98861-9917</span>
           <span>📧 @2T.OFICINA</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <main className="agendamento-main">
@@ -77,17 +77,17 @@ const SobreAgendamento = () => {
         </section>
 
         {/* Contato */}
-        <section className="contato-section">
-          <h3>Está com dúvidas? Entre em contato:</h3>
-          <div className="contato-info">
-            <p> Telefone: (11) 98861-9917</p>
-            <p>E-mail: contato@2tofi.com</p>
-          </div>
-        </section>
       </main>
+      <section className="contato-section">
+        <h3>Está com dúvidas? Entre em contato:</h3>
+        <div className="contato-info">
+          <p> Telefone: (11) 98861-9917</p>
+          <p>E-mail: contato@2tofi.com</p>
+        </div>
+      </section>
 
       {/* Footer Contact Bar */}
-      <div className="contact__down_bottom">
+      {/* <div className="contact__down_bottom">
         <div className="contact__down-content">
           <a
             href="https://wa.me/5511988619917"
@@ -116,7 +116,7 @@ const SobreAgendamento = () => {
             <span>@2T.OFICINA</span>
           </a>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
