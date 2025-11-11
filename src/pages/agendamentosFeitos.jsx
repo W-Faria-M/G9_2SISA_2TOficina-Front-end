@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import FilterBar from "../components/filterBar";
-import CadastroAgendamento from "../components/CadastroAgendamento";
 import "./agendamentosFeitos.css";
-import "./modalAgendar.css";
 import { apiRequest, formatarData, formatarHora } from "../helpers/utils";
 
 export default function AgendamentosFeitos({ onDetalhes }) {
@@ -10,7 +9,7 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a visibilidade do modal
+  const navigate = useNavigate();
 
   useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
@@ -52,14 +51,6 @@ export default function AgendamentosFeitos({ onDetalhes }) {
         console.error("Erro ao cancelar agendamento:", error);
         alert("Erro ao cancelar agendamento.");
       }
-    }
-  };
-
-  const handleAgendamentoSuccess = () => {
-    setIsModalOpen(false); // Fecha o modal
-    const usuarioId = sessionStorage.getItem("usuarioId");
-    if (usuarioId) {
-      fetchAgendamentos(usuarioId); // Recarrega a lista de agendamentos
     }
   };
 
@@ -107,7 +98,7 @@ export default function AgendamentosFeitos({ onDetalhes }) {
         onSearch={(value) => setSearchTerm(value)}
         onFilter={() => alert("Abrir filtros avançados")}
         acaoText="+ Agendar"
-        onOpenAgendarModal={() => setIsModalOpen(true)} // Passa a função para abrir o modal
+        onOpenAgendarModal={() => navigate("/realizar-agendamento")}
       />
 
       <div className="agendamentos-lista">
@@ -163,14 +154,7 @@ export default function AgendamentosFeitos({ onDetalhes }) {
         )}
       </div>
 
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="modal-close-button" onClick={() => setIsModalOpen(false)}>X</button>
-            <CadastroAgendamento onSuccess={handleAgendamentoSuccess} />
-          </div>
-        </div>
-      )}
+      {/* Modal removido: agora redireciona diretamente para /realizar-agendamento */}
     </div>
   );
 }
