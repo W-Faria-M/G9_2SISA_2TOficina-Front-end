@@ -31,7 +31,7 @@ export default function Grafico3() {
 	const [raw, setRaw] = useState([]);
 
 	useEffect(() => {
-		fetch('/db.json')
+		fetch('http://localhost:8080/agendamentos/kpi4')
 			.then((r) => r.json())
 			.then((j) => setRaw(j.agendamentos || []))
 			.catch(() => setRaw([]));

@@ -81,7 +81,7 @@ export default function Grafico1() {
 	});
 
 	useEffect(() => {
-		fetch('/db.json')
+		fetch('http://localhost:8080/agendamentos/kpi4')
 			.then((res) => res.json())
 			.then((json) => {
 				const ags = json.agendamentos || [];
