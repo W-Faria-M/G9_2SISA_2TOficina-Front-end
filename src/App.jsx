@@ -13,6 +13,7 @@ import Servico from "./pages/Servico";
 import SobreAgendamento from "./pages/sobreAgendamentos";
 import GestaoAgendamentos from "./pages/GestaoAgendamentos";
 import Dash from './pages/dash'
+import Perfil from "./pages/perfil";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
@@ -48,6 +49,16 @@ function App() {
               </>
             }
           />
+          <Route
+            path="/Perfil"
+            element={
+              <>
+                <MenuHamburguer />
+                <Perfil />
+              </>
+            }
+          />
+
           <Route path="/login-funcionario" element={<LoginFuncionario />} />
 
           <Route 
