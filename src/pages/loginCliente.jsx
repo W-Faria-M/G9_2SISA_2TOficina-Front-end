@@ -33,7 +33,7 @@ export default function LoginCliente() {
 
                 setTimeout(() => {
                     setIsModalOpen(false);
-                    window.location.href = "/agendamentos-feitos";
+                    window.location.href = "/perfil";
                 }, 3000);
 
 
