@@ -14,6 +14,7 @@ import SobreAgendamento from "./pages/sobreAgendamentos";
 import GestaoAgendamentos from "./pages/GestaoAgendamentos";
 import Dash from './pages/dash'
 import Perfil from "./pages/perfil";
+import RealizarAgendamento from "./pages/realizarAgendamento";
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
@@ -97,6 +98,15 @@ function App() {
                     onClose={() => setDetalheSelecionado(null)}
                   />
                 )}
+              </>
+            }
+          />
+          <Route
+            path="/realizar-agendamento"
+            element={
+              <>
+                <MenuHamburguer />
+                <RealizarAgendamento />
               </>
             }
           />

@@ -63,8 +63,32 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     }
   };
 
-  const filteredAgendamentos = agendamentos.filter((ag) =>
-    ag.dataAgendamento.toLowerCase().includes(searchTerm.toLowerCase())
+  // Ordena agendamentos do mais recente para o mais antigo (considerando data + hora)
+  const ordenarAgendamentos = (lista) => {
+    return [...lista].sort((a, b) => {
+      const dataA = construirDataHora(a);
+      const dataB = construirDataHora(b);
+      return dataB - dataA; // mais recentes primeiro
+    });
+  };
+
+  const construirDataHora = (ag) => {
+    // Tenta construir Date usando data + hora; se hora ausente, usa só a data
+    if (ag.dataAgendamento) {
+      const hasHora = ag.horaAgendamento && ag.horaAgendamento.trim() !== "";
+      const dateStr = hasHora ? `${ag.dataAgendamento}T${ag.horaAgendamento}` : ag.dataAgendamento;
+      const dt = new Date(dateStr);
+      // Se inválida, retorna epoch pra não quebrar sort
+      if (isNaN(dt.getTime())) return new Date(0);
+      return dt;
+    }
+    return new Date(0);
+  };
+
+  const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
+
+  const filteredAgendamentos = agendamentosOrdenados.filter((ag) =>
+    ag.dataAgendamento?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
