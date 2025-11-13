@@ -4,18 +4,18 @@ const diasSemana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 const capacidadeDia = 5;
 const statusColors = {
     "Concluído": "#008000", // verde
-    "Em Andamento": "#FFA500", // laranja
+    "Em Atendimento": "#FFA500", // laranja
     "Cancelado": "#FF4500", // vermelho
-    "Esperando Atendimento": "#FFD700", // amarelo
+    "Pendente": "#FFD700", // amarelo
     "Aguardando": "#87CEEB", // azul claro
     "default": "#d3d3d3" // cinza
 };
 
 function getStatusColor(status) {
     if (status === "Concluído") return statusColors["Concluído"];
-    if (status === "Em Andamento") return statusColors["Em Andamento"];
+    if (status === "Em Atendimento") return statusColors["Em Atendimento"];
     if (status === "Cancelado") return statusColors["Cancelado"];
-    if (status === "Esperando Atendimento") return statusColors["Esperando Atendimento"];
+    if (status === "Pendente") return statusColors["Pendente"];
     if (status === "Aguardando") return statusColors["Aguardando"];
     return statusColors["default"];
 }
@@ -24,7 +24,7 @@ export default function KPI4() {
     const [agendamentos, setAgendamentos] = useState([]);
 
     useEffect(() => {
-        fetch("/db.json")
+        fetch("http://localhost:8080/agendamentos/kpi4")
             .then(res => res.json())
             .then(data => setAgendamentos(data.agendamentos || []));
     }, []);
@@ -61,9 +61,9 @@ export default function KPI4() {
             ))}
             <div className="kpi4-legend">
                 <span className="kpi4-legend-circle" style={{background: statusColors["Concluído"]}}></span>Concluído
-                <span className="kpi4-legend-circle" style={{background: statusColors["Em Andamento"]}}></span>Em Andamento
+                <span className="kpi4-legend-circle" style={{background: statusColors["Em Atendimento"]}}></span>Em Atendimento
                 <span className="kpi4-legend-circle" style={{background: statusColors["Cancelado"]}}></span>Cancelado
-                <span className="kpi4-legend-circle" style={{background: statusColors["Esperando Atendimento"]}}></span>Aguardando
+                <span className="kpi4-legend-circle" style={{background: statusColors["Pendente"]}}></span>Aguardando
             </div>
         </div>
     );

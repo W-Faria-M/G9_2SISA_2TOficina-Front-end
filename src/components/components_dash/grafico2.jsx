@@ -14,14 +14,15 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Title, Tooltip, Legend);
 
-const COLORS = {
-	primary: '#3B82F6', // azul
-	green: '#34D399',
-	orange: '#F97316',
-	amber: '#F59E0B',
-	grid: 'rgba(242, 116, 5, 0.2)',
-	border: '#F27405',
-};
+const COLORS = [
+	'#3B82F6', // azul
+	'#34D399', // verde
+	'#F97316', // laranja
+	'#F59E0B', // amarelo
+	'#9333EA', // roxo
+	'#E11D48', // vermelho
+	'#10B981', // verde água
+];
 
 function getLastMonths(count = 6) {
 	const now = new Date();
@@ -37,7 +38,12 @@ function monthKey(d) {
 	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
-function normalizeServiceName(name = '') {
+// ✅ Função protegida contra null
+function normalizeServiceName(name) {
+	if (!name || typeof name !== 'string') {
+		console.warn('Serviço nulo ou inválido detectado:', name);
+		return '';
+	}
 	return name
 		.normalize('NFD')
 		.replace(/\p{Diacritic}/gu, '')
@@ -49,26 +55,28 @@ export default function Grafico2() {
 	const [raw, setRaw] = useState([]);
 
 	useEffect(() => {
-		fetch('/db.json')
+		fetch('http://localhost:8080/agendamentos/kpi4')
 			.then((r) => r.json())
 			.then((j) => setRaw(j.agendamentos || []))
-			.catch(() => setRaw([]));
+			.catch((err) => {
+				console.error('Erro ao carregar dados:', err);
+				setRaw([]);
+			});
 	}, []);
 
 	const { labels, datasets } = useMemo(() => {
 		const months = getLastMonths(6);
 		const labelNames = months.map((d) =>
-			d.toLocaleDateString('pt-BR', { month: 'long' }).replace(/^./, (c) => c.toUpperCase())
+			d
+				.toLocaleDateString('pt-BR', { month: 'long' })
+				.replace(/^./, (c) => c.toUpperCase())
 		);
 		const monthKeys = months.map(monthKey);
 
-		// Serviços alvo (se não existirem, viram zero)
-		const targetServices = [
-			'troca de oleo',
-			'injecao eletrica',
-			'revisao',
-			'alinhamento',
-		];
+		// 🔹 Identificar automaticamente os serviços únicos no retorno
+		const uniqueServices = Array.from(
+			new Set(raw.map((ag) => normalizeServiceName(ag.servico)))
+		).filter(Boolean);
 
 		// bucket[monthKey][service] = count
 		const bucket = new Map();
@@ -78,64 +86,32 @@ export default function Grafico2() {
 			const d = new Date(yyyy, mm - 1, dd);
 			const key = monthKey(d);
 			if (!bucket.has(key)) bucket.set(key, new Map());
-			const service = normalizeServiceName(ag.servico || '');
+			const service = normalizeServiceName(ag.servico);
 			const map = bucket.get(key);
 			map.set(service, (map.get(service) || 0) + 1);
 		}
 
-		// Se algum dos serviços alvo não existir nos dados, mantém zero
-		const seriesData = targetServices.map((srv) =>
-			monthKeys.map((mk) => (bucket.get(mk)?.get(srv) || 0))
-		);
+		// Montar datasets dinamicamente com base nos serviços encontrados
+		const datasets = uniqueServices.map((srv, i) => {
+			const data = monthKeys.map((mk) => bucket.get(mk)?.get(srv) || 0);
+			const color = COLORS[i % COLORS.length];
+			return {
+				label: srv
+					.split(' ')
+					.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+					.join(' '),
+				data,
+				borderColor: color,
+				backgroundColor: `${color}33`,
+				tension: 0.35,
+				fill: true,
+				pointRadius: 3,
+				pointBackgroundColor: '#fff',
+				pointBorderColor: color,
+			};
+		});
 
-		const ds = [
-			{
-				label: 'Troca de Óleo',
-				data: seriesData[0],
-				borderColor: COLORS.primary,
-				backgroundColor: `${COLORS.primary}33`,
-				tension: 0.35,
-				fill: true,
-				pointRadius: 3,
-				pointBackgroundColor: '#fff',
-				pointBorderColor: COLORS.primary,
-			},
-			{
-				label: 'Injeção Elétrica',
-				data: seriesData[1],
-				borderColor: COLORS.green,
-				backgroundColor: `${COLORS.green}33`,
-				tension: 0.35,
-				fill: true,
-				pointRadius: 3,
-				pointBackgroundColor: '#fff',
-				pointBorderColor: COLORS.green,
-			},
-			{
-				label: 'Revisão',
-				data: seriesData[2],
-				borderColor: COLORS.orange,
-				backgroundColor: `${COLORS.orange}33`,
-				tension: 0.35,
-				fill: true,
-				pointRadius: 3,
-				pointBackgroundColor: '#fff',
-				pointBorderColor: COLORS.orange,
-			},
-			{
-				label: 'Alinhamento',
-				data: seriesData[3],
-				borderColor: COLORS.amber,
-				backgroundColor: `${COLORS.amber}33`,
-				tension: 0.35,
-				fill: true,
-				pointRadius: 3,
-				pointBackgroundColor: '#fff',
-				pointBorderColor: COLORS.amber,
-			},
-		];
-
-		return { labels: labelNames, datasets: ds };
+		return { labels: labelNames, datasets };
 	}, [raw]);
 
 	const options = {
@@ -151,12 +127,16 @@ export default function Grafico2() {
 		},
 		scales: {
 			x: {
-				grid: { color: COLORS.grid, borderColor: COLORS.border },
+				grid: { color: 'rgba(242, 116, 5, 0.2)', borderColor: '#F27405' },
 				ticks: { color: '#444' },
 			},
 			y: {
 				beginAtZero: true,
-				grid: { color: COLORS.grid, borderColor: COLORS.border, borderDash: [4, 4] },
+				grid: {
+					color: 'rgba(242, 116, 5, 0.2)',
+					borderColor: '#F27405',
+					borderDash: [4, 4],
+				},
 				ticks: { color: '#444' },
 			},
 		},
@@ -168,3 +148,4 @@ export default function Grafico2() {
 		</div>
 	);
 }
+

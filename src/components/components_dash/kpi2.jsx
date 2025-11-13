@@ -5,13 +5,10 @@ export default function KPI2() {
     const capacidade = 5; // capacidade fixa
 
     useEffect(() => {
-        fetch("/db.json")
+       fetch("http://localhost:8080/agendamentos/kpi2")
             .then((res) => res.json())
             .then((data) => {
-                // Filtra agendamentos do dia atual
-                const hoje = new Date().toLocaleDateString("pt-BR");
-                const agendamentosHoje = (data.agendamentos || []).filter(ag => ag.data === hoje);
-                setOcupacao(agendamentosHoje.length);
+                setOcupacao((data.agendamentos || []).length);
             });
     }, []);
 
