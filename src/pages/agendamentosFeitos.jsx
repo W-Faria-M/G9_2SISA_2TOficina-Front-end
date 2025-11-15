@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import FilterBar from "../components/filterBar";
 import "./agendamentosFeitos.css";
 import { apiRequest, formatarData, formatarHora } from "../helpers/utils";
+import { ModalCancelar } from "../components/ModalCancelar";
 
 export default function AgendamentosFeitos({ onDetalhes }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,15 +11,17 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [agendamentoParaCancelar, setAgendamentoParaCancelar] = useState(null);
 
   useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
-      if (!usuarioId) {
-        setError("Usuário não identificado. Faça login novamente.");
-        setLoading(false);
-        return;
-      }
-        fetchAgendamentos(usuarioId);
+    if (!usuarioId) {
+      setError("Usuário não identificado. Faça login novamente.");
+      setLoading(false);
+      return;
+    }
+    fetchAgendamentos(usuarioId);
   }, []);
 
   const fetchAgendamentos = async (usuarioId) => {
@@ -40,18 +43,25 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     }
   };
 
-  const handleCancelAgendamento = async (id) => {
-    if (window.confirm("Tem certeza que deseja cancelar este agendamento?")) {
-      try {
-        await apiRequest(`http://localhost:3001/agendamentos/${id}`, "DELETE");
-        setAgendamentos(agendamentos.filter((ag) => ag.id !== id));
-        alert("Agendamento cancelado com sucesso!");
-      } catch (error) {
-        setError("Erro ao cancelar agendamento: " + error.message);
-        console.error("Erro ao cancelar agendamento:", error);
-        alert("Erro ao cancelar agendamento.");
-      }
+  const handleCancelAgendamento = async () => {
+    if (!agendamentoParaCancelar) return;
+
+    try {
+      await apiRequest(`http://localhost:3001/agendamentos/${agendamentoParaCancelar.id}`, "DELETE");
+      setAgendamentos(agendamentos.filter((ag) => ag.id !== agendamentoParaCancelar.id));
+      alert("Agendamento cancelado com sucesso!");
+      setModalOpen(false);
+      setAgendamentoParaCancelar(null);
+    } catch (error) {
+      setError("Erro ao cancelar agendamento: " + error.message);
+      console.error("Erro ao cancelar agendamento:", error);
+      alert("Erro ao cancelar agendamento.");
     }
+  };
+
+  const abrirModalCancelar = (agendamento) => {
+    setAgendamentoParaCancelar(agendamento);
+    setModalOpen(true);
   };
 
   // Ordena agendamentos do mais recente para o mais antigo (considerando data + hora)
@@ -92,6 +102,18 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
   return (
     <div className="agendamentos-page">
+
+      {modalOpen && (
+        <ModalCancelar
+          isOpen={modalOpen}
+          onClose={() => {
+            setModalOpen(false);
+            setAgendamentoParaCancelar(null);
+          }}
+          onConfirm={handleCancelAgendamento}
+        />
+      )}
+
       <h1 className="titulo">Agendamentos</h1>
 
       <FilterBar
@@ -130,12 +152,11 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
               <div className="card-lateral">
                 <div className="card-status">
-                  
-                  <span className={`status-tag ${
-                    ag.status === "Concluído" ? "status-concluido" :
-                    ag.status === "Pendente" ? "status-pendente" : 
-                    ag.status === "Em Atendimento" ? "status-em-atendimento" :
-                    "status-cancelado"
+
+                  <span className={`status-tag ${ag.status === "Concluído" ? "status-concluido" :
+                    ag.status === "Pendente" ? "status-pendente" :
+                      ag.status === "Em Atendimento" ? "status-em-atendimento" :
+                        "status-cancelado"
                     }`}>
                     <span style={{ color: "black" }}>Status: </span>
                     {ag.status}
@@ -145,7 +166,12 @@ export default function AgendamentosFeitos({ onDetalhes }) {
                 <div className="card-acoes">
                   <button className="btn-detalhes" onClick={(() => onDetalhes(ag))}>Detalhes</button>
                   {ag.status !== "Concluído" && (
-                    <button className="btn-cancelar" onClick={() => handleCancelAgendamento(ag.id)}>Cancelar</button>
+                    <button
+                      className="btn-cancelar"
+                      onClick={() => abrirModalCancelar(ag)}
+                    >
+                      Cancelar
+                    </button>
                   )}
                 </div>
               </div>

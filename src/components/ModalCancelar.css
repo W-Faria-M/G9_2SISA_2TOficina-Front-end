@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.ctn-cancel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(148, 143, 143, 0.541);
+}
+
+.card-cancel {
+    width: 600px;
+    height: 370px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    gap: 40px;
+    flex-direction: column;
+}
+
+.card-cancel p {
+    color: white;
+    font-size: 16px;
+}
+
+.btn-cancelar-confirmar {
+    width: 120px;
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.card-cancel h2 {
+    color: rgb(255, 115, 0);
+    font-size: 24px;
+}
+
+.card-cancel input {
+    width: 50%;
+    height: 35px;
+    border: none;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 16px;
+    background-color: white;
+    color: gray;
+}
+
+.header-cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.header-cancel h2 {
+    flex: 1;
+    text-align: center;
+}
+
+.btn-fechar {
+    position: absolute;
+    right: 20px;
+    background: transparent !important;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0 !important;
+}
+
+.btn-fechar:hover {
+    color: #ff6b6b;
+    transform: rotate(90deg);
+}

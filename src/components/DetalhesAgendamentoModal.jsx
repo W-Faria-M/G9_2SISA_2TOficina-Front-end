@@ -3,98 +3,96 @@ import axios from "axios";
 import "./DetalhesAgendamentoModal.css";
 
 export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdate }) {
-
     console.log("Agendamento completo:", agendamento);
-    console.log("Usuario ID:", agendamento?.usuarioId);
 
     const [km, setKm] = useState("");
     const [kmOriginal, setKmOriginal] = useState(0);
     const [loading, setLoading] = useState(false);
     const [loadingVeiculo, setLoadingVeiculo] = useState(true);
     const [error, setError] = useState("");
+    const [veiculoId, setVeiculoId] = useState(null);
 
     useEffect(() => {
         const buscarDadosVeiculo = async () => {
-            if (!agendamento?.usuarioId) {
-                console.log("usuarioId não encontrado");
+            setLoadingVeiculo(true);
+            setError("");
+            setVeiculoId(null);
+            setKm("");
+
+            if (!agendamento) {
+                setLoadingVeiculo(false);
+                return;
+            }
+
+            const usuarioId = agendamento.usuarioId ?? agendamento.usuario?.id ?? agendamento.clienteId ?? agendamento.cliente;
+            console.log("usuarioId detectado:", usuarioId);
+
+            if (!usuarioId && usuarioId !== 0) {
+                setError("ID do usuário não encontrado no agendamento.");
                 setLoadingVeiculo(false);
                 return;
             }
 
             try {
-                console.log("Buscando veículos para usuarioId:", agendamento.usuarioId);
-                const response = await axios.get(
-                    `http://localhost:8080/veiculos?usuarioId=${agendamento.usuarioId}`
-                );
+                const resp = await axios.get(`http://localhost:8080/veiculos?usuarioId=${usuarioId}`);
+                console.log("GET /veiculos?usuarioId= resp:", resp.status, resp.data);
 
-                console.log("Resposta veículos:", response.data);
-
-                if (response.data && response.data.length > 0) {
-                    const veiculoAtual = response.data[0];
-                    setKm(veiculoAtual.km || 0);
-                    setKmOriginal(veiculoAtual.km || 0);
+                if (resp.data && resp.data.length > 0) {
+                    const veiculo = resp.data[0];
+                    const idFromView = veiculo.veiculoId ?? veiculo.id ?? null;
+                    setVeiculoId(idFromView);
+                    setKm(veiculo.km ?? "");
+                    setKmOriginal(veiculo.km ?? 0);
+                    console.log("Veículo carregado:", { idFromView, km: veiculo.km, veiculo });
+                } else {
+                    setError("Nenhum veículo encontrado para este usuário.");
                 }
             } catch (err) {
-                console.error("Erro ao buscar dados do veículo:", err);
-                setError("Erro ao carregar dados do veículo");
+                console.error("Erro ao buscar veículo:", err, err.response?.data);
+                setError("Erro ao carregar dados do veículo.");
             } finally {
                 setLoadingVeiculo(false);
             }
         };
 
         buscarDadosVeiculo();
-    }, [agendamento?.usuarioId]);
+    }, [agendamento]);
 
     if (!agendamento) return null;
 
     const handleSaveKm = async () => {
-        if (!agendamento?.usuarioId) {
-            setError("ID do usuário não encontrado");
+        setError("");
+        const kmNumber = Number(km);
+        if (isNaN(kmNumber) || kmNumber < 0) {
+            setError("KM inválido.");
+            return;
+        }
+
+        if (!veiculoId && veiculoId !== 0) {
+            setError("Veículo não encontrado para esse agendamento (veiculoId undefined).");
             return;
         }
 
         setLoading(true);
-        setError("");
-
         try {
-            console.log("Salvando KM para usuarioId:", agendamento.usuarioId);
-
-            // Busca o veículo do usuário
-            const veiculosResponse = await axios.get(
-                `http://localhost:8080/veiculos?usuarioId=${agendamento.usuarioId}`
-            );
-
-            console.log("Veículos encontrados:", veiculosResponse.data);
-
-            if (!veiculosResponse.data || veiculosResponse.data.length === 0) {
-                throw new Error("Veículo não encontrado");
-            }
-
-            const veiculoId = veiculosResponse.data[0].id;
-            console.log("Atualizando veículo ID:", veiculoId, "com KM:", km);
-
-            // Atualiza o KM do veículo
+            console.log("DEBUG: patch - veiculoId:", veiculoId, "kmNumber:", kmNumber);
             const response = await axios.patch(
                 `http://localhost:8080/veiculos/atualizar-campo/${veiculoId}`,
-                { km: Number(km) },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
+                { km: kmNumber },
+                { headers: { "Content-Type": "application/json" } }
             );
 
+            console.log("DEBUG: patch response:", response.status, response.data);
             if (response.status === 200) {
-                setKmOriginal(Number(km));
-                if (onUpdate) {
-                    onUpdate({ ...agendamento, km: Number(km) });
-                }
+                setKmOriginal(kmNumber);
+                if (onUpdate) onUpdate({ ...agendamento, km: kmNumber });
                 alert("KM atualizado com sucesso!");
+            } else {
+                setError("Erro ao atualizar KM.");
             }
         } catch (err) {
-            console.error("Erro ao atualizar KM:", err);
-            console.error("Detalhes:", err.response?.data);
-            setError(err.response?.data?.message || "Erro ao atualizar KM");
+            console.error("Erro ao atualizar KM:", err, err.response?.data);
+            setError(err.response?.data?.message || JSON.stringify(err.response?.data) || err.message);
         } finally {
             setLoading(false);
         }
@@ -111,7 +109,7 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                     <div className="detalhes-coluna-esquerda">
                         <div className="detalhes-modal-info">
                             <p className="detalhes-label">
-                                Nº {agendamento.agendamentoId} | {agendamento.nomeVeiculo}
+                                Nº {agendamento.agendamentoId ?? agendamento.id} | {agendamento.nomeVeiculo ?? agendamento.veiculo}
                             </p>
                             <div className="detalhes-km">
                                 {loadingVeiculo ? (
@@ -131,7 +129,7 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                                         <button
                                             className="detalhes-save-icon"
                                             onClick={handleSaveKm}
-                                            disabled={loading}
+                                            disabled={loading || loadingVeiculo}
                                             title="Salvar KM"
                                         >
                                             {loading ? "..." : "✓"}
@@ -140,35 +138,23 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                                 )}
                             </div>
 
-                            {error && (
-                                <p style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>
-                                    {error}
-                                </p>
-                            )}
+                            {error && <p style={{ color: 'red', fontSize: 12, marginTop: 5 }}>{error}</p>}
                         </div>
 
                         <div className="detalhes-modal-info">
-                            <p className="detalhes-texto">
-                                Cliente: {agendamento.nomeCliente || 'Não informado'}
-                            </p>
+                            <p className="detalhes-texto">Cliente: {agendamento.nomeCliente ?? agendamento.username ?? "Não informado"}</p>
                         </div>
 
                         <div className="detalhes-modal-info">
-                            <p className="detalhes-texto">
-                                Agendado em: {agendamento.dataAgendamento || 'Não informado'}
-                            </p>
+                            <p className="detalhes-texto">Agendado em: {agendamento.dataAgendamento ?? agendamento.data ?? "Não informado"}</p>
                         </div>
 
                         <div className="detalhes-modal-info">
-                            <p className="detalhes-texto">
-                                Hora de início: {agendamento.horaAgendamento || 'Não informado'}
-                            </p>
+                            <p className="detalhes-texto">Hora de início: {agendamento.horaAgendamento ?? agendamento.hora ?? "Não informado"}</p>
                         </div>
 
                         <div className="detalhes-modal-info">
-                            <p className="detalhes-texto">
-                                Hora de retirada: {agendamento.horaRetirada || 'Não informada'}
-                            </p>
+                            <p className="detalhes-texto">Hora de retirada: {agendamento.horaRetirada ?? "Não informada"}</p>
                         </div>
                     </div>
 
@@ -176,10 +162,8 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                         <div className="detalhes-modal-info">
                             <p className="detalhes-label">Serviços:</p>
                             <ul className="detalhes-lista">
-                                {agendamento.servicos ? (
-                                    agendamento.servicos.split(', ').map((servico, index) => (
-                                        <li key={index}>• {servico}</li>
-                                    ))
+                                {(agendamento.servicos ?? agendamento.servico) ? (
+                                    (agendamento.servicos ?? agendamento.servico).split(", ").map((s, i) => <li key={i}>• {s}</li>)
                                 ) : (
                                     <li>• Nenhum serviço informado</li>
                                 )}
@@ -187,23 +171,17 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                         </div>
 
                         <div className="detalhes-modal-info">
-                            <p className="detalhes-status-label">
-                                Status: <span className="detalhes-status-valor">{agendamento.status || 'Não informado'}</span>
-                            </p>
+                            <p className="detalhes-status-label">Status: <span className="detalhes-status-valor">{agendamento.status ?? "Não informado"}</span></p>
                         </div>
 
                         <div className="detalhes-modal-info">
                             <p className="detalhes-label">Descrição:</p>
-                            <p className="detalhes-texto">
-                                {agendamento.descricao || 'Sem descrição'}
-                            </p>
+                            <p className="detalhes-texto">{agendamento.descricao ?? "Sem descrição"}</p>
                         </div>
 
                         <div className="detalhes-modal-info">
                             <p className="detalhes-label">Observação:</p>
-                            <p className="detalhes-texto">
-                                {agendamento.observacao || 'Sem observações'}
-                            </p>
+                            <p className="detalhes-texto">{agendamento.observacao ?? "Sem observações"}</p>
                         </div>
                     </div>
                 </div>

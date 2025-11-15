@@ -79,12 +79,12 @@ const SobreAgendamento = () => {
         {/* Contato */}
       </main>
       <section className="contato-section">
-        <h3>Está com dúvidas? Entre em contato:</h3>
-        <div className="contato-info">
-          <p> Telefone: (11) 98861-9917</p>
-          <p>E-mail: contato@2tofi.com</p>
-        </div>
-      </section>
+          <h3>Está com dúvidas? Entre em contato:</h3>
+          <div className="contato-info">
+            <p> Telefone: (11) 98861-9917</p>
+            <p>E-mail: contato@2tofi.com</p>
+          </div>
+        </section>
 
       {/* Footer Contact Bar */}
       {/* <div className="contact__down_bottom">

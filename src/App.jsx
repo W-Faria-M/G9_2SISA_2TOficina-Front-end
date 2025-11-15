@@ -15,6 +15,8 @@ import GestaoAgendamentos from "./pages/GestaoAgendamentos";
 import Dash from './pages/dash'
 import Perfil from "./pages/perfil";
 import RealizarAgendamento from "./pages/realizarAgendamento";
+import { ModalCancelar } from "./components/ModalCancelar";
+
 
 function App() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
