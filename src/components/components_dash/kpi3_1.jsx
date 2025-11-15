@@ -4,7 +4,7 @@ export default function KPI3_1() {
     const [agendamentos, setAgendamentos] = useState([]);
 
     useEffect(() => {
-        fetch("/db.json")
+        fetch("http://localhost:8080/agendamentos/kpi3")
             .then((res) => res.json())
             .then((data) => {
                 const all = data.agendamentos || [];

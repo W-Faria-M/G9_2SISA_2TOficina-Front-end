@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import CadastroCliente from "./pages/cadastroCliente";
-import MenuHamburguer from "./components/menu-hamburguer";
+import MenuHamburguerCliente from "./components/menu-hamburguer";
+import MenuHamburguerFuncionario from "./components/menuFunc";
 import LoginCliente from "./pages/loginCliente";
 import Home from "./pages/home";
 import LoginFuncionario from "./pages/loginFuncionario";
@@ -56,7 +57,7 @@ function App() {
             path="/Perfil"
             element={
               <>
-                <MenuHamburguer />
+                <MenuHamburguerCliente />
                 <Perfil />
               </>
             }
@@ -68,7 +69,7 @@ function App() {
             path="/gestao-agendamentos"
             element={
               <>
-                <MenuHamburguer />
+                <MenuHamburguerFuncionario />
                 <GestaoAgendamentos />
               </>
             }/>
@@ -77,7 +78,7 @@ function App() {
             path="/analises"
             element={
               <>
-                <MenuHamburguer />
+                <MenuHamburguerFuncionario />
                 <Dash />
               </>
             }/>
@@ -88,7 +89,7 @@ function App() {
             path="/agendamentos-feitos"
             element={
               <>
-                <MenuHamburguer />
+                <MenuHamburguerCliente />
                 <AgendamentosFeitos
                   onDetalhes={(agendamento) =>
                     setDetalheSelecionado(agendamento)
@@ -107,7 +108,7 @@ function App() {
             path="/realizar-agendamento"
             element={
               <>
-                <MenuHamburguer />
+                <MenuHamburguerCliente />
                 <RealizarAgendamento />
               </>
             }
