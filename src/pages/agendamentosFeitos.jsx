@@ -47,8 +47,16 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     if (!agendamentoParaCancelar) return;
 
     try {
-      await apiRequest(`http://localhost:3001/agendamentos/${agendamentoParaCancelar.id}`, "DELETE");
-      setAgendamentos(agendamentos.filter((ag) => ag.id !== agendamentoParaCancelar.id));
+      await apiRequest(
+        `http://localhost:8080/agendamentos/${agendamentoParaCancelar.agendamentoId}`,
+        "DELETE"
+      );
+
+      // Remove o agendamento da lista local
+      setAgendamentos(agendamentos.filter(
+        (ag) => ag.agendamentoId !== agendamentoParaCancelar.agendamentoId
+      ));
+
       alert("Agendamento cancelado com sucesso!");
       setModalOpen(false);
       setAgendamentoParaCancelar(null);
