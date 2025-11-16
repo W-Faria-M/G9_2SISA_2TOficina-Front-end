@@ -19,11 +19,11 @@ const MenuHamburguer = () => {
           await apiRequest(`http://localhost:8080/usuarios/logoff?usuarioId=${usuarioId}`, "POST");
         }
         sessionStorage.removeItem("usuarioId");
-        sessionStorage.clear(); // Remove todos os dados da sessão
+        sessionStorage.clear(); 
         window.location.href = "/";
       } catch (error) {
         console.error("Erro ao fazer logout:", error);
-        // Mesmo com erro na API, ainda limpa a sessão local e redireciona
+        
         sessionStorage.removeItem("usuarioId");
         sessionStorage.clear();
         window.location.href = "/";
