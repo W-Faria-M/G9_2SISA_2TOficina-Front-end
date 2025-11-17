@@ -20,13 +20,13 @@ const MenuHamburguer = () => {
         }
         sessionStorage.removeItem("usuarioId");
         sessionStorage.clear(); 
-        window.location.href = "/";
+        window.location.href = "/login-funcionario";
       } catch (error) {
         console.error("Erro ao fazer logout:", error);
         
         sessionStorage.removeItem("usuarioId");
         sessionStorage.clear();
-        window.location.href = "/";
+        window.location.href = "/login-funcionario";
         console.log("Logout realizado localmente. Houve um problema na comunicação com o servidor.");
       }
     }

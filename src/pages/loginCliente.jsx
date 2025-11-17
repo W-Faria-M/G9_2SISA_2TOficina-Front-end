@@ -4,11 +4,13 @@ import "./loginCliente.css";
 import loginImage from "../assets/image-login.png";
 import ModalTransicao from "../components/ModalTransicao";
 import { createFormChangeHandler, validateField, apiRequest } from "../helpers/utils";
+import ModalRedefSenha from "../components/ModalRedefSenha";
 
 export default function LoginCliente() {
     const [form, setForm] = useState({ email: "", senha: "" });
     const [error, setError] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isResetOpen, setIsResetOpen] = useState(false);
 
     const handleChange = createFormChangeHandler(form, setForm, () => setError(""));
 
@@ -72,8 +74,8 @@ export default function LoginCliente() {
                     />
                 </div>
                 {error && <div style={{ color: "orange", marginBottom: 10 }}>{error}</div>}
-                <div className="login-recuperar">
-                    Esqueceu sua senha? Clique <a href="#">aqui</a> para redefini-la.
+                 <div className="login-recuperar">
+                    Esqueceu sua senha? Clique <a href="#" onClick={(e) => { e.preventDefault(); setIsResetOpen(true); }}>aqui</a> para redefini-la.
                 </div>
                 <button type="submit">ENTRAR</button>
                 <div className="login-novo">
@@ -85,6 +87,11 @@ export default function LoginCliente() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 tipo="login"
+            />
+            
+            <ModalRedefSenha
+              isOpen={isResetOpen} 
+              onClose={() => setIsResetOpen(false)}
             />
         </div>
     );

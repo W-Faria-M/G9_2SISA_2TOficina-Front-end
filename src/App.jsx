@@ -62,7 +62,8 @@ function App() {
               </>
             }
           />
-
+        
+        
           <Route path="/login-funcionario" element={<LoginFuncionario />} />
 
           <Route 
