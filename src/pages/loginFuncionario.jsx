@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import logoImage from '../assets/logo2T.jpg';
 import axios from 'axios';
 import { createFormChangeHandler, validateField } from "../helpers/utils";
+import ModalRedefSenha from '../components/ModalRedefSenha';
 
 const LoginFuncionario = () => {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isResetOpen, setIsResetOpen] = useState(false);
 
   const handleChange = createFormChangeHandler(form, setForm, () => setError(""));
 
@@ -82,7 +84,15 @@ const LoginFuncionario = () => {
             />
             <div className="forgot">
               <p>
-                Esqueceu sua senha? Clique <a rel="noopener noreferrer" href="#">aqui</a> para redefini-la.
+                Esqueceu sua senha? Clique{" "}
+                <a
+                  rel="noopener noreferrer"
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); setIsResetOpen(true); }}
+                >
+                  aqui
+                </a>{" "}
+                para redefini-la.
               </p>
             </div>
           </div>
@@ -96,6 +106,12 @@ const LoginFuncionario = () => {
           </div>
         </form>
       </div>
+      <ModalRedefSenha
+        isOpen={isResetOpen}
+        onClose={() => setIsResetOpen(false)}
+        apiPath="http://localhost:8080/usuarios/reset-password"
+        defaultEmail={form.email}
+      />
     </div>
   );
 };
