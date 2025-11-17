@@ -17,6 +17,7 @@ import Dash from './pages/dash'
 import Perfil from "./pages/perfil";
 import RealizarAgendamento from "./pages/realizarAgendamento";
 import { ModalCancelar } from "./components/ModalCancelar";
+import VLibras from "./components/VLibras";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   return (
     <>
       <Router>
+        <VLibras />
         <Routes>
           <Route
             path="/"
@@ -32,6 +34,7 @@ function App() {
               <>
                 <Navbar />
                 <Home />
+               
               </>
             }
           />
@@ -63,7 +66,7 @@ function App() {
             }
           />
         
-        
+          
           <Route path="/login-funcionario" element={<LoginFuncionario />} />
 
           <Route 
