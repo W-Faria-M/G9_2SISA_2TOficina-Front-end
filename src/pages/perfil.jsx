@@ -1,56 +1,41 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiRequest } from "../helpers/utils";
+import EditarPerfilModal from "../components/EditarPerfilModal";
+import AdicionarVeiculoModal from "../components/AdicionarVeiculoModal";
+import RemoverVeiculoModal from "../components/RemoverVeiculoModal";
 
 export default function Perfil() {
-  const [usuarios, setUsuarios] = useState([]);
+  const [usuario, setUsuario] = useState(null);
+  const [veiculos, setVeiculos] = useState([]);
   const [loadingUsuarios, setLoadingUsuarios] = useState(true);
+  const [loadingVeiculos, setLoadingVeiculos] = useState(true);
   const [erroUsuarios, setErroUsuarios] = useState(null);
+  const [erroVeiculos, setErroVeiculos] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalAdicionarOpen, setIsModalAdicionarOpen] = useState(false);
+  const [isModalRemoverOpen, setIsModalRemoverOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const usuarioId = sessionStorage.getItem("usuarioId");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUsuarios = async () => {
+    const fetchUsuario = async () => {
       try {
         const data = await apiRequest(`http://localhost:8080/usuarios?usuarioId=${usuarioId}`);
-        console.group('[Perfil] Usuários recebidos');
-        console.log('Quantidade:', Array.isArray(data) ? data.length : 'Formato inesperado');
+        console.group('[Perfil] Dados do usuário recebidos');
         console.log('Dados:', data);
         console.groupEnd();
-        // Normalização: API retorna registros flat (usuario + veiculo). Agrupar por usuarioId.
-        if (Array.isArray(data)) {
-          const agrupado = data.reduce((acc, item) => {
-            const id = item.usuarioId || item.idUsuario || 'desconhecido';
-            if (!acc[id]) {
-              acc[id] = {
-                usuarioId: id,
-                nomeCompleto: item.nomeCompleto || item.nome || '',
-                email: item.email || '',
-                telefone: item.telefone || '',
-                qtdServicosPendentes: item.qtdPendentes ?? item.qtdServicosPendentes ?? 0,
-                qtdServicosConcluidos: item.qtdConcluidos ?? item.qtdServicosConcluidos ?? 0,
-                veiculos: []
-              };
-            }
-            // Monta veículo se houver campos de veículo
-            if (item.marca || item.modelo || item.placa) {
-              acc[id].veiculos.push({
-                veiculoId: item.idVeiculo || item.veiculoId || item.id || undefined,
-                marca: item.marca,
-                modelo: item.modelo,
-                ano: item.ano,
-                km: item.km,
-                placa: item.placa,
-              });
-            }
-            return acc;
-          }, {});
-          setUsuarios(Object.values(agrupado));
+        
+        if (Array.isArray(data) && data.length > 0) {
+          setUsuario(data[0]);
+        } else if (data && typeof data === 'object') {
+          setUsuario(data);
         } else {
-          setUsuarios([]);
+          setUsuario(null);
         }
       } catch (e) {
-        console.group('[Perfil] Erro ao buscar usuários');
+        console.group('[Perfil] Erro ao buscar usuário');
         console.error(e);
         console.groupEnd();
         setErroUsuarios(e.message);
@@ -58,11 +43,138 @@ export default function Perfil() {
         setLoadingUsuarios(false);
       }
     };
-    fetchUsuarios();
+
+    const fetchVeiculos = async () => {
+      try {
+        const data = await apiRequest(`http://localhost:8080/veiculos/perfil?usuarioId=${usuarioId}`);
+        console.group('[Perfil] Veículos recebidos');
+        console.log('Quantidade:', Array.isArray(data) ? data.length : 'Formato inesperado');
+        console.log('Dados:', data);
+        console.groupEnd();
+        
+        if (Array.isArray(data)) {
+          setVeiculos(data);
+        } else {
+          setVeiculos([]);
+        }
+      } catch (e) {
+        console.group('[Perfil] Erro ao buscar veículos');
+        console.error(e);
+        console.groupEnd();
+        setErroVeiculos(e.message);
+      } finally {
+        setLoadingVeiculos(false);
+      }
+    };
+
+    fetchUsuario();
+    fetchVeiculos();
   }, [usuarioId]);
 
+  const handleAtualizarPerfil = async (dadosAtualizados) => {
+    setIsSubmitting(true);
+    try {
+      await apiRequest(
+        `http://localhost:8080/usuarios/atualizar-campo/${usuarioId}`,
+        "PATCH",
+        dadosAtualizados
+      );
+      console.group('[Perfil] Atualização bem-sucedida');
+      console.log('Dados enviados:', dadosAtualizados);
+      console.groupEnd();
+      alert("Informações atualizadas com sucesso!");
+      setIsModalOpen(false);
+      // Recarrega os dados do usuário
+      const data = await apiRequest(`http://localhost:8080/usuarios?usuarioId=${usuarioId}`);
+      if (Array.isArray(data) && data.length > 0) {
+        setUsuario(data[0]);
+      } else if (data && typeof data === 'object') {
+        setUsuario(data);
+      }
+    } catch (error) {
+      console.group('[Perfil] Erro ao atualizar');
+      console.error(error);
+      console.groupEnd();
+      alert("Erro ao atualizar informações: " + (error.message || "Erro desconhecido"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleAdicionarVeiculo = async (dadosVeiculo) => {
+    setIsSubmitting(true);
+    try {
+      await apiRequest(
+        "http://localhost:8080/veiculos",
+        "POST",
+        dadosVeiculo
+      );
+      console.group('[Perfil] Veículo adicionado');
+      console.log('Dados enviados:', dadosVeiculo);
+      console.groupEnd();
+      alert("Veículo adicionado com sucesso!");
+      setIsModalAdicionarOpen(false);
+      // Recarrega a lista de veículos
+      const data = await apiRequest(`http://localhost:8080/veiculos/perfil?usuarioId=${usuarioId}`);
+      if (Array.isArray(data)) {
+        setVeiculos(data);
+      }
+    } catch (error) {
+      console.group('[Perfil] Erro ao adicionar veículo');
+      console.error(error);
+      console.groupEnd();
+      alert("Erro ao adicionar veículo: " + (error.message || "Erro desconhecido"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRemoverVeiculo = async (veiculoId) => {
+    setIsSubmitting(true);
+    try {
+      await apiRequest(
+        `http://localhost:8080/veiculos/${veiculoId}`,
+        "DELETE"
+      );
+      console.group('[Perfil] Veículo removido');
+      console.log('ID do veículo:', veiculoId);
+      console.groupEnd();
+      alert("Veículo removido com sucesso!");
+      setIsModalRemoverOpen(false);
+      // Recarrega a lista de veículos
+      const data = await apiRequest(`http://localhost:8080/veiculos/perfil?usuarioId=${usuarioId}`);
+      if (Array.isArray(data)) {
+        setVeiculos(data);
+      }
+    } catch (error) {
+      console.group('[Perfil] Erro ao remover veículo');
+      console.error(error);
+      console.groupEnd();
+      alert("Erro ao remover veículo: " + (error.message || "Erro desconhecido"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const prepararDadosParaEdicao = () => {
+    if (!usuario) return {};
+    // Separa nome completo em nome e sobrenome
+    const nomeCompleto = usuario.nomeCompleto || '';
+    const partesNome = nomeCompleto.split(' ');
+    const nome = partesNome[0] || '';
+    const sobrenome = partesNome.slice(1).join(' ') || '';
+    
+    return {
+      nome,
+      sobrenome,
+      telefone: usuario.telefone || '',
+      email: usuario.email || '',
+      dataNascimento: usuario.dataNascimento || '',
+    };
+  };
+
   return (
-    <div className="min-w-[100vw] min-h-screen bg-linear-to-b from-[#f97316] to-[#34313129] flex items-center justify-center overflow-y-auto relative">
+    <div className="min-w-screen min-h-screen bg-linear-to-b from-[#f97316] to-[#34313129] flex items-center justify-center overflow-y-auto relative">
       <div className="flex flex-col gap-10 w-[85%] h-[90vh] relative z-0">
         <div className="flex flex-col">
           <span className="text-4xl font-bold mb-8">Perfil</span>
@@ -74,21 +186,21 @@ export default function Perfil() {
         {erroUsuarios && (
           <div className="text-red-600 text-center">{erroUsuarios}</div>
         )}
-        {!loadingUsuarios && !erroUsuarios && usuarios.length === 0 && (
+        {!loadingUsuarios && !erroUsuarios && !usuario && (
           <div className="text-black/70 text-center">Nenhum usuário encontrado.</div>
         )}
-        {!loadingUsuarios && !erroUsuarios && usuarios.length > 0 && (
+        {!loadingUsuarios && !erroUsuarios && usuario && (
         <div className="w-full flex gap-30 justify-center relative">
           {/* BLOCO DE SUAS INFORMAÇÕES */}
-          <div className="w-2/7 min-h-125 border border-black rounded-md
-          bg-gradient-to-b from-[#F27405] to-[#FFAB07] flex flex-col items-center !p-6 shadow-md relative z-20">
-            <h2 className="text-lg font-semibold text-center !mb-4 text-[#2B2B2B]">
+          <div className="w-2/7 max-h-125 border border-black rounded-md
+          bg-linear-to-b from-[#F27405] to-[#FFAB07] flex flex-col items-center p-6! shadow-md relative z-20">
+            <h2 className="text-lg font-semibold text-center mb-4! text-[#2B2B2B]">
               Suas Informações
             </h2>
 
             {/* Foto de perfil */}
-            <div className="relative !mb-4">
-              <div className="w-28 h-28 !p-5 rounded-full border-4 border-[#2B2B2B] overflow-hidden relative z-10">
+            <div className="relative mb-4!">
+              <div className="w-28 h-28 p-5! rounded-full border-4 border-[#2B2B2B] overflow-hidden relative z-10">
                 <img
                   src="https://via.placeholder.com/120x120.png?text=Foto"
                   alt="Foto de perfil"
@@ -98,30 +210,28 @@ export default function Perfil() {
 
               {/* Botão de editar*/}
               <button
-                className="absolute bottom-0 right-0 bg-[#2B2B2B] !p-1.5 !rounded-full text-[#F27405] shadow-md hover:scale-105! transition! z-20"
+                className="absolute bottom-0 right-0 bg-[#2B2B2B] p-1.5! rounded-full! text-[#F27405] shadow-md hover:scale-105! transition! z-20"
               >
                 ✏️
               </button>
             </div>
-            <div className="!mb-2" />
+            <div className="mb-2!" />
             <br />
 
 
             {/* Dados do usuário */}
-            {(() => {
-              const u = usuarios[0];
-              return (
-                <div className="flex flex-col items-center text-sm text-black gap-1 relative z-20">
-                  <p className="font-medium">{u.nomeCompleto || u.nome || 'Nome não informado'}</p>
-                  <p>{u.email || 'Email não informado'}</p>
-                  <p>Telefone: {u.telefone || '—'}</p>
-                </div>
-              );
-            })()}
+            <div className="flex flex-col items-center text-sm text-black gap-1 relative z-20">
+              <p className="font-medium">{usuario.nomeCompleto || 'Nome não informado'}</p>
+              <p>{usuario.email || 'Email não informado'}</p>
+              <p>Telefone: {usuario.telefone || '—'}</p>
+            </div>
 
             {/* Botão Editar */}
-            <button className="!mt-6 w-40 h-8 bg-gradient-to-b from-[#F27405] to-[#FFAB07] text-black flex items-center justify-center
-            font-semibold !rounded-full !border !border-[#2B2B2B]/30 hover:border-[#2B2B2B]! shadow-md transition relative z-20">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="mt-6! w-40 h-8 bg-linear-to-b from-[#F27405] to-[#FFAB07] text-black flex items-center justify-center
+              font-semibold rounded-full! border! border-[#2B2B2B]/30! hover:border-[#2B2B2B]! shadow-md transition relative z-20"
+            >
               EDITAR
             </button>
           </div>
@@ -133,11 +243,11 @@ export default function Perfil() {
                 <div className="w-55 h-35 bg-[#F27405] rounded-lg flex flex-col justify-center items-center shadow-md">
                   <span className="text-lg text-white/90">Serviços a realizar:</span>
                   <div className="h-2" />
-                  <span className="text-4xl font-bold text-white mt-1">{usuarios[0].qtdServicosPendentes}</span>
+                  <span className="text-4xl font-bold text-white mt-1">{usuario.qtdPendentes || 0}</span>
                 </div>
                 <button
                   onClick={() => navigate('/agendamentos-feitos')}
-                  className="!h-8 !w-30 text-l flex items-center justify-center text-[#F4A100] !bg-white hover:brightness-95 transition">
+                  className="h-8! w-30! text-l flex items-center justify-center text-[#F4A100] bg-white! hover:brightness-95 transition">
                   Agendamentos
                 </button>
               </section>
@@ -146,11 +256,11 @@ export default function Perfil() {
                 <div className="w-55 h-35 bg-[#F28907] rounded-lg flex flex-col justify-center items-center shadow-md">
                   <span className="text-lg text-white/90">Serviços concluídos:</span>
                   <div className="h-2" />
-                  <span className="text-4xl font-bold text-white mt-1">{usuarios[0].qtdServicosConcluidos}</span>
+                  <span className="text-4xl font-bold text-white mt-1">{usuario.qtdConcluidos || 0}</span>
                 </div>
                 <button
                   onClick={() => navigate('/realizar-agendamento')}
-                  className="!h-8 !w-30 text-l flex items-center justify-center text-white !bg-[#F4A100] hover:brightness-95 transition">
+                  className="h-8! w-30! text-l flex items-center justify-center text-white bg-[#F4A100]! hover:brightness-95 transition">
                   + Agendar
                 </button>
               </section>
@@ -159,10 +269,10 @@ export default function Perfil() {
             <section className="h-1/2 flex flex-col items-center gap-5">
               <span className="text-2xl text-[#F27405]">Suas Motos</span>
               <ul className="w-full min-h-35 justify-center overflow-x-auto flex gap-5 px-6">
-                {(usuarios[0].veiculos || []).length === 0 && (
+                {veiculos.length === 0 && (
                   <li className="text-sm text-black/70">Nenhum veículo cadastrado.</li>
                 )}
-                {(usuarios[0].veiculos || []).map(v => (
+                {veiculos.map(v => (
                   <li key={v.veiculoId || v.placa || Math.random()} className="w-60 bg-black/45 rounded-lg p-6">
                     <p style={{ paddingLeft: '12px', margin: '8px 0 0 0' }}>Marca: {v.marca || '—'}</p>
                     <p style={{ paddingLeft: '12px', margin: 0 }}>Modelo: {v.modelo || '—'}</p>
@@ -173,10 +283,16 @@ export default function Perfil() {
                 ))}
               </ul>
               <div className="flex h-full items-end gap-10">
-                <button className="!h-7 !w-40 !rounded-full text-l flex items-center justify-center text-[#007A4D] !bg-white">
+                <button 
+                  onClick={() => setIsModalAdicionarOpen(true)}
+                  className="h-7! w-40! rounded-full! text-l flex items-center justify-center text-[#007A4D] bg-white! hover:brightness-95 transition"
+                >
                   Adicionar
                 </button>
-                <button className="!h-7 !w-40 !rounded-full text-l flex items-center justify-center text-[#DF3535] !bg-white">
+                <button 
+                  onClick={() => setIsModalRemoverOpen(true)}
+                  className="h-7! w-40! rounded-full! text-l flex items-center justify-center text-[#DF3535] bg-white! hover:brightness-95 transition"
+                >
                   Remover
                 </button>
               </div>
@@ -185,6 +301,33 @@ export default function Perfil() {
         </div>
         )}
       </div>
+
+      {/* Modal de Edição */}
+      <EditarPerfilModal
+        open={isModalOpen}
+        dadosUsuario={prepararDadosParaEdicao()}
+        onConfirm={handleAtualizarPerfil}
+        onClose={() => setIsModalOpen(false)}
+        isSubmitting={isSubmitting}
+      />
+
+      {/* Modal de Adicionar Veículo */}
+      <AdicionarVeiculoModal
+        open={isModalAdicionarOpen}
+        usuarioId={usuarioId}
+        onConfirm={handleAdicionarVeiculo}
+        onClose={() => setIsModalAdicionarOpen(false)}
+        isSubmitting={isSubmitting}
+      />
+
+      {/* Modal de Remover Veículo */}
+      <RemoverVeiculoModal
+        open={isModalRemoverOpen}
+        veiculos={veiculos}
+        onConfirm={handleRemoverVeiculo}
+        onClose={() => setIsModalRemoverOpen(false)}
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 }
