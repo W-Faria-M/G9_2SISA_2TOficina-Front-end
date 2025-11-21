@@ -178,7 +178,7 @@ export default function RealizarAgendamento() {
 
   return (
     <>
-    <div className="min-w-screen min-h-screen bg-linear-to-b from-[#f97316] to-[#34313129] flex items-center justify-center overflow-y-auto">
+    <div className="min-w-screen min-h-screen bg-[#2B2B2B] flex items-center justify-center overflow-y-auto">
       <div className="flex w-[85%] h-[90vh]">
         <div className="w-1/2 flex flex-col gap-15">
           <span>
@@ -191,7 +191,7 @@ export default function RealizarAgendamento() {
                 <span className="text-l">Qual veículo precisa de atendimento?</span>
                 <select
                   name="slct-veiculos"
-                  className="w-[87%] bottom-0! rounded-full bg-white text-orange-500 border-2 border-amber-600"
+                  className="w-[87%] bottom-0! rounded-full bg-gray-200 text-orange-500 border-2 border-amber-600"
                   value={veiculoSelecionado}
                   onChange={(e) => setVeiculoSelecionado(e.target.value)}
                 >
@@ -217,7 +217,7 @@ export default function RealizarAgendamento() {
                   min={hojeISO}
                   value={data}
                   onChange={(e) => setData(e.target.value)}
-                  className="w-[87%] flex justify-center rounded-full bg-white text-orange-500 border-2 border-amber-600"
+                  className="w-[87%] flex justify-center rounded-full bg-gray-200 text-orange-500 border-2 border-amber-600"
                 />
               </div>
             </div>
@@ -226,7 +226,7 @@ export default function RealizarAgendamento() {
               name="hora"
               value={horarioSelecionado}
               onChange={(e) => setHorarioSelecionado(e.target.value)}
-              className="w-[82%] rounded-full flex justify-center text-center bg-white text-orange-500 border-2 border-amber-600">
+              className="w-[82%] rounded-full flex justify-center text-center bg-gray-200 text-orange-500 border-2 border-amber-600">
               <option value="" disabled>
                 {isDomingo
                   ? "A oficina não abre aos domingos"
@@ -247,7 +247,7 @@ export default function RealizarAgendamento() {
               name="descricao"
               value={descricaoProblema}
               onChange={(e) => setDescricaoProblema(e.target.value)}
-              className="w-[82%] px-4! py-3! h-36 resize-none bg-[rgba(242,137,7,0.36)] rounded-md"
+              className="w-[82%] px-4! py-3! h-36 resize-none bg-[rgba(242,136,7,0.8)] rounded-md"
               placeholder="Descreva aqui o problema"
             ></textarea>
             <div className="flex flex-col gap-2 w-[82%]">
@@ -263,7 +263,7 @@ export default function RealizarAgendamento() {
         </div>
         <div className="w-1/2 h-[82%] self-end flex flex-col gap-5">
           <span className="m-8">O que a sua moto precisa? Selecione os serviços abaixo.</span>
-          <div className="w-full h-98.5 bg-[rgba(0,0,0,0.25)] rounded-md flex flex-col gap-4 p-4! scroll-mb-2 overflow-y-auto">
+          <div className="w-full h-98.5 bg-[rgba(0,0,0,0.5)] rounded-md flex flex-col gap-4 p-4! scroll-mb-2 overflow-y-auto">
             <ul className="flex flex-wrap gap-5">
               {servicos.map((s) => (
                 <li
@@ -271,7 +271,7 @@ export default function RealizarAgendamento() {
                   role="button"
                   aria-pressed={isSelecionado(s.servicoId)}
                   onClick={() => toggleServico(s.servicoId)}
-                  className={`relative w-47 h-28 cursor-pointer group rounded-md overflow-hidden border transition-all duration-200
+                  className={`relative w-47 h-28 cursor-pointer group rounded-md overflow-hidden border border-white/40 transition-all duration-200
                     ${isSelecionado(s.servicoId) ? 'ring-2 ring-orange-500 border-orange-500' : 'border-transparent hover:border-orange-400'}`}
                 >
                   <img
