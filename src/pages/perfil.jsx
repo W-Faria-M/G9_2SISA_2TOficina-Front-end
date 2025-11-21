@@ -174,11 +174,11 @@ export default function Perfil() {
   };
 
   return (
-    <div className="min-w-screen min-h-screen bg-linear-to-b from-[#f97316] to-[#34313129] flex items-center justify-center overflow-y-auto relative">
+    <div className="min-w-screen min-h-screen bg-[#2B2B2B] flex items-center justify-center overflow-y-auto relative">
       <div className="flex flex-col gap-10 w-[85%] h-[90vh] relative z-0">
         <div className="flex flex-col">
           <span className="text-4xl font-bold mb-8">Perfil</span>
-          <span className="text-lg text-black">Personalize sua experiência</span>
+          <span className="text-lg text-[#F27405]">Personalize sua experiência</span>
         </div>
         {loadingUsuarios && (
           <div className="text-black/80 text-center">Carregando dados...</div>
