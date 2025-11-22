@@ -4,7 +4,7 @@ import "./FilterBar.css";
 import { validateField } from "../helpers/utils";
 
 
-export default function ServiceCard({ nome, categoria, onDetalhes, onRemover }) {
+export default function ServiceCard({ nome, categoria, onDetalhes }) {
   const [errors, setErrors] = useState({});
 
   React.useEffect(() => {
@@ -24,9 +24,6 @@ export default function ServiceCard({ nome, categoria, onDetalhes, onRemover }) 
       <div className="service-actions">
         <button className="btn-detalhes" onClick={onDetalhes}>
           DETALHES
-        </button>
-        <button className="btn-remover" onClick={onRemover}>
-          REMOVER
         </button>
       </div>
     </div>
