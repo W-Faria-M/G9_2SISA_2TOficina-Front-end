@@ -31,10 +31,22 @@ export default function Servico() {
     setLoading(true);
     try {
       const [servicesData, categoriesData] = await Promise.all([
-        apiRequest("http://localhost:3001/servicos", "GET"),
-        apiRequest("http://localhost:3001/categorias", "GET"),
+        apiRequest("http://localhost:8080/servicos/completos", "GET"),
+        apiRequest("http://localhost:8080/servicos/categorias", "GET"),
       ]);
-      setServices(servicesData);
+      
+      // Mapeia os dados da API para o formato esperado pelo frontend
+      const mappedServices = servicesData.map(servico => ({
+        id: servico.servicoId,
+        nome: servico.nomeServico,
+        categoria: servico.nomeCategoria,
+        descricao: servico.descricao,
+        rapido: servico.ehRapido,
+        status: servico.status,
+        ativo: servico.status === "Ativo"
+      }));
+      
+      setServices(mappedServices);
       setCategories(categoriesData);
     } catch (error) {
       setError("Erro ao carregar dados: " + error.message);
@@ -46,14 +58,22 @@ export default function Servico() {
 
   const handleAddServico = async (novoServico) => {
     try {
+      // Encontra o id da categoria selecionada
+      const categoriaSelecionada = categories.find(cat => cat.nome === novoServico.categoria);
+      
       const serviceToAdd = {
         nome: novoServico.nome,
-        categoria: novoServico.categoria,
-        rapido: novoServico.rapido === "true",
-        status: novoServico.ativo === "true" ? "Ativo" : "Inativo",
+        categoriaServico: {
+          id: categoriaSelecionada?.id
+        },
         descricao: novoServico.descricao,
+        ehRapido: novoServico.rapido === true,
+        statusServico: {
+          id: novoServico.ativo === true ? 1 : 2
+        }
       };
-      await apiRequest("http://localhost:3001/servicos", "POST", serviceToAdd);
+      
+      await apiRequest("http://localhost:8080/servicos", "POST", serviceToAdd);
       alert("Serviço adicionado com sucesso!");
       setIsPopupAddServiceOpen(false);
       fetchData();
@@ -66,7 +86,22 @@ export default function Servico() {
 
   const handleEditServico = async (servicoEditado) => {
     try {
-      await apiRequest(`http://localhost:3001/servicos/${servicoEditado.id}`, "PUT", servicoEditado);
+      // Encontra o id da categoria selecionada
+      const categoriaSelecionada = categories.find(cat => cat.nome === servicoEditado.categoria);
+      
+      const serviceToUpdate = {
+        nome: servicoEditado.nome,
+        categoriaServico: {
+          id: categoriaSelecionada?.id
+        },
+        descricao: servicoEditado.descricao,
+        ehRapido: servicoEditado.rapido === "true" || servicoEditado.rapido === true,
+        statusServico: {
+          id: servicoEditado.ativo === true ? 1 : 2
+        }
+      };
+      
+      await apiRequest(`http://localhost:8080/servicos/atualizar-campo/${servicoEditado.id}`, "PATCH", serviceToUpdate);
       alert("Serviço atualizado com sucesso!");
       setIsPopupEditServiceOpen(false);
       setSelectedService(null);
@@ -78,22 +113,9 @@ export default function Servico() {
     }
   };
 
-  const handleDeleteServico = async (id) => {
-    if (!window.confirm("Tem certeza que deseja excluir este serviço?")) return;
-    try {
-      await apiRequest(`http://localhost:3001/servicos/${id}`, "DELETE");
-      alert("Serviço excluído com sucesso!");
-      fetchData();
-    } catch (error) {
-      setError("Erro ao excluir serviço: " + error.message);
-      console.error("Erro ao excluir serviço:", error);
-      alert("Erro ao excluir serviço.");
-    }
-  };
-
   const handleAddCategory = async (newCategory) => {
     try {
-      await apiRequest("http://localhost:3001/categorias", "POST", { nome: newCategory.nome });
+      await apiRequest("http://localhost:8080/servicos/categorias", "POST", { nome: newCategory.nome });
       alert("Categoria adicionada com sucesso!");
       setIsPopupAddCategoryOpen(false);
       fetchData();
@@ -106,7 +128,7 @@ export default function Servico() {
 
   const handleEditCategory = async (editedCategory) => {
     try {
-      await apiRequest(`http://localhost:3001/categorias/${editedCategory.id}`, "PUT", editedCategory);
+      await apiRequest(`http://localhost:8080/servicos/categorias/${editedCategory.id}`, "PUT", { nome: editedCategory.nome });
       alert("Categoria atualizada com sucesso!");
       setIsPopupEditCategoryOpen(false);
       setSelectedCategory(null);
@@ -115,19 +137,6 @@ export default function Servico() {
       setError("Erro ao atualizar categoria: " + error.message);
       console.error("Erro ao atualizar categoria:", error);
       alert("Erro ao atualizar categoria.");
-    }
-  };
-
-  const handleDeleteCategory = async (id) => {
-    if (!window.confirm("Tem certeza que deseja excluir esta categoria? Isso pode afetar serviços associados.")) return;
-    try {
-      await apiRequest(`http://localhost:3001/categorias/${id}`, "DELETE");
-      alert("Categoria excluída com sucesso!");
-      fetchData();
-    } catch (error) {
-      setError("Erro ao excluir categoria: " + error.message);
-      console.error("Erro ao excluir categoria:", error);
-      alert("Erro ao excluir categoria.");
     }
   };
 
@@ -200,14 +209,13 @@ export default function Servico() {
               nome={s.nome}
               categoria={s.categoria}
               onDetalhes={() => handleOpenDetalhesService(s)}
-              onRemover={() => handleDeleteServico(s.id)}
             />
           ))
         }
 
         {activeTab === "categorias" &&
           filteredCategories.map((cat) => (
-            <CategoriaCard key={cat.id} nome={cat.nome} onEditar={() => handleOpenEditCategory(cat)} onRemover={() => handleDeleteCategory(cat.id)} />
+            <CategoriaCard key={cat.id} nome={cat.nome} onEditar={() => handleOpenEditCategory(cat)} />
           ))
         }
       </div>

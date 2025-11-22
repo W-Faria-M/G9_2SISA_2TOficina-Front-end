@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { validateField } from "../helpers/utils";
 
-export default function CategoriaCard({ nome, onEditar, onRemover }) {
+export default function CategoriaCard({ nome, onEditar }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -16,9 +16,6 @@ export default function CategoriaCard({ nome, onEditar, onRemover }) {
       <div style={{ textAlign: 'right', marginTop: '8px' }}>
         <button className="btn-detalhes" onClick={onEditar}>
           EDITAR
-        </button>
-        <button className="btn-remover" onClick={onRemover}>
-          REMOVER
         </button>
       </div>
     </div>

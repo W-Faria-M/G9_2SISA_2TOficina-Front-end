@@ -7,7 +7,7 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
   const [formData, setFormData] = useState({
     nome: "",
     categoria: "",
-    rapido: false,
+    rapido: true,
     ativo: true,
     descricao: "",
   });
@@ -22,12 +22,12 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
           id: initialData.id,
           nome: initialData.nome || "",
           categoria: initialData.categoria || "",
-          rapido: initialData.rapido === true || initialData.rapido === "true" ? "true" : "false",
+          rapido: initialData.rapido === true || initialData.rapido === "true" ? true : false,
           ativo: initialData.status === "Ativo" || initialData.ativo === true || initialData.ativo === "true" ? true : false,
           descricao: initialData.descricao || "",
         });
       } else {
-        setFormData({ nome: "", categoria: "", rapido: false, ativo: true, descricao: "" });
+        setFormData({ nome: "", categoria: "", rapido: true, ativo: true, descricao: "" });
       }
     }
   }, [isOpen, initialData, availableCategories]);
@@ -63,7 +63,7 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
     onConfirm(formData);
     onClose();
     setStep("form");
-    setFormData({ nome: "", categoria: "", rapido: false, ativo: true, descricao: "" });
+    setFormData({ nome: "", categoria: "", rapido: true, ativo: true, descricao: "" });
   };
 
   return (
@@ -94,8 +94,8 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
                   type="radio"
                   name="rapido"
                   value="true"
-                  checked={formData.rapido === "true"}
-                  onChange={handleChange}
+                  checked={formData.rapido === true}
+                  onChange={() => setFormData({ ...formData, rapido: true })}
                 />
                 Sim
               </label>
@@ -104,10 +104,34 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
                   type="radio"
                   name="rapido"
                   value="false"
-                  checked={formData.rapido === "false"}
-                  onChange={handleChange}
+                  checked={formData.rapido === false}
+                  onChange={() => setFormData({ ...formData, rapido: false })}
                 />
                 Não
+              </label>
+            </div>
+
+            <label>Status:</label>
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="ativo"
+                  value="true"
+                  checked={formData.ativo === true}
+                  onChange={(e) => setFormData({ ...formData, ativo: true })}
+                />
+                Ativo
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="ativo"
+                  value="false"
+                  checked={formData.ativo === false}
+                  onChange={(e) => setFormData({ ...formData, ativo: false })}
+                />
+                Inativo
               </label>
             </div>
 
@@ -124,7 +148,7 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
           <div className="popup-confirmacao">
             <p><strong>Nome do Serviço:</strong> {formData.nome}</p>
             <p><strong>Categoria:</strong> {formData.categoria}</p>
-            <p><strong>Rápido:</strong> {booleanToYesNo(formData.rapido === "true")}</p>
+            <p><strong>Rápido:</strong> {booleanToYesNo(formData.rapido)}</p>
             <p><strong>Ativo:</strong> {booleanToYesNo(formData.ativo)}</p>
             <p><strong>Descrição:</strong> {formData.descricao}</p>
 

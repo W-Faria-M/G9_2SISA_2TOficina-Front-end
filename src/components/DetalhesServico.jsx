@@ -15,7 +15,7 @@ export default function DetalhesServico({ isOpen, onClose, servico, onEditar }) 
         <div className="status-linha">
           <span><strong>Status:</strong></span>
           <span className="status-badge">
-            {servico.ativo ? "✓ Ativo" : "✗ Inativo"}
+            {servico.status === "Ativo" ? "✓ Ativo" : "✗ Inativo"}
           </span>
         </div>
 
