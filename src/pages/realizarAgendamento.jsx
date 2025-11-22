@@ -5,6 +5,7 @@ import trocaDeOleo from "../assets/Gemini_Generated_Image_xd1a8qxd1a8qxd1a.png";
 import revisaoFiltros from "../assets/Gemini_Generated_Image_lnyfj8lnyfj8lnyf.png"
 import reparoFreio from "../assets/Gemini_Generated_Image_sqig5csqig5csqig.png"
 import revisaoKm from "../assets/Gemini_Generated_Image_w3b4ohw3b4ohw3b4.png"
+import imgGenerica from "../assets/Gemini_Generated_Image_a1g6j9a1g6j9a1g6.png"
 
 export default function RealizarAgendamento() {
 
@@ -276,7 +277,7 @@ export default function RealizarAgendamento() {
                 >
                   <img
                     src={s.nomeServico === "Troca de Óleo" ? trocaDeOleo : s.nomeServico === "Revisão de Filtros" ? revisaoFiltros :
-                      s.nomeServico === "Reparo no Freio" ? reparoFreio : s.nomeServico === "Revisão Periódica 10.000km" ? revisaoKm : ""}
+                      s.nomeServico === "Reparo no Freio" ? reparoFreio : s.nomeServico === "Revisão Periódica 10.000km" ? revisaoKm : imgGenerica}
                     alt={s.nomeServico}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                   />
