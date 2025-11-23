@@ -85,3 +85,24 @@
   background-color: #f97316;
   color: white;
 }
+
+.status-balls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-ball {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.date-input {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  outline: none;
+}

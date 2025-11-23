@@ -14,6 +14,28 @@ export default function GestaoAgendamentos() {
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
   const [editarSelecionado, setEditarSelecionado] = useState(null);
 
+  const [filtrosAtivos, setFiltrosAtivos] = useState({
+    search: "",
+    date: null,
+    status: null,
+  });
+
+  const filteredAgendamentos = agendamentos.filter((ag) => {
+    // Filtro de busca
+    const matchSearch =
+      ag.veiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.servico?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.username?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
+
+    // Filtro de data
+    const matchDate = !filtrosAtivos.date || ag.data === filtrosAtivos.date;
+
+    // Filtro de status
+    const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
+
+    return matchSearch && matchDate && matchStatus;
+  });
+
   useEffect(() => {
     fetchAgendamentos();
   }, []);
@@ -52,11 +74,11 @@ export default function GestaoAgendamentos() {
     }
   };
 
-  const filteredAgendamentos = agendamentos.filter((ag) =>
-    ag.veiculo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ag.servico?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ag.status?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredAgendamentos = agendamentos.filter((ag) =>
+  //   ag.veiculo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   ag.servico?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   ag.status?.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   const formatarData = (data) => {
     return data;
@@ -103,12 +125,23 @@ export default function GestaoAgendamentos() {
     <div className="gestao-agendamentos-page">
       <h1 className="gestao-agendamentos-titulo">Agendamentos</h1>
 
-      <FilterBar
+      {/* <FilterBar
         onSearch={(value) => setSearchTerm(value)}
         onFilter={() => alert("Abrir filtros avançados")}
         acaoText="+ Agendar"
         onOpenAgendarModal={() => setIsModalOpen(true)}
+      /> */}
+
+      <FilterBar
+        onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
+        onFilter={(filtros) => {
+          console.log("Filtros aplicados:", filtros);
+          setFiltrosAtivos(filtros);
+        }}
+        acaoText="+ Agendar"
+        onOpenAgendarModal={() => setIsModalOpen(true)}
       />
+
 
       <div className="gestao-agendamentos-lista">
         {filteredAgendamentos.length === 0 ? (

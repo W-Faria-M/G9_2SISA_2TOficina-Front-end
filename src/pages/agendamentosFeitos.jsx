@@ -96,9 +96,28 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
   const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
 
-  const filteredAgendamentos = agendamentosOrdenados.filter((ag) =>
-    ag.dataAgendamento?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [filtrosAtivos, setFiltrosAtivos] = useState({
+    search: "",
+    date: null,
+    status: null,
+  });
+
+  const filteredAgendamentos = agendamentosOrdenados.filter((ag) => {
+    const matchSearch =
+      ag.nomeVeiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.servicos?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.dataAgendamento?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
+
+    const matchDate = !filtrosAtivos.date || ag.dataAgendamento === filtrosAtivos.date;
+
+    const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
+
+    return matchSearch && matchDate && matchStatus;
+  });
+
+  // const filteredAgendamentos = agendamentosOrdenados.filter((ag) =>
+  //   ag.dataAgendamento?.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   if (loading) {
     return <div className="agendamentos-page">Carregando agendamentos...</div>;
@@ -125,8 +144,11 @@ export default function AgendamentosFeitos({ onDetalhes }) {
       <h1 className="titulo">Agendamentos</h1>
 
       <FilterBar
-        onSearch={(value) => setSearchTerm(value)}
-        onFilter={() => alert("Abrir filtros avançados")}
+        onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
+        onFilter={(filtros) => {
+          console.log("Filtros aplicados:", filtros);
+          setFiltrosAtivos(filtros);
+        }}
         acaoText="+ Agendar"
         onOpenAgendarModal={() => navigate("/realizar-agendamento")}
       />
