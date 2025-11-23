@@ -4,6 +4,7 @@ import { apiRequest } from "../helpers/utils";
 import EditarPerfilModal from "../components/EditarPerfilModal";
 import AdicionarVeiculoModal from "../components/AdicionarVeiculoModal";
 import RemoverVeiculoModal from "../components/RemoverVeiculoModal";
+import FotoPerfil from "../components/fotoPerfil.jsx";
 
 export default function Perfil() {
   const [usuario, setUsuario] = useState(null);
@@ -199,24 +200,9 @@ export default function Perfil() {
             </h2>
 
             {/* Foto de perfil */}
-            <div className="relative mb-4!">
-              <div className="w-28 h-28 p-5! rounded-full border-4 border-[#2B2B2B] overflow-hidden relative z-10">
-                <img
-                  src="https://via.placeholder.com/120x120.png?text=Foto"
-                  alt="Foto de perfil"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Botão de editar*/}
-              <button
-                className="absolute bottom-0 right-0 bg-[#2B2B2B] p-1.5! rounded-full! text-[#F27405] shadow-md hover:scale-105! transition! z-20"
-              >
-                ✏️
-              </button>
-            </div>
-            <div className="mb-2!" />
-            <br />
+             <FotoPerfil usuarioId={usuarioId} />
+             <div className="!mb-2" />
+             <br />
 
 
             {/* Dados do usuário */}
