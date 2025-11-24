@@ -381,7 +381,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
             <div className="grid grid-cols-2 gap-4 max-h-[60vh] overflow-auto text-white">
               <label className="block">
                 Top Type
-                                <select value={topType} onChange={(e) => setTopType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={topType} onChange={(e) => setTopType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {TOP_OPTIONS.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -390,7 +390,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Accessories
-                                <select value={accessoriesType} onChange={(e) => setAccessoriesType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={accessoriesType} onChange={(e) => setAccessoriesType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {ACCESSORIES_OPTIONS.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -399,7 +399,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Hair Color
-                                <select value={hairColor} onChange={(e) => setHairColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={hairColor} onChange={(e) => setHairColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {HAIR_COLORS.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -408,7 +408,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Facial Hair
-                                <select value={facialHairType} onChange={(e) => setFacialHairType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={facialHairType} onChange={(e) => setFacialHairType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {FACIAL_HAIR.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -417,7 +417,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Facial Hair Color
-                                <select value={facialHairColor} onChange={(e) => setFacialHairColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={facialHairColor} onChange={(e) => setFacialHairColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {FACIAL_HAIR_COLORS.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -426,7 +426,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Clothe Type
-                                <select value={clotheType} onChange={(e) => setClotheType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={clotheType} onChange={(e) => setClotheType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {CLOTHE_TYPES.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -435,7 +435,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Clothe Color
-                                <select value={clotheColor} onChange={(e) => setClotheColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={clotheColor} onChange={(e) => setClotheColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {CLOTHE_COLORS.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -444,7 +444,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Eye Type
-                                <select value={eyeType} onChange={(e) => setEyeType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={eyeType} onChange={(e) => setEyeType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {EYE_TYPES.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -453,7 +453,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Eyebrow
-                                <select value={eyebrowType} onChange={(e) => setEyebrowType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={eyebrowType} onChange={(e) => setEyebrowType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {EYEBROW_TYPES.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -462,7 +462,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Mouth
-                                <select value={mouthType} onChange={(e) => setMouthType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={mouthType} onChange={(e) => setMouthType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {MOUTH_TYPES.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
@@ -471,7 +471,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
               <label className="block">
                 Skin
-                                <select value={skinColor} onChange={(e) => setSkinColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm">
+								<select value={skinColor} onChange={(e) => setSkinColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
                   {SKIN_COLORS.map((o) => (
                     <option key={o} value={o} className="text-black">{o}</option>
                   ))}
