@@ -385,7 +385,7 @@ html, body {
     line-height: 1.3;
     text-align: center;
     color: #F27405;
-    padding: 0 6px;
+    padding: 65px 6px;
   }
 
   .secao-1 .esquerda h4 {
@@ -408,7 +408,6 @@ html, body {
     border-radius: 8px;
   }
 
-  /* remover heights fixos e offsets problemáticos */
   .secao-2 {
     margin-top: 30px;
     height: auto !important;

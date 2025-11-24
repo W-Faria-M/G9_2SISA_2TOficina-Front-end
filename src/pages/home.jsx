@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
+import { useNavigate } from "react-router-dom";
+import TransientModal from "../components/modalBase.jsx";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
+ const [showModal, setShowModal] = useState(false);
 
   const images = [
     { src: "src/assets/pneu.png", title: "Revisão de Freios" },
@@ -19,6 +23,15 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  function handleAgendarClick(e) {
+    e.preventDefault();
+    setShowModal(true);
+    setTimeout(() => {
+      setShowModal(false);
+      navigate("/login-cliente");
+    }, 2500); 
+  }
+
   return (
     <div id="topo" className="home-container">
       {/* Seção 1 */}
@@ -33,7 +46,7 @@ export default function Home() {
             A sua moto merece o melhor cuidado. Agende seu atendimento <br />
             e deixe sua máquina em boas mãos!
           </h4>
-          <button>AGENDAR</button>
+          <button onClick={handleAgendarClick}>AGENDAR</button>
         </div>
         <div className="direita">
           <img src="src/assets/foto_oficina.png" alt="" />
@@ -107,7 +120,7 @@ export default function Home() {
       <div className="secao-4">
           <h2>Precisa de um serviço? Agende agora seu atendimento de forma rápida e prática.</h2>
 
-          <button>AGENDAR</button>
+          <button onClick={handleAgendarClick}>AGENDAR</button>
       </div>
 
       {/* Contato */}
@@ -147,11 +160,13 @@ export default function Home() {
           </a>
         </div>
       </div>
-
       </div>
-
-      
-      
+       <TransientModal
+        isOpen={showModal}
+        message="Você precisa fazer login para realizar o agendamento. Redirecionando para a tela de login..."
+        duration={2000}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 }
