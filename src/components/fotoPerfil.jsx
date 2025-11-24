@@ -354,10 +354,10 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
 
   return (
     <>
-      <div className="relative !mb-4">
-        <div className="w-30 h-30 !p-5 rounded-full border-4 border-[#2B2B2B] overflow-hidden relative z-10">
-          <img src={serverAvatarUrl || avatarUrl} alt="Foto de perfil" className="w-22 h-22 object-cover" />
-        </div>
+			<div className="relative !mb-4">
+				<div className="w-40 h-40 rounded-full overflow-hidden border-2 border-[#F27405] bg-[#2B2B2B] p-1 relative z-10">
+					<img src={serverAvatarUrl || avatarUrl} alt="Foto de perfil" className="w-full h-full object-cover" />
+				</div>
 
         {/* Botão de editar*/}
         <button
@@ -373,11 +373,11 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
             <div className="bg-[#0b0b0b] rounded-lg w-[95%] max-w-4xl p-8 border-l-4 border-[#F27405] shadow-xl max-h-[85vh] overflow-auto ">
             <h3 className="text-2xl font-semibold mb-4 text-[#F27405] text-center">Redefinir avatar</h3>
                 {/* Preview do avatar */}
-                <div className="flex justify-center mb-4">
-                  <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-[#F27405] bg-white p-1">
-                    <img src={serverAvatarUrl || avatarUrl} alt="Preview avatar" className="w-full h-full object-cover" />
-                  </div>
-                </div>
+								<div className="flex justify-center mb-4">
+									<div className="w-40 h-40 rounded-full overflow-hidden border-2 border-[#F27405] bg-[#2B2B2B] p-1">
+										<img src={serverAvatarUrl || avatarUrl} alt="Preview avatar" className="w-full h-full object-cover" />
+									</div>
+								</div>
             <div className="grid grid-cols-2 gap-4 max-h-[60vh] overflow-auto text-white">
               <label className="block">
                 Top Type
