@@ -114,11 +114,26 @@ export default function GestaoAgendamentos() {
   };
 
   if (loading) {
-    return <div className="gestao-agendamentos-page">Carregando agendamentos...</div>;
+    return (
+      <div className="gestao-agendamentos-page">
+        <div className="gestao-sem-resultados">
+          <p>Carregando dados...</p>
+          <p>Por favor, aguarde enquanto buscamos os agendamentos.</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="gestao-agendamentos-page">Erro ao carregar: {error}</div>;
+    return (
+      <div className="gestao-agendamentos-page">
+        <div className="gestao-sem-resultados" style={{ borderColor: '#e74c3c' }}>
+          <p style={{ color: '#e74c3c' }}>Erro ao carregar agendamentos</p>
+          <p>{error}</p>
+          <p>Tente recarregar a página ou entre em contato com o suporte se o problema persistir.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -145,7 +160,18 @@ export default function GestaoAgendamentos() {
 
       <div className="gestao-agendamentos-lista">
         {filteredAgendamentos.length === 0 ? (
-          <p>Nenhum agendamento encontrado.</p>
+          agendamentos.length === 0 ? (
+            <div className="gestao-sem-resultados">
+              <p>Nenhum agendamento cadastrado no sistema.</p>
+              <p>Os agendamentos apareceram listados aqui quando forem criados.</p>
+              <p>Use o botão "+ Agendar" acima para criar o primeiro agendamento!</p>
+            </div>
+          ) : (
+            <div className="gestao-sem-resultados">
+              <p>Nenhum agendamento encontrado para a pesquisa.</p>
+              <p>Tente pesquisar com termos diferentes ou ajuste os filtros.</p>
+            </div>
+          )
         ) : (
           filteredAgendamentos.map((ag) => (
             <div key={ag.id} className="gestao-agendamentos-card">

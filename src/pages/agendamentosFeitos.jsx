@@ -120,11 +120,26 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   // );
 
   if (loading) {
-    return <div className="agendamentos-page">Carregando agendamentos...</div>;
+    return (
+      <div className="agendamentos-page">
+        <div className="sem-agendamentos">
+          <p>Carregando dados...</p>
+          <p>Por favor, aguarde enquanto buscamos seus agendamentos.</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="agendamentos-page" style={{ color: 'red' }}>{error}</div>;
+    return (
+      <div className="agendamentos-page">
+        <div className="sem-agendamentos" style={{ borderColor: '#e74c3c' }}>
+          <p style={{ color: '#e74c3c' }}>Erro ao carregar agendamentos</p>
+          <p style={{ color: '#fff' }}>{error}</p>
+          <p style={{ color: '#e74c3c' }}>Tente recarregar a página ou entre em contato com o suporte se o problema persistir.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
