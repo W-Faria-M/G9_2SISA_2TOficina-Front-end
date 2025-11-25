@@ -34,8 +34,10 @@ const MenuHamburguer = () => {
 
   return (
     <>
-      <button className="hamburger" onClick={toggleMenu}>
-        ☰
+      <button className={`hamburger ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
       </button>
 
       {isOpen && <div className="overlay" onClick={toggleMenu}></div>}

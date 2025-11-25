@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./menu-hamburguer.css";
+import "./menuFunc.css";
 import logo from "../assets/logo2T.jpg";
 import { apiRequest } from "../helpers/utils";
 
@@ -34,24 +34,26 @@ const MenuHamburguer = () => {
 
   return (
     <>
-      <button className="hamburger" onClick={toggleMenu}>
-        ☰
+      <button className={`hamburger-func ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
       </button>
 
-      {isOpen && <div className="overlay" onClick={toggleMenu}></div>}
+      {isOpen && <div className="overlay-func" onClick={toggleMenu}></div>}
 
-      <div className={`sidebar ${isOpen ? "open" : ""}`}>
-        <div className="sidebar-header">
-          <img src={logo} alt="Logo" className="logo" />
+      <div className={`sidebar-func ${isOpen ? "open" : ""}`}>
+        <div className="sidebar-header-func">
+          <img src={logo} alt="Logo" className="logo-func" />
         </div>
 
-        <ul className="sidebar-menu">
-          <li><a href="/gestao-agendamentos">Ver Agendamentos</a></li>
+        <ul className="sidebar-menu-func">
+          <li><a href="/gestao-agendamentos">Agendamentos</a></li>
           <li><a href="/analises">Dashboard</a></li>
           <li><a href="/servico">Serviços</a></li>
         </ul>
 
-        <button className="logout" onClick={handleLogout}>SAIR</button>
+        <button className="logout-func" onClick={handleLogout}>SAIR</button>
       </div>
     </>
   );

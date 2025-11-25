@@ -1,38 +1,79 @@
 /* Botão hamburguer */
-.hamburger {
-  font-size: 28px;
-  background: none;
+.hamburger-func {
+  background: #f39c12;
   border: none;
   cursor: pointer;
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 1001;
-  color: #000;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.hamburger-func:hover {
+  background: #e67e22;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 3px;
+  background-color: #f4f4f4;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-func.open {
+  left: 280px;
+}
+
+.hamburger-func.open .hamburger-line:nth-child(1) {
+  transform: rotate(-40deg) translateY(3px) translateX(-3px);
+  width: 18px;
+}
+
+.hamburger-func.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.hamburger-func.open .hamburger-line:nth-child(3) {
+  transform: rotate(40deg) translateY(-3px) translateX(-3px);
+  width: 18px;
 }
 
 
 /* Overlay escuro */
-.overlay {
+.overlay-func {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.3);
   z-index: 1000;
 }
 
 /* Sidebar */
-.sidebar {
+.sidebar-func {
   position: fixed;
   top: 0;
   left: -260px;
   width: 260px;
   height: 100%;
-  background: #111;
-  color: white;
+  background: #e67e22;
+  color: #fff;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
   transition: left 0.3s ease;
   z-index: 1002;
   display: flex;
@@ -42,16 +83,16 @@
   align-items: center;
 }
 
-.sidebar.open {
+.sidebar-func.open {
   left: 0;
 }
 
-.sidebar-header {
+.sidebar-header-func {
   text-align: center;
   margin-bottom: 40px;
 }
 
-.logo {
+.logo-func {
   width: 15vh;
   max-width: 100%; 
   height: 13vh; 
@@ -59,7 +100,7 @@
 }
 
 /* Menu */
-.sidebar-menu {
+.sidebar-menu-func {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,31 +109,38 @@
   margin: 0;
 }
 
-.sidebar-menu li {
+.sidebar-menu-func li {
   margin: 40px 0;
 }
 
-.sidebar-menu a {
-  color: white;
+.sidebar-menu-func a {
+  color: #fff;
   text-decoration: none;
   font-size: 27px;
+  font-weight: 500;
   transition: 0.3s;
 }
 
-.sidebar-menu a:hover {
-  color: orange;
+.sidebar-menu-func a:hover {
+  color: #333;
 }
 
 /* Botão sair */
-.logout {
-  background: red;
+.logout-func {
+  background: #fff;
   border: none;
-  padding: 10px;
+  padding: 12px 20px;
   font-size: 16px;
-  font-weight: bold;
-  color: white;
+  font-weight: 600;
+  color: #e74c3c;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 8px;
   margin-top: auto;
   width: 100%;
+  transition: all 0.3s ease;
+}
+
+.logout-func:hover {
+  background: #e74c3c;
+  color: #fff;
 }
