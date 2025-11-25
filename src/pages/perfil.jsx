@@ -178,7 +178,7 @@ export default function Perfil() {
     <div className="min-w-screen min-h-screen bg-[#2B2B2B] flex items-center justify-center overflow-y-auto relative">
       <div className="flex flex-col gap-10 w-[85%] h-[90vh] relative z-0">
         <div className="flex flex-col">
-          <span className="text-4xl font-bold mb-8">Perfil</span>
+          <span className="text-5xl font-bold mb-8">Perfil</span>
           <span className="text-lg text-[#F27405]">Personalize sua experiência</span>
         </div>
         {loadingUsuarios && (
@@ -201,7 +201,7 @@ export default function Perfil() {
 
             {/* Foto de perfil */}
              <FotoPerfil usuarioId={usuarioId} />
-             <div className="!mb-2" />
+             <div className="mb-2!" />
              <br />
 
 
@@ -256,7 +256,12 @@ export default function Perfil() {
               <span className="text-2xl text-[#F27405]">Suas Motos</span>
               <ul className="w-full min-h-35 justify-center overflow-x-auto flex gap-5 px-6">
                 {veiculos.length === 0 && (
-                  <li className="text-sm text-black/70">Nenhum veículo cadastrado.</li>
+                  <div className="w-full flex items-center justify-center">
+                    <div className="bg-white border-2 border-dashed border-[#F27405]! rounded-lg p-8! text-center max-w-md">
+                      <p className="text-lg font-bold text-[#F27405] mb-2">Atenção</p>
+                      <p className="text-sm text-[#333]">Você precisa cadastrar pelo menos um veículo para realizar um agendamento.</p>
+                    </div>
+                  </div>
                 )}
                 {veiculos.map(v => (
                   <li key={v.veiculoId || v.placa || Math.random()} className="w-60 bg-black/45 rounded-lg p-6">

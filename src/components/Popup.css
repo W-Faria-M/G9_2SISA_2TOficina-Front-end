@@ -1,40 +1,58 @@
 .popup-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
 }
 
 .popup-content {
   background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 500px;
+  border-radius: 12px;
+  border: 4px solid #f27405;
+  padding: 30px;
+  width: 600px;
   max-width: 95%;
   position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(242, 116, 5, 0.2);
 }
 
 .popup-title {
   text-align: center;
   margin-bottom: 15px;
-  color: #d35400;
+  color: #f39c12;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .popup-close {
-  color: black;
   position: absolute;
-  top: 10px; right: 10px;
-  border: none;
+  top: 15px;
+  right: 15px;
   background: transparent;
-  font-size: 18px;
+  border: none;
+  font-size: 24px;
+  color: #333;
   cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.popup-close:hover {
+  color: #f39c12;
 }
 
 .popup-form label {
   display: block;
   margin-top: 10px;
+  font-weight: 500;
+  color: #333;
 }
 
 .popup-form input,
@@ -43,29 +61,85 @@
   width: 100%;
   padding: 8px;
   margin-top: 5px;
-  background-color: unset;
+  background-color: #fff;
   color: black;
-  border-radius: 10px;
-  border: 2px solid #F4A100;
+  border-radius: 8px;
+  border: 2px solid #f39c12;
   resize: none;
+  box-sizing: border-box;
+}
+
+.popup-form input:focus,
+.popup-form select:focus,
+.popup-form textarea:focus {
+  outline: none;
+  border-color: #e67e22;
 }
 
 .radio-group {
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  margin-top: 8px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  font-weight: 500;
+  color: #666;
+  margin-top: 0;
+  flex: 1;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.radio-group label:hover {
+  border-color: #f39c12;
+  background-color: #fff;
+}
+
+.radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #f39c12;
+}
+
+.radio-group input[type="radio"]:checked + span,
+.radio-group label:has(input[type="radio"]:checked) {
+  border-color: #f39c12;
+  background-color: #fff5e6;
+  color: #f39c12;
+  font-weight: 600;
 }
 
 .btn-adicionar {
   margin-top: 15px;
   width: 60%;
   padding: 10px;
-  background: none;
-  color: #007A4D;
-  border: #007A4D solid 1px;
+  background: #007a4d;
+  color: #fff;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   position: relative;
   left: 20%;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-adicionar:hover {
+  background: #006239;
 }
 
 .popup-confirmacao p {
@@ -76,24 +150,44 @@
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  gap: 10px;
 }
 
 .btn-cancelar {
-  background: #DF3535;
+  background: #e74c3c;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   width: 200px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #c0392b;
 }
 
 .btn-confirmar {
-  background: #007A4D;
+  background: #007a4d;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   width: 200px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-confirmar:hover {
+  background: #006239;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
 }

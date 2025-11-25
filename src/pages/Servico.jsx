@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FilterBar from "../components/filterBar";
+import SearchBarServicos from "../components/SearchBarServicos";
 import ServiceCard from "../components/ServiceCard";
 import CategoriaCard from "../components/CategoriaCard";
 import PopupServico from "../components/PopupServico";
@@ -168,11 +168,26 @@ export default function Servico() {
   };
 
   if (loading) {
-    return <div className="servico-page">Carregando serviços e categorias...</div>;
+    return (
+      <div className="servico-page">
+        <div className="servico-sem-resultados">
+          <p>Carregando dados...</p>
+          <p>Por favor, aguarde enquanto buscamos os serviços e categorias.</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="servico-page" style={{ color: 'red' }}>{error}</div>;
+    return (
+      <div className="servico-page">
+        <div className="servico-sem-resultados" style={{ borderColor: '#e74c3c' }}>
+          <p style={{ color: '#e74c3c' }}>Erro ao carregar dados</p>
+          <p>{error}</p>
+          <p>Tente recarregar a página ou entre em contato com o suporte se o problema persistir.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -187,38 +202,68 @@ export default function Servico() {
         </div>
       </div>
 
-      {/* Barra de filtro aparece em qualquer aba */}
-      <FilterBar
-        searchValue={searchTerm}
-        onSearch={value => setSearchTerm(value)}
-        onFilter={() => alert("Abrir filtros avançados")}
-        onOpenAgendarModal={() =>
-          activeTab === "servicos"
-            ? setIsPopupAddServiceOpen(true)
-            : setIsPopupAddCategoryOpen(true)
-        }
-        acaoText={activeTab === "servicos" ? "Novo Serviço" : "Nova Categoria"}
-      />
+      <div className="content-wrapper">
+        {/* Barra de pesquisa simplificada */}
+        <SearchBarServicos
+          onSearch={value => setSearchTerm(value)}
+          onOpenModal={() =>
+            activeTab === "servicos"
+              ? setIsPopupAddServiceOpen(true)
+              : setIsPopupAddCategoryOpen(true)
+          }
+          acaoText={activeTab === "servicos" ? "Novo Serviço" : "Nova Categoria"}
+        />
 
-      {/* Conteúdo */}
-      <div className="services-container">
-        {activeTab === "servicos" &&
-          filteredServices.map((s) => (
-            <ServiceCard
-              key={s.id}
-              nome={s.nome}
-              categoria={s.categoria}
-              onDetalhes={() => handleOpenDetalhesService(s)}
-            />
-          ))
-        }
+        {/* Conteúdo */}
+        <div className="services-container">
+        {activeTab === "servicos" && (
+          filteredServices.length === 0 ? (
+            services.length === 0 ? (
+              <div className="servico-sem-resultados">
+                <p>Nenhum serviço cadastrado no sistema.</p>
+                <p>Os serviços aparecerão listados aqui quando forem criados.</p>
+                <p>Use o botão "Novo Serviço" acima para adicionar o primeiro serviço!</p>
+              </div>
+            ) : (
+              <div className="servico-sem-resultados">
+                <p>Nenhum serviço encontrado para a pesquisa.</p>
+                <p>Tente pesquisar com termos diferentes.</p>
+              </div>
+            )
+          ) : (
+            filteredServices.map((s) => (
+              <ServiceCard
+                key={s.id}
+                nome={s.nome}
+                categoria={s.categoria}
+                onDetalhes={() => handleOpenDetalhesService(s)}
+              />
+            ))
+          )
+        )}
 
-        {activeTab === "categorias" &&
-          filteredCategories.map((cat) => (
-            <CategoriaCard key={cat.id} nome={cat.nome} onEditar={() => handleOpenEditCategory(cat)} />
-          ))
-        }
+        {activeTab === "categorias" && (
+          filteredCategories.length === 0 ? (
+            categories.length === 0 ? (
+              <div className="servico-sem-resultados">
+                <p>Nenhuma categoria cadastrada no sistema.</p>
+                <p>As categorias aparecerão listadas aqui quando forem criadas.</p>
+                <p>Use o botão "Nova Categoria" acima para adicionar a primeira categoria!</p>
+              </div>
+            ) : (
+              <div className="servico-sem-resultados">
+                <p>Nenhuma categoria encontrada para a pesquisa.</p>
+                <p>Tente pesquisar com termos diferentes.</p>
+              </div>
+            )
+          ) : (
+            filteredCategories.map((cat) => (
+              <CategoriaCard key={cat.id} nome={cat.nome} onEditar={() => handleOpenEditCategory(cat)} />
+            ))
+          )
+        )}
       </div>
+    </div>
 
       {/* Popup de adicionar serviço */}
     <PopupServico
@@ -261,6 +306,6 @@ export default function Servico() {
       servico={selectedService}
       onEditar={handleOpenEditService}
     />
-  </div>
+    </div>
   );
 }
