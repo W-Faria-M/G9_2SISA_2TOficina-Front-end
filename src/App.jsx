@@ -117,7 +117,15 @@ function App() {
               </>
             }
           />
-          <Route path="/servico" element={<Servico />} />
+          <Route 
+            path="/servico"
+            element={
+              <>
+                <MenuHamburguerFuncionario />
+                <Servico />
+              </>
+            }
+          />
           <Route
             path="/agendamento"
             element={
