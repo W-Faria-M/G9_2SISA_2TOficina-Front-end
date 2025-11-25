@@ -14,7 +14,7 @@
 }
 
 .acao-button {
-  background-color: #F4A100;
+  background-color: #27ae60;
   color: white;
   border: none;
   border-radius: 10px;
@@ -26,7 +26,7 @@
 }
 
 .acao-button:hover {
-  background-color: #d48800;
+  background-color: #229954;
 }
 
 .filter-bar {
@@ -71,7 +71,7 @@
   align-items: center;
   gap: 8px;
   background-color: #ffff;
-  color: #F4A100;
+  color: #f4a100;
   padding: 8px 16px;
   border-radius: 9999px;
   font-weight: 500;
@@ -105,4 +105,7 @@
   border-radius: 20px;
   border: 1px solid #ddd;
   outline: none;
+  color: orange;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }

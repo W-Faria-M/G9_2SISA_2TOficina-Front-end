@@ -87,52 +87,58 @@ export default function PopupServico({ isOpen, onClose, onConfirm, initialData, 
             </select>
             {errors.categoria && <span className="error-message">{errors.categoria}</span>}
 
-            <label>É rápido?</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="rapido"
-                  value="true"
-                  checked={formData.rapido === true}
-                  onChange={() => setFormData({ ...formData, rapido: true })}
-                />
-                Sim
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="rapido"
-                  value="false"
-                  checked={formData.rapido === false}
-                  onChange={() => setFormData({ ...formData, rapido: false })}
-                />
-                Não
-              </label>
-            </div>
+            <div style={{ display: 'flex', gap: '25px', marginTop: '10px' }}>
+              <div style={{ flex: 1 }}>
+                <label>É rápido?</label>
+                <div className="radio-group">
+                  <label className={formData.rapido === true ? "radio-selected" : ""}>
+                    <input
+                      type="radio"
+                      name="rapido"
+                      value="true"
+                      checked={formData.rapido === true}
+                      onChange={() => setFormData({ ...formData, rapido: true })}
+                    />
+                    <span>Sim</span>
+                  </label>
+                  <label className={formData.rapido === false ? "radio-selected" : ""}>
+                    <input
+                      type="radio"
+                      name="rapido"
+                      value="false"
+                      checked={formData.rapido === false}
+                      onChange={() => setFormData({ ...formData, rapido: false })}
+                    />
+                    <span>Não</span>
+                  </label>
+                </div>
+              </div>
 
-            <label>Status:</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="ativo"
-                  value="true"
-                  checked={formData.ativo === true}
-                  onChange={(e) => setFormData({ ...formData, ativo: true })}
-                />
-                Ativo
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="ativo"
-                  value="false"
-                  checked={formData.ativo === false}
-                  onChange={(e) => setFormData({ ...formData, ativo: false })}
-                />
-                Inativo
-              </label>
+              <div style={{ flex: 1 }}>
+                <label>Status:</label>
+                <div className="radio-group">
+                  <label className={formData.ativo === true ? "radio-selected" : ""}>
+                    <input
+                      type="radio"
+                      name="ativo"
+                      value="true"
+                      checked={formData.ativo === true}
+                      onChange={(e) => setFormData({ ...formData, ativo: true })}
+                    />
+                    <span>Ativo</span>
+                  </label>
+                  <label className={formData.ativo === false ? "radio-selected" : ""}>
+                    <input
+                      type="radio"
+                      name="ativo"
+                      value="false"
+                      checked={formData.ativo === false}
+                      onChange={(e) => setFormData({ ...formData, ativo: false })}
+                    />
+                    <span>Inativo</span>
+                  </label>
+                </div>
+              </div>
             </div>
 
             <label htmlFor="descricao">Descrição:</label>
