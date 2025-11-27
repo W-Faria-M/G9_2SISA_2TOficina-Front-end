@@ -49,17 +49,18 @@ export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acao
                             key={opt.value}
                             className="status-ball"
                             title={opt.label}
-                            onClick={() => setStatus(opt.value)}
+                            onClick={() => setStatus(status === opt.value ? "" : opt.value)}
                             style={{
                                 background: opt.color,
-                                border:
-                                    status === opt.value
-                                        ? "1.9px solid #f36c12"
-                                        : "2px solid transparent",
+                                border: status === opt.value ? "1.9px solid #f36c12" : "2px solid transparent",
+                                width: status === opt.value ? "26px" : "20px",
+                                height: status === opt.value ? "26px" : "20px",
+                                transition: "all 0.3s ease",
                             }}
                         />
                     ))}
                 </div>
+
 
                 <input
                     type="date"
