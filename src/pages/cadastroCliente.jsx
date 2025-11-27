@@ -34,6 +34,16 @@ export default function CadastroCliente() {
 
     const onSubmitCallback = async (formState) => {
         try {
+
+            console.log("Enviando dados para cadastro:", {
+                tipoUsuario: { id: 1 },
+                nome: formState.nome,
+                sobrenome: formState.sobrenome,
+                telefone: formState.telefone,
+                email: formState.email,
+                senha: formState.senha
+            });
+
             const data = await apiRequest("http://localhost:8080/usuarios", "POST", {
                 tipoUsuario: { id: 1 },
                 nome: formState.nome,
@@ -43,6 +53,7 @@ export default function CadastroCliente() {
                 senha: formState.senha
             });
 
+            console.log("Resposta da API:", data);
             setIsModalOpen(true);
 
             setForm({
@@ -60,6 +71,9 @@ export default function CadastroCliente() {
 
             setError({});
         } catch (error) {
+            console.error("Erro capturado:", error);
+            console.error("Erro message:", error.message);
+            console.error("Erro response:", error.response?.data);
             if (error.message.includes("400")) {
                 setError({ email: "Email já cadastrado." });
             } else {

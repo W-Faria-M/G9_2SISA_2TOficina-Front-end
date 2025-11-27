@@ -54,7 +54,7 @@ export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acao
                                 background: opt.color,
                                 border:
                                     status === opt.value
-                                        ? "3px solid #333"
+                                        ? "1.9px solid #f36c12"
                                         : "2px solid transparent",
                             }}
                         />

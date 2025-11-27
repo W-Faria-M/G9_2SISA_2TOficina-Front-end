@@ -14,6 +14,7 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(148, 143, 143, 0.541);
+    z-index: 1000;
 }
 
 .card-cancel {
