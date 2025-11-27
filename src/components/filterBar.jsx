@@ -11,7 +11,8 @@ const statusOptions = [
 
 export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acaoText }) {
     const [search, setSearch] = useState("");
-    const [date, setDate] = useState("");
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
     const [status, setStatus] = useState("");
 
     const handleSearch = (e) => {
@@ -23,11 +24,18 @@ export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acao
         if (onFilter) {
             onFilter({
                 search: search.trim(),
-                date: date || null,
+                dateFrom: dateFrom || null,
+                dateTo: dateTo || null,
                 status: status || null,
             });
         }
     };
+
+    const clearDates = () => {
+        setDateFrom("");
+        setDateTo("");
+        if (onFilter) onFilter({ search: search.trim(), dateFrom: null, dateTo: null, status: status || null });
+    }
 
     return (
         <div className="filter-wrapper">
@@ -61,12 +69,24 @@ export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acao
                     ))}
                 </div>
 
-                <input
-                    type="date"
-                    className="date-input"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                <div className="date-range">
+                    <input
+                        type="date"
+                        className="date-input"
+                        value={dateFrom}
+                        onChange={(e) => setDateFrom(e.target.value)}
+                        aria-label="Data inicial"
+                    />
+                    <span style={{ margin: "0 6px", color: "#333" }}>até</span>
+                    <input
+                        type="date"
+                        className="date-input"
+                        value={dateTo}
+                        onChange={(e) => setDateTo(e.target.value)}
+                        aria-label="Data final"
+                    />
+                    <button onClick={clearDates} className="clear-dates" title="Limpar intervalo">×</button>
+                </div>
 
                 <button onClick={() => handleApplyFilter()} className="filter-button">
                     <Filter size={18} />
