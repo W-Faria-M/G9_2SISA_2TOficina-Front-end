@@ -172,7 +172,7 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                         </div>
                     </div>
 
-                    <div className="editar-form-group editar-form-row">
+                    {/* <div className="editar-form-group editar-form-row">
                         <label className="editar-label">Status:</label>
                         <select
                             name="status"
@@ -188,6 +188,17 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                         <button type="button" className="editar-icon-btn">
                             <Settings size={20} />
                         </button>
+                    </div> */}
+                    
+                    <div className="editar-form-group editar-form-row">
+                        <label className="editar-label">Adicionar observação:</label>
+                        <textarea
+                            className="ipt-observacao"
+                            name="observacao"
+                            value={formData.observacao}
+                            onChange={handleChange}
+                            rows="2"
+                        />
                     </div>
 
                     <div className="editar-form-group editar-form-row">
