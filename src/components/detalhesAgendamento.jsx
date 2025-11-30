@@ -19,15 +19,14 @@ export default function DetalhesAgendamento({ agendamento, onClose }) {
           </div>
           <div className="detalhes-esquerda">
             <div className="detalhes-status">
-              <span className={`status-tag ${
-                    agendamento.status === "Concluído" ? "status-concluido" :
-                    agendamento.status === "Pendente" ? "status-pendente" : 
+              <span className={`status-tag ${agendamento.status === "Concluído" ? "status-concluido" :
+                  agendamento.status === "Pendente" ? "status-pendente" :
                     agendamento.status === "Em Atendimento" ? "status-em-atendimento" :
-                    "status-cancelado"
-                    }`}>
-                    <span style={{ color: "black" }}>Status: </span>
-                    {agendamento.status}
-                  </span>
+                      "status-cancelado"
+                }`}>
+                <span style={{ color: "black" }}>Status: </span>
+                {agendamento.status}
+              </span>
             </div>
             <div>
               <span>Serviços:</span>
@@ -55,9 +54,9 @@ export default function DetalhesAgendamento({ agendamento, onClose }) {
         </div>
         <div className="detalhes-descricao">
           {tab === "descricao" ? (
-            <>{agendamento.descricao}</>
+            <p>{agendamento.descricao || "Nenhuma descrição adicionada"}</p>
           ) : (
-            <>{agendamento.observacao}</>
+            <p>{agendamento.observacao || "Nenhuma observação adicionada"}</p>
           )}
         </div>
       </div>

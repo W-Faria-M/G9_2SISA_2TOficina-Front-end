@@ -82,7 +82,7 @@
   font-weight: 600;
   color: #333;
   font-size: 0.95rem;
-  min-width: 120px;
+  min-width: 110px;
 }
 
 .editar-input {
@@ -313,7 +313,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .editar-input-hora {

@@ -75,9 +75,26 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   // Ordena agendamentos do mais recente para o mais antigo (considerando data + hora)
   const ordenarAgendamentos = (lista) => {
     return [...lista].sort((a, b) => {
+      // Ordem de prioridade: Em Atendimento → Pendente → Cancelado → Concluído
+      const statusOrder = {
+        "Em Atendimento": 0,
+        "Pendente": 1,
+        "Cancelado": 2,
+        "Concluído": 3
+      };
+
+      const statusA = statusOrder[a.status] ?? 999;
+      const statusB = statusOrder[b.status] ?? 999;
+
+      // Se status diferente, ordena por prioridade
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+
+      // Se mesmo status, ordena por data (mais antigos primeiro = primeira fila)
       const dataA = construirDataHora(a);
       const dataB = construirDataHora(b);
-      return dataB - dataA; // mais recentes primeiro
+      return dataA - dataB;
     });
   };
 

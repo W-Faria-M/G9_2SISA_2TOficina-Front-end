@@ -38,12 +38,12 @@ export default function GestaoAgendamentos() {
 
       if (filtrosAtivos.dateFrom) {
         const from = new Date(filtrosAtivos.dateFrom);
-        from.setHours(0,0,0,0);
+        from.setHours(0, 0, 0, 0);
         if (agDt < from) return false;
       }
       if (filtrosAtivos.dateTo) {
         const to = new Date(filtrosAtivos.dateTo);
-        to.setHours(23,59,59,999);
+        to.setHours(23, 59, 59, 999);
         if (agDt > to) return false;
       }
       return true;
@@ -53,7 +53,28 @@ export default function GestaoAgendamentos() {
     const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
 
     return matchSearch && matchDate && matchStatus;
-  });
+  })
+
+    .sort((a, b) => {
+      // Ordem de prioridade: Em Atendimento → Pendente → Cancelado → Concluído
+      const statusOrder = {
+        "Em Atendimento": 0,
+        "Pendente": 1,
+        "Cancelado": 2,
+        "Concluído": 3
+      };
+
+      const statusA = statusOrder[a.status] ?? 999;
+      const statusB = statusOrder[b.status] ?? 999;
+
+      // Se status diferente, ordena por prioridade
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+
+      // Se mesmo status, ordena por data (mais antigos primeiro = primeira fila)
+      return new Date(a.data) - new Date(b.data);
+    });
 
   useEffect(() => {
     fetchAgendamentos();
