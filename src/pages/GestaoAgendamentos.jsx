@@ -157,7 +157,7 @@ export default function GestaoAgendamentos() {
 
   return (
     <div className="gestao-agendamentos-page">
-      <h1 className="gestao-agendamentos-titulo">Agendamentos</h1>
+      <h1 className="gestao-agendamentos-titulo">Gestão de agendamentos</h1>
 
       {/* <FilterBar
         onSearch={(value) => setSearchTerm(value)}

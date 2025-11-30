@@ -1,60 +1,19 @@
-.filter-wrapper {
-  width: 76%;
-  max-width: 1200px;
-  margin: 0 auto;
+.filterbarclient-wrapper {
+  width: 100vw;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 16px 16px 16px 16px;
-  padding-top: 25px;
-  background-color: #f7f7f7;
-  border: 1px solid #dedede;
-  padding-top: 25px;
-  margin-right: 153px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.filter-label {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 4px;
-  margin-left: 7px;
-}
-
-
-/* .filter-wrapper, .title-filter {
-  display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: flex-start;
-} */
-
-.title-filter {
-  display: flex;
-  margin-top: -10px;
-  justify-content: flex-start;
-  font-size: 1.3rem;
-  color: #2b2b2b;
-  font-weight: 600;
-  /* margin-bottom: 16px; */
-  align-self: flex-start;
-  padding: 0 0 30px 0;
-  padding-left: 8px;
+  flex-direction: row;
+  padding: 16px;
+  padding-left: 245px;
+  padding-top: 25px;
 }
 
-/* .acao-container {
+.filterbarclient-action-container {
   padding-right: 170px;
-} */
+}
 
-.acao-button {
+.filterbarclient-action-btn {
   background-color: #27ae60;
   color: white;
   border: none;
@@ -64,21 +23,21 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
   justify-content: end;
+  margin-top: 18px;
 }
 
-.acao-button:hover {
+.filterbarclient-action-btn:hover {
   background-color: #229954;
 }
 
-.filter-bar {
+.filterbarclient-container {
   display: flex;
   align-items: center;
   gap: 20px;
-  width: 100%;
-  justify-content: flex-start;
+  width: auto;
 }
 
-.search-container {
+.filterbarclient-search-box {
   display: flex;
   align-items: center;
   background-color: white;
@@ -88,12 +47,12 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.search-icon {
+.filterbarclient-search-icon {
   color: #f97316;
   margin-right: 8px;
 }
 
-.search-input {
+.filterbarclient-search-field {
   flex: 1;
   border: none;
   outline: none;
@@ -104,16 +63,14 @@
   box-shadow: none;
 }
 
-.search-input::placeholder {
+.filterbarclient-search-field::placeholder {
   color: #fb923c;
 }
 
-.filter-button {
+.filterbarclient-filter-btn {
   display: flex;
   align-items: center;
-  /* align-self: flex-end; */
   gap: 8px;
-  margin-left: auto;
   background-color: #ffff;
   color: #f4a100;
   padding: 8px 16px;
@@ -123,28 +80,28 @@
   transition: background-color 0.2s ease;
   border: none;
   cursor: pointer;
+  margin-top: 20px;
 }
 
-.filter-button:hover {
+.filterbarclient-filter-btn:hover {
   background-color: #f97316;
   color: white;
 }
 
-.clear-dates {
+.filterbarclient-filter-group {
   display: flex;
-  align-items: center;
-  margin-top: 20px;
-  justify-content: center;
-  background-color: white;
-  color: black;
-  width: 30px;
-  height: 30px;
-  margin-right: 0px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  flex-direction: column;
 }
 
-.container-status {
+.filterbarclient-filter-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 4px;
+  margin-left: 7px;
+}
+
+.filterbarclient-container-status {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,41 +113,70 @@
   border-radius: 20px;
 }
 
-.status-balls {
+.filterbarclient-status-indicators {
   display: flex;
   gap: 10px;
   align-items: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 12px 16px;
+  border-radius: 20px;
 }
 
-.status-ball {
+.filterbarclient-status-ball {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
   box-shadow:
     0 4px 10px rgba(0, 0, 0, 0.15),
     0 1px 4px rgba(0, 0, 0, 0.1),
     inset 0 -1px 0 rgba(255, 255, 255, 0.4),
     inset 0 1px 3px rgba(0, 0, 0, 0.08);
-
 }
 
-.status-ball:hover {
+.filterbarclient-status-ball:hover {
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.25),
     0 3px 10px rgba(0, 0, 0, 0.18),
     inset 0 -2px 0 rgba(255, 255, 255, 0.7),
     inset 0 1px 2px rgba(0, 0, 0, 0.08);
-
   transform: translateY(-2px);
 }
 
-.date-input {
+.filterbarclient-date-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filterbarclient-date-field {
   padding: 8px 12px;
   border-radius: 20px;
   border: 1px solid #ddd;
   outline: none;
   color: #f4a100;
   background-color: white;
-  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+}
+
+.filterbarclient-clear-dates {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-right: 40px;
+  justify-content: center;
+  background-color: white;
+  color: black;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.2s ease;
+}
+
+.filterbarclient-clear-dates:hover {
+  color: #f44336;
+  border-color: #f44336;
+  background-color: #fff5f5;
 }

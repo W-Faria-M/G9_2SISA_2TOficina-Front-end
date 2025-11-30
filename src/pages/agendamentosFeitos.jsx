@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FilterBar from "../components/filterBar";
+import FilterBarClient from "../components/filterBarClient";
 import "./agendamentosFeitos.css";
 import { apiRequest, formatarData, formatarHora } from "../helpers/utils";
 import { ModalCancelar } from "../components/ModalCancelar";
@@ -158,7 +158,7 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
       <h1 className="titulo">Agendamentos</h1>
 
-      <FilterBar
+      <FilterBarClient
         onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
         onFilter={(filtros) => {
           console.log("Filtros aplicados:", filtros);
