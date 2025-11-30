@@ -53,6 +53,7 @@ function normalizeServiceName(name) {
 
 export default function Grafico2() {
 	const [raw, setRaw] = useState([]);
+	const [range, setRange] = useState(null); // { left: {year, monthIndex}, right: {year, monthIndex} }
 
 	useEffect(() => {
 		fetch('http://localhost:8080/agendamentos/kpi4')
@@ -65,31 +66,42 @@ export default function Grafico2() {
 	}, []);
 
 	const { labels, datasets } = useMemo(() => {
-		const months = getLastMonths(2);
+		// determine months to show: either exactly the two selected in `range` or the last 2 months
+		let months = [];
+		if (range && range.left && range.right) {
+			const leftMonth = new Date(range.left.year, range.left.monthIndex, 1);
+			const rightMonth = new Date(range.right.year, range.right.monthIndex, 1);
+			months.push(leftMonth);
+			if (!(leftMonth.getFullYear() === rightMonth.getFullYear() && leftMonth.getMonth() === rightMonth.getMonth())) {
+				months.push(rightMonth);
+			}
+		} else {
+			months = getLastMonths(2);
+		}
+
 		const labelNames = months.map((d) =>
-			d
-				.toLocaleDateString('pt-BR', { month: 'short' })
-				.replace(/^./, (c) => c.toUpperCase())
+			d.toLocaleDateString('pt-BR', { month: 'short' }).replace(/^./, (c) => c.toUpperCase())
 		);
 		const monthKeys = months.map(monthKey);
 
-		// bucket[monthKey][service] = count
+		// prepare buckets only for the months we show
 		const bucket = new Map();
 		const totalPerService = new Map();
+		for (const mk of monthKeys) bucket.set(mk, new Map());
 
 		for (const ag of raw) {
 			const [dd, mm, yyyy] = String(ag.data || '').split('/').map((x) => parseInt(x, 10));
 			if (!yyyy || !mm || !dd) continue;
 			const d = new Date(yyyy, mm - 1, dd);
 			const key = monthKey(d);
-			if (!bucket.has(key)) bucket.set(key, new Map());
+			if (!bucket.has(key)) continue; // skip dates outside the selected months
 			const service = normalizeServiceName(ag.servico) || 'outros';
 			const map = bucket.get(key);
 			map.set(service, (map.get(service) || 0) + 1);
 			totalPerService.set(service, (totalPerService.get(service) || 0) + 1);
 		}
 
-		// top N services to avoid visual clutter
+		// top N services to avoid visual clutter (based on selected months)
 		const TOP_N = 6;
 		const sorted = Array.from(totalPerService.entries()).sort((a, b) => b[1] - a[1]).map((e) => e[0]);
 		const topServices = sorted.slice(0, TOP_N);
@@ -97,7 +109,7 @@ export default function Grafico2() {
 		const serviceList = topServices.slice();
 		if (otherServices.length) serviceList.push('outros');
 
-		// datasets per service (each dataset will produce a colored bar per month)
+		// datasets per service (each dataset will produce a colored horizontal bar per month)
 		const datasets = serviceList.map((srv, i) => {
 			const data = monthKeys.map((mk) => {
 				if (srv === 'outros') {
@@ -120,7 +132,7 @@ export default function Grafico2() {
 		});
 
 		return { labels: labelNames, datasets };
-	}, [raw]);
+	}, [raw, range]);
 
 	const options = {
 		indexAxis: 'y',
@@ -142,9 +154,9 @@ export default function Grafico2() {
 	return (
 		<>
 		<div className='GF2'>
-			<Filtros1 />
+			<Filtros1 onChange={setRange} />
 			<div style={{ width: '100%', height: 280 }}>
-			<Bar data={{ labels, datasets }} options={options} />
+				<Bar data={{ labels, datasets }} options={options} />
 			</div>
 		</div>
 		</>
