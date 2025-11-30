@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import Filtros1 from './filtros1';
+
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -138,9 +140,15 @@ export default function Grafico2() {
 	};
 
 	return (
-		<div style={{ width: '100%', height: 360 }}>
+		<>
+		<div className='GF2'>
+			<Filtros1 />
+			<div style={{ width: '100%', height: 280 }}>
 			<Bar data={{ labels, datasets }} options={options} />
+			</div>
 		</div>
+		</>
+		
 	);
 }
 
