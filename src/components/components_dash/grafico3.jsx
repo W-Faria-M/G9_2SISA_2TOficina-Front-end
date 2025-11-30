@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import Filtros1 from './filtros1';
+
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -29,6 +31,7 @@ function monthKey(d) {
 
 export default function Grafico3() {
 	const [raw, setRaw] = useState([]);
+	const [range, setRange] = useState(null); // { left: {year, monthIndex}, right: {year, monthIndex} }
 
 	useEffect(() => {
 		fetch('http://localhost:8080/agendamentos/kpi4')
@@ -38,7 +41,39 @@ export default function Grafico3() {
 	}, []);
 
 	const { labels, data } = useMemo(() => {
-		const months = getLastMonths(6);
+		// helper to build months between start and end (inclusive)
+		function buildMonthsArray(startY, startM, endY, endM) {
+			const arr = [];
+			let y = startY;
+			let m = startM;
+			while (y < endY || (y === endY && m <= endM)) {
+				arr.push(new Date(y, m, 1));
+				m += 1;
+				if (m > 11) {
+					m = 0;
+					y += 1;
+				}
+			}
+			return arr;
+		}
+
+		let months = [];
+		if (range && range.left && range.right) {
+			const ly = range.left.year;
+			const lm = range.left.monthIndex;
+			const ry = range.right.year;
+			const rm = range.right.monthIndex;
+			// normalize order (start <= end)
+			const isLeftBefore = ly < ry || (ly === ry && lm <= rm);
+			const startY = isLeftBefore ? ly : ry;
+			const startM = isLeftBefore ? lm : rm;
+			const endY = isLeftBefore ? ry : ly;
+			const endM = isLeftBefore ? rm : lm;
+			months = buildMonthsArray(startY, startM, endY, endM);
+		} else {
+			months = getLastMonths(6);
+		}
+
 		const labels = months.map((d) => d.toLocaleDateString('pt-BR', { month: 'long' }).replace(/^./, (c) => c.toUpperCase()));
 		const keys = months.map(monthKey);
 
@@ -72,7 +107,7 @@ export default function Grafico3() {
 		};
 
 		return { labels, data: chartData };
-	}, [raw]);
+	}, [raw, range]);
 
 	const options = {
 		responsive: true,
@@ -94,9 +129,14 @@ export default function Grafico3() {
 	};
 
 	return (
-		<div style={{ width: '100%', height: 350 }}>
-			<Line options={options} data={data} />
-		</div>
+		<>
+			<div className='GF2'>
+				<Filtros1 onChange={setRange} />
+				<div style={{ width: '100%', height: 280 }}>
+					<Line options={options} data={data} />
+				</div>
+			</div>
+		</>
 	);
 }
 
