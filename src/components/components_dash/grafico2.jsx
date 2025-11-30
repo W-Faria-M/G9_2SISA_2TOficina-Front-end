@@ -3,16 +3,14 @@ import {
 	Chart as ChartJS,
 	CategoryScale,
 	LinearScale,
-	PointElement,
-	LineElement,
-	Filler,
+	BarElement,
 	Title,
 	Tooltip,
 	Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const COLORS = [
 	'#3B82F6', // azul
@@ -65,49 +63,57 @@ export default function Grafico2() {
 	}, []);
 
 	const { labels, datasets } = useMemo(() => {
-		const months = getLastMonths(6);
+		const months = getLastMonths(2);
 		const labelNames = months.map((d) =>
 			d
-				.toLocaleDateString('pt-BR', { month: 'long' })
+				.toLocaleDateString('pt-BR', { month: 'short' })
 				.replace(/^./, (c) => c.toUpperCase())
 		);
 		const monthKeys = months.map(monthKey);
 
-		// 🔹 Identificar automaticamente os serviços únicos no retorno
-		const uniqueServices = Array.from(
-			new Set(raw.map((ag) => normalizeServiceName(ag.servico)))
-		).filter(Boolean);
-
 		// bucket[monthKey][service] = count
 		const bucket = new Map();
+		const totalPerService = new Map();
+
 		for (const ag of raw) {
 			const [dd, mm, yyyy] = String(ag.data || '').split('/').map((x) => parseInt(x, 10));
 			if (!yyyy || !mm || !dd) continue;
 			const d = new Date(yyyy, mm - 1, dd);
 			const key = monthKey(d);
 			if (!bucket.has(key)) bucket.set(key, new Map());
-			const service = normalizeServiceName(ag.servico);
+			const service = normalizeServiceName(ag.servico) || 'outros';
 			const map = bucket.get(key);
 			map.set(service, (map.get(service) || 0) + 1);
+			totalPerService.set(service, (totalPerService.get(service) || 0) + 1);
 		}
 
-		// Montar datasets dinamicamente com base nos serviços encontrados
-		const datasets = uniqueServices.map((srv, i) => {
-			const data = monthKeys.map((mk) => bucket.get(mk)?.get(srv) || 0);
+		// top N services to avoid visual clutter
+		const TOP_N = 6;
+		const sorted = Array.from(totalPerService.entries()).sort((a, b) => b[1] - a[1]).map((e) => e[0]);
+		const topServices = sorted.slice(0, TOP_N);
+		const otherServices = sorted.slice(TOP_N);
+		const serviceList = topServices.slice();
+		if (otherServices.length) serviceList.push('outros');
+
+		// datasets per service (each dataset will produce a colored bar per month)
+		const datasets = serviceList.map((srv, i) => {
+			const data = monthKeys.map((mk) => {
+				if (srv === 'outros') {
+					let sum = 0;
+					const m = bucket.get(mk) || new Map();
+					for (const s of otherServices) sum += m.get(s) || 0;
+					return sum;
+				}
+				return bucket.get(mk)?.get(srv) || 0;
+			});
 			const color = COLORS[i % COLORS.length];
+			const label = srv === 'outros' ? 'Outros' : srv.split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 			return {
-				label: srv
-					.split(' ')
-					.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-					.join(' '),
+				label,
 				data,
-				borderColor: color,
-				backgroundColor: `${color}33`,
-				tension: 0.35,
-				fill: true,
-				pointRadius: 3,
-				pointBackgroundColor: '#fff',
-				pointBorderColor: color,
+				backgroundColor: color,
+				borderColor: '#fff',
+				borderWidth: 1,
 			};
 		});
 
@@ -115,36 +121,25 @@ export default function Grafico2() {
 	}, [raw]);
 
 	const options = {
+		indexAxis: 'y',
 		responsive: true,
 		maintainAspectRatio: false,
 		plugins: {
-			legend: {
-				position: 'bottom',
-				labels: { boxWidth: 12, boxHeight: 12, color: '#000' },
-			},
+			legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, color: '#000' } },
+			tooltip: { enabled: true, mode: 'index', intersect: false },
 			title: { display: false },
-			tooltip: { enabled: true },
 		},
 		scales: {
-			x: {
-				grid: { color: 'rgba(242, 116, 5, 0.2)', borderColor: '#F27405' },
-				ticks: { color: '#444' },
-			},
-			y: {
-				beginAtZero: true,
-				grid: {
-					color: 'rgba(242, 116, 5, 0.2)',
-					borderColor: '#F27405',
-					borderDash: [4, 4],
-				},
-				ticks: { color: '#444' },
-			},
+			x: { beginAtZero: true, ticks: { color: '#444', precision: 0 }, grid: { color: 'rgba(0,0,0,0.06)' } },
+			y: { grid: { display: false }, ticks: { color: '#444' } },
 		},
+		interaction: { mode: 'index', intersect: false },
+		elements: { bar: { borderRadius: 4, borderSkipped: false, maxBarThickness: 20 } },
 	};
 
 	return (
-		<div style={{ width: '100%', height: 350 }}>
-			<Line data={{ labels, datasets }} options={options} />
+		<div style={{ width: '100%', height: 360 }}>
+			<Bar data={{ labels, datasets }} options={options} />
 		</div>
 	);
 }
