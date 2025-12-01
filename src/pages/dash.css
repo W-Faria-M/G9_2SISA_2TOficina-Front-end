@@ -8,7 +8,7 @@ html, body {
 
 .dash-page {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   background: #F4F4F4;
   color: black;
   padding: 20px;
