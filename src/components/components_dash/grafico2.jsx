@@ -56,9 +56,10 @@ export default function Grafico2() {
 	const [range, setRange] = useState(null); // { left: {year, monthIndex}, right: {year, monthIndex} }
 
 	useEffect(() => {
-		fetch('http://localhost:8080/agendamentos/kpi4')
+		// endpoint que retorna registros agregados por mês/serviço
+		fetch('http://localhost:8080/servicos/estatisticas/quantidade-por-mes')
 			.then((r) => r.json())
-			.then((j) => setRaw(j.agendamentos || []))
+			.then((j) => setRaw(j || []))
 			.catch((err) => {
 				console.error('Erro ao carregar dados:', err);
 				setRaw([]);
@@ -89,16 +90,19 @@ export default function Grafico2() {
 		const totalPerService = new Map();
 		for (const mk of monthKeys) bucket.set(mk, new Map());
 
-		for (const ag of raw) {
-			const [dd, mm, yyyy] = String(ag.data || '').split('/').map((x) => parseInt(x, 10));
-			if (!yyyy || !mm || !dd) continue;
-			const d = new Date(yyyy, mm - 1, dd);
-			const key = monthKey(d);
-			if (!bucket.has(key)) continue; // skip dates outside the selected months
-			const service = normalizeServiceName(ag.servico) || 'outros';
+		// `raw` now contains aggregated rows with fields: ano, mes, idServico, nomeServico, totalServicos
+		for (const row of raw) {
+			const ano = row.ano;
+			const mes = row.mes; // 1..12
+			if (!ano || !mes) continue;
+			const key = `${ano}-${String(mes).padStart(2, '0')}`;
+			if (!bucket.has(key)) continue; // skip rows outside the selected months
+			const serviceRawName = row.nomeServico || '';
+			const service = normalizeServiceName(serviceRawName) || 'outros';
+			const count = Number(row.totalServicos || 0);
 			const map = bucket.get(key);
-			map.set(service, (map.get(service) || 0) + 1);
-			totalPerService.set(service, (totalPerService.get(service) || 0) + 1);
+			map.set(service, (map.get(service) || 0) + count);
+			totalPerService.set(service, (totalPerService.get(service) || 0) + count);
 		}
 
 		// top N services to avoid visual clutter (based on selected months)
