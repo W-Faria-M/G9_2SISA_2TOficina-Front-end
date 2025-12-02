@@ -35,13 +35,47 @@ export default function Filtros1({ years = [], initial = null, onChange = () => 
     }, [years, thisYear]);
 
     const defaultInitial = useMemo(() => {
-        const leftYear = availableYears[0] || thisYear;
-        const rightYear = availableYears[availableYears.length - 1] || thisYear;
+        // default to previous month (left) and current month (right) relative to today's date
+        let leftYear = thisYear;
+        let leftMonth = thisMonthIndex - 1;
+        let rightYear = thisYear;
+        let rightMonth = thisMonthIndex;
+
+        if (leftMonth < 0) {
+            leftMonth = 11;
+            leftYear = thisYear - 1;
+        }
+
+        // clamp to availableYears range
+        const minYear = availableYears && availableYears.length ? availableYears[0] : thisYear;
+        const maxYear = availableYears && availableYears.length ? availableYears[availableYears.length - 1] : thisYear;
+
+        if (leftYear < minYear) {
+            leftYear = minYear;
+            leftMonth = 0;
+        } else if (leftYear > maxYear) {
+            leftYear = maxYear;
+        }
+
+        if (rightYear < minYear) {
+            rightYear = minYear;
+            rightMonth = 0;
+        } else if (rightYear > maxYear) {
+            rightYear = maxYear;
+            rightMonth = Math.min(rightMonth, 11);
+        }
+
+        // respect disableFuture: do not choose months after current month in current year
+        if (disableFuture) {
+            if (leftYear === thisYear && leftMonth > thisMonthIndex) leftMonth = thisMonthIndex;
+            if (rightYear === thisYear && rightMonth > thisMonthIndex) rightMonth = thisMonthIndex;
+        }
+
         return {
-            left: { year: leftYear, monthIndex: 0 },
-            right: { year: rightYear, monthIndex: 0 },
+            left: { year: leftYear, monthIndex: leftMonth },
+            right: { year: rightYear, monthIndex: rightMonth },
         };
-    }, [availableYears, thisYear]);
+    }, [availableYears, thisYear, thisMonthIndex, disableFuture]);
 
     const [left, setLeft] = useState((initial && initial.left) || defaultInitial.left);
     const [right, setRight] = useState((initial && initial.right) || defaultInitial.right);
