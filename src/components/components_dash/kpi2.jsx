@@ -14,7 +14,7 @@ export default function KPI2() {
 
     return (
         <div className="kpi1-box">
-            <h2 className="kpi1-title">Ocupação Atual:</h2>
+            <h2 className="kpi1-title">Motos paradas na oficina:</h2>
             <p className="kpi1-value">{ocupacao}/{capacidade} motos</p>
         </div>
     );

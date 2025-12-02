@@ -23,7 +23,7 @@ export default function KPI1() {
 
     return (
         <div className="kpi1-box">
-            <h2 className="kpi1-title">Capacidade de Serviços:</h2>
+            <h2 className="kpi1-title">Meta Mensal de Serviços:</h2>
             <p className="kpi1-value">{agendamentosMes}/{capacidadeMes} mês</p>
         </div>
     );
