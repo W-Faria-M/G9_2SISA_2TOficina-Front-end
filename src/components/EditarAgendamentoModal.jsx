@@ -72,23 +72,32 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
         return statusMap[statusNome] || 1;
     };
 
-    const handleExcluir = () => {
-        console.log('Tentando excluir agendamento com ID:', agendamento.id);
-        if (window.confirm("Deseja realmente excluir este agendamento?")) {
-            fetch(`http://localhost:8080/agendamentos/${agendamento.id}`, {
-                method: 'DELETE',
+    const handleCancelar = () => {
+        if (window.confirm("Deseja realmente cancelar este agendamento?")) {
+            const payload = {
+                statusAgendamento: {
+                    id: 4 // ID para status "Cancelado"
+                }
+            };
+
+            fetch(`http://localhost:8080/agendamentos/atualizar-campo/${agendamento.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
             })
                 .then(async response => {
                     if (!response.ok) {
                         const errorText = await response.text();
-                        throw new Error(`Erro ao excluir agendamento: ${errorText}`);
+                        throw new Error(`Erro ao cancelar agendamento: ${errorText}`);
                     }
-                    alert('Agendamento excluído com sucesso!');
+                    alert('Agendamento cancelado com sucesso!');
                     onClose();
                     window.location.reload();
                 })
                 .catch(err => {
-                    console.error('Erro ao excluir:', err);
+                    console.error('Erro ao cancelar:', err);
                     alert(err.message);
                 });
         }
@@ -189,7 +198,7 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                             <Settings size={20} />
                         </button>
                     </div> */}
-                    
+
                     <div className="editar-form-group editar-form-row">
                         <label className="editar-label">Adicionar observação:</label>
                         <textarea
@@ -219,15 +228,15 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                         <button
                             type="button"
                             className="editar-btn editar-btn-excluir"
-                            onClick={handleExcluir}
+                            onClick={handleCancelar}
                         >
-                            Excluir
+                            Cancelar Agendamento
                         </button>
                         <button
                             type="submit"
                             className="editar-btn editar-btn-salvar"
                         >
-                            Salvar
+                            Salvar Alterações
                         </button>
                     </div>
                 </form>

@@ -130,13 +130,13 @@
 
 .editar-modal-actions {
   display: flex;
-  gap: 15px;
+  gap: 40px;
   margin-top: 20px;
   justify-content: center;
 }
 
 .editar-btn {
-  padding: 12px 40px;
+  padding: 12px 30px;
   border: none;
   border-radius: 25px;
   font-size: 1rem;
