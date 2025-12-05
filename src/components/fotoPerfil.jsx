@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PopupSucesso from './PopupSucesso';
+import PopupErro from './PopupErro';
 
 export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080' }) {
   // estados para cada atributo do avatar
@@ -14,15 +16,15 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
   const [mouthType, setMouthType] = useState("");
   const [skinColor, setSkinColor] = useState("");
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
-  const [serverAvatarUrl, setServerAvatarUrl] = useState(null);
-  const [loaded, setLoaded] = useState(false);
-  const [avatarId, setAvatarId] = useState(null);
-
-  // opções básicas (pode ser estendido conforme necessidade)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [serverAvatarUrl, setServerAvatarUrl] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [avatarId, setAvatarId] = useState(null);
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });  // opções básicas (pode ser estendido conforme necessidade)
   const [TOP_OPTIONS, setTopOptions] = useState(["NoHair", "Hat", "ShortHairShortFlat", "LongHairStraight", "Hijab"]);
   const [ACCESSORIES_OPTIONS, setAccessoriesOptions] = useState(["Blank", "Sunglasses", "Prescription02", "Kurt"]);
   const [HAIR_COLORS, setHairColors] = useState(["Black", "BrownDark", "Brown", "Blonde", "Red"]);
@@ -280,14 +282,12 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
       mouthType,
       skinColor,
     };
-    // no local persistence: require usuarioId to save to server
-    if (!usuarioId) {
-      alert('Impossível salvar: `usuarioId` ausente.');
-      setSaving(false);
-      return;
-    }
-
-    const base = apiBase.replace(/\/$/, '') || 'http://localhost:8080';
+    // no local persistence: require usuarioId to save to server
+    if (!usuarioId) {
+      setPopupErro({ show: true, mensagem: "Impossível salvar: usuário não identificado." });
+      setSaving(false);
+      return;
+    }    const base = apiBase.replace(/\/$/, '') || 'http://localhost:8080';
     const endpointsToTry = [
       `${base}/usuarios/${usuarioId}/avatar`,
       `${base}/${usuarioId}/avatar`,
@@ -341,20 +341,18 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
       }
     }
 
-    if (saved) {
-      alert('Avatar salvo com sucesso no servidor.');
-    } else {
-      console.error('Falha ao salvar avatar no servidor:', lastErr);
-      alert('Falha ao salvar no servidor. Veja o console para mais detalhes.');
-    }
-
-    setSaving(false);
+    if (saved) {
+      setPopupSucesso({ show: true, mensagem: "Avatar salvo com sucesso no servidor." });
+    } else {
+      console.error('Falha ao salvar avatar no servidor:', lastErr);
+      setPopupErro({ show: true, mensagem: "Não foi possível salvar o avatar. Tente novamente." });
+    }    setSaving(false);
     setModalOpen(false);
   }
 
   return (
     <>
-			<div className="relative !mb-4">
+			<div className="relative mb-4!">
 				<div className="w-40 h-40 rounded-full overflow-hidden border-2 border-[#F27405] bg-[#2B2B2B] p-1 relative z-10">
 					<img src={serverAvatarUrl || avatarUrl} alt="Foto de perfil" className="w-full h-full object-cover" />
 				</div>
@@ -362,7 +360,7 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
         {/* Botão de editar*/}
         <button
           onClick={openModal}
-          className="absolute bottom-0 right-0 bg-[#2B2B2B] !p-1.5 !rounded-full text-[#F27405] shadow-md hover:scale-105! transition! z-20"
+          className="absolute bottom-0 right-0 bg-[#2B2B2B] p-1.5! rounded-full! text-[#F27405] shadow-md hover:scale-105! transition! z-20"
         >
           ✏️
         </button>
@@ -491,10 +489,25 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
                  Salvar
                </button>
             </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+          </div>
+        </div>
+      )}
+
+      {popupSucesso.show && (
+        <PopupSucesso
+          mensagem={popupSucesso.mensagem}
+          onClose={() => setPopupSucesso({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
+    </>
+  );
 }
 

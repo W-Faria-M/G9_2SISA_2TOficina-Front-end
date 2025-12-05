@@ -128,6 +128,13 @@ export const apiRequest = async (url, method = "GET", data = null) => {
  * @returns {string} A data bonitinha no formato DD/MM/AAAA.
  */
 export const formatarData = (dateInput) => {
+  // Se a data vier no formato YYYY-MM-DD, fazemos o parse manual para evitar problema de timezone
+  if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
+    const [year, month, day] = dateInput.split('-');
+    return `${day}/${month}/${year}`;
+  }
+  
+  // Para outros formatos, usa o Date normalmente
   const date = new Date(dateInput);
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Mês começa do 0, então tem que somar 1

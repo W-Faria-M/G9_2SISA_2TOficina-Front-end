@@ -84,9 +84,6 @@ export default function AdicionarVeiculoModal({ open, usuarioId, onConfirm, onCl
     <div
       ref={backdropRef}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 animate-fadeIn"
-      onClick={(e) => {
-        if (e.target === backdropRef.current && !isSubmitting) onClose();
-      }}
       aria-hidden={!open}
     >
       <div
@@ -112,7 +109,7 @@ export default function AdicionarVeiculoModal({ open, usuarioId, onConfirm, onCl
               value={placa}
               onChange={(e) => setPlaca(e.target.value.toUpperCase())}
               maxLength={10}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 uppercase"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 uppercase"
               placeholder="Ex.: ABC-1234"
               required
             />
@@ -128,7 +125,7 @@ export default function AdicionarVeiculoModal({ open, usuarioId, onConfirm, onCl
               value={marca}
               onChange={(e) => setMarca(e.target.value)}
               maxLength={45}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="Ex.: Honda, Yamaha, etc."
               required
             />
@@ -144,7 +141,7 @@ export default function AdicionarVeiculoModal({ open, usuarioId, onConfirm, onCl
               value={modelo}
               onChange={(e) => setModelo(e.target.value)}
               maxLength={45}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="Ex.: CB 500, XRE 300, etc."
               required
             />
@@ -162,7 +159,7 @@ export default function AdicionarVeiculoModal({ open, usuarioId, onConfirm, onCl
                 onChange={(e) => setAno(e.target.value)}
                 min="1900"
                 max="2099"
-                className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Ex.: 2020"
                 required
               />
@@ -179,7 +176,7 @@ export default function AdicionarVeiculoModal({ open, usuarioId, onConfirm, onCl
                 onChange={(e) => setKm(Number(e.target.value))}
                 min="0"
                 step="0.1"
-                className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Ex.: 15000"
                 required
               />
