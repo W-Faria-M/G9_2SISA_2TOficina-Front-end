@@ -1,18 +1,59 @@
 import React, { useState } from "react";
 import "./ModalAvancarStatus.css";
+import PopupSucesso from "./PopupSucesso";
+import PopupErro from "./PopupErro";
 
-export default function ModalAvancarStatus({ agendamento, proximoStatus, onClose, onConfirm }) {
+export default function ModalAvancarStatus({ agendamento, proximoStatus, onClose, onSuccess }) {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
   const palavraChave = proximoStatus === "Em Atendimento" ? "ATENDER" : "CONCLUIR";
 
-  const handleConfirm = () => {
+  const getStatusId = (statusNome) => {
+    const statusMap = {
+      'Pendente': 1,
+      'Em Atendimento': 2,
+      'Concluído': 3,
+      'Cancelado': 4
+    };
+    return statusMap[statusNome] || 1;
+  };
+
+  const handleConfirm = async () => {
     if (inputValue.trim().toUpperCase() !== palavraChave) {
       setError(`Por favor, digite "${palavraChave}" para confirmar.`);
       return;
     }
-    onConfirm();
+
+    try {
+      const payload = {
+        statusAgendamento: {
+          id: getStatusId(proximoStatus)
+        }
+      };
+
+      console.log('Enviando payload de avanço de status:', payload);
+
+      const response = await fetch(`http://localhost:8080/agendamentos/atualizar-campo/${agendamento.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erro ao atualizar status: ${errorText}`);
+      }
+
+      setPopupSucesso({ show: true, mensagem: `Status avançado para "${proximoStatus}" com sucesso!` });
+    } catch (err) {
+      console.error('Erro ao atualizar status:', err);
+      setPopupErro({ show: true, mensagem: "Não foi possível atualizar o status. Tente novamente." });
+    }
   };
 
   return (
@@ -51,6 +92,27 @@ export default function ModalAvancarStatus({ agendamento, proximoStatus, onClose
           </button>
         </div>
       </div>
+
+      {popupSucesso.show && (
+        <PopupSucesso
+          mensagem={popupSucesso.mensagem}
+          onClose={() => {
+            setPopupSucesso({ show: false, mensagem: "" });
+            setTimeout(() => {
+              onClose();
+              if (onSuccess) onSuccess();
+            }, 100);
+          }}
+          darkMode={false}
+        />
+      )}
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={false}
+        />
+      )}
     </div>
   );
 }

@@ -22,65 +22,25 @@ export default function GestaoAgendamentos() {
 
   const [filtrosAtivos, setFiltrosAtivos] = useState({
     search: "",
-    dateFrom: null,
-    dateTo: null,
+    date: null,
     status: null,
   });
 
   const filteredAgendamentos = agendamentos.filter((ag) => {
     // Filtro de busca
-    const q = (filtrosAtivos.search || "").toLowerCase();
     const matchSearch =
-      (ag.veiculo || "").toLowerCase().includes(q) ||
-      (ag.servico || "").toLowerCase().includes(q) ||
-      (ag.username || "").toLowerCase().includes(q);
+      ag.veiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.servico?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.username?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
 
-    // Filtro de data por intervalo
-    const matchDate = (() => {
-      if (!filtrosAtivos.dateFrom && !filtrosAtivos.dateTo) return true;
-      if (!ag.data) return false;
-      const agDt = new Date(ag.data);
-      if (isNaN(agDt)) return false;
-
-      if (filtrosAtivos.dateFrom) {
-        const from = new Date(filtrosAtivos.dateFrom);
-        from.setHours(0, 0, 0, 0);
-        if (agDt < from) return false;
-      }
-      if (filtrosAtivos.dateTo) {
-        const to = new Date(filtrosAtivos.dateTo);
-        to.setHours(23, 59, 59, 999);
-        if (agDt > to) return false;
-      }
-      return true;
-    })();
+    // Filtro de data
+    const matchDate = !filtrosAtivos.date || ag.data === filtrosAtivos.date;
 
     // Filtro de status
     const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
 
     return matchSearch && matchDate && matchStatus;
-  })
-
-    .sort((a, b) => {
-      // Ordem de prioridade: Em Atendimento → Pendente → Cancelado → Concluído
-      const statusOrder = {
-        "Em Atendimento": 0,
-        "Pendente": 1,
-        "Cancelado": 2,
-        "Concluído": 3
-      };
-
-      const statusA = statusOrder[a.status] ?? 999;
-      const statusB = statusOrder[b.status] ?? 999;
-
-      // Se status diferente, ordena por prioridade
-      if (statusA !== statusB) {
-        return statusA - statusB;
-      }
-
-      // Se mesmo status, ordena por data (mais antigos primeiro = primeira fila)
-      return new Date(a.data) - new Date(b.data);
-    });
+  });
 
   useEffect(() => {
     fetchAgendamentos();
@@ -172,27 +132,8 @@ export default function GestaoAgendamentos() {
     }
   };
 
-  const handleConfirmarAvancoStatus = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/agendamentos/${modalAvancarStatus.agendamento.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          status: modalAvancarStatus.proximoStatus,
-        }),
-      });
-
-      if (!response.ok) throw new Error('Erro ao atualizar status');
-
-      await fetchAgendamentos();
-      setModalAvancarStatus({ show: false, agendamento: null, proximoStatus: "" });
-      setPopupSucesso({ show: true, mensagem: `Status avançado para "${modalAvancarStatus.proximoStatus}" com sucesso!` });
-    } catch (err) {
-      console.error('Erro ao atualizar status:', err);
-      setPopupErro({ show: true, mensagem: "Não foi possível atualizar o status. Tente novamente." });
-    }
+  const handleSuccessAvancoStatus = () => {
+    fetchAgendamentos();
   };
 
   if (loading) {
@@ -220,7 +161,7 @@ export default function GestaoAgendamentos() {
 
   return (
     <div className="gestao-agendamentos-page">
-      <h1 className="gestao-agendamentos-titulo">Gestão de agendamentos</h1>
+      <h1 className="gestao-agendamentos-titulo">Agendamentos</h1>
 
       {/* <FilterBar
         onSearch={(value) => setSearchTerm(value)}
@@ -233,7 +174,7 @@ export default function GestaoAgendamentos() {
         onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
         onFilter={(filtros) => {
           console.log("Filtros aplicados:", filtros);
-          setFiltrosAtivos(prev => ({ ...prev, ...filtros }));
+          setFiltrosAtivos(filtros);
         }}
         acaoText="+ Agendar"
         onOpenAgendarModal={() => setIsModalOpen(true)}
@@ -331,7 +272,7 @@ export default function GestaoAgendamentos() {
           agendamento={modalAvancarStatus.agendamento}
           proximoStatus={modalAvancarStatus.proximoStatus}
           onClose={() => setModalAvancarStatus({ show: false, agendamento: null, proximoStatus: "" })}
-          onConfirm={handleConfirmarAvancoStatus}
+          onSuccess={handleSuccessAvancoStatus}
         />
       )}
 
