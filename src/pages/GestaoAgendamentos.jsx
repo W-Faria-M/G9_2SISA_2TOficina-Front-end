@@ -13,7 +13,6 @@ export default function GestaoAgendamentos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
   const [editarSelecionado, setEditarSelecionado] = useState(null);
   const [modalAvancarStatus, setModalAvancarStatus] = useState({ show: false, agendamento: null, proximoStatus: "" });
@@ -24,22 +23,6 @@ export default function GestaoAgendamentos() {
     search: "",
     date: null,
     status: null,
-  });
-
-  const filteredAgendamentos = agendamentos.filter((ag) => {
-    // Filtro de busca
-    const matchSearch =
-      ag.veiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.servico?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.username?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
-
-    // Filtro de data
-    const matchDate = !filtrosAtivos.date || ag.data === filtrosAtivos.date;
-
-    // Filtro de status
-    const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
-
-    return matchSearch && matchDate && matchStatus;
   });
 
   useEffect(() => {
@@ -80,15 +63,53 @@ export default function GestaoAgendamentos() {
     }
   };
 
-  // const filteredAgendamentos = agendamentos.filter((ag) =>
-  //   ag.veiculo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //   ag.servico?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //   ag.status?.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
-
-  const formatarData = (data) => {
-    return data;
+  const construirDataHora = (ag) => {
+    if (ag.data) {
+      const hasHora = ag.hora && ag.hora.trim() !== "";
+      const dateStr = hasHora ? `${ag.data}T${ag.hora}` : ag.data;
+      const dt = new Date(dateStr);
+      if (isNaN(dt.getTime())) return new Date(0);
+      return dt;
+    }
+    return new Date(0);
   };
+
+  const ordenarAgendamentos = (lista) => {
+    return [...lista].sort((a, b) => {
+      const statusOrder = {
+        "Em Atendimento": 0,
+        "Pendente": 1,
+        "Cancelado": 2,
+        "Concluído": 3
+      };
+
+      const statusA = statusOrder[a.status] ?? 999;
+      const statusB = statusOrder[b.status] ?? 999;
+
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+
+      const dataA = construirDataHora(a);
+      const dataB = construirDataHora(b);
+      return dataA - dataB;
+    });
+  };
+
+  const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
+
+  const filteredAgendamentos = agendamentosOrdenados.filter((ag) => {
+    const matchSearch =
+      ag.veiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.servico?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.username?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
+
+    const matchDate = !filtrosAtivos.date || ag.data === filtrosAtivos.date;
+
+    const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
+
+    return matchSearch && matchDate && matchStatus;
+  });
 
   const handleDetalhes = (agendamento) => {
     setDetalheSelecionado(agendamento);
@@ -96,22 +117,6 @@ export default function GestaoAgendamentos() {
 
   const handleEditar = (agendamento) => {
     setEditarSelecionado(agendamento);
-  };
-
-  const handleExcluirAgendamento = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:8080/agendamentos/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) throw new Error('Erro ao excluir agendamento');
-
-      await fetchAgendamentos();
-      setPopupSucesso({ show: true, mensagem: "Agendamento excluído com sucesso!" });
-    } catch (err) {
-      console.error('Erro ao excluir:', err);
-      setPopupErro({ show: true, mensagem: "Não foi possível excluir o agendamento. Tente novamente." });
-    }
   };
 
   const handleAgendamentoSuccess = () => {
@@ -163,13 +168,6 @@ export default function GestaoAgendamentos() {
     <div className="gestao-agendamentos-page">
       <h1 className="gestao-agendamentos-titulo">Agendamentos</h1>
 
-      {/* <FilterBar
-        onSearch={(value) => setSearchTerm(value)}
-        onFilter={() => alert("Abrir filtros avançados")}
-        acaoText="+ Agendar"
-        onOpenAgendarModal={() => setIsModalOpen(true)}
-      /> */}
-
       <FilterBar
         onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
         onFilter={(filtros) => {
@@ -180,13 +178,12 @@ export default function GestaoAgendamentos() {
         onOpenAgendarModal={() => setIsModalOpen(true)}
       />
 
-
       <div className="gestao-agendamentos-lista">
         {filteredAgendamentos.length === 0 ? (
           agendamentos.length === 0 ? (
             <div className="gestao-sem-resultados">
               <p>Nenhum agendamento cadastrado no sistema.</p>
-              <p>Os agendamentos apareceram listados aqui quando forem criados.</p>
+              <p>Os agendamentos aparecerão listados aqui quando forem criados.</p>
               <p>Use o botão "+ Agendar" acima para criar o primeiro agendamento!</p>
             </div>
           ) : (
@@ -209,20 +206,18 @@ export default function GestaoAgendamentos() {
               <div className="gestao-agendamentos-card-lateral">
                 <div className="gestao-agendamentos-card-status">
                   <div className="gestao-agendamentos-status-container">
-                    <span className={`gestao-agendamentos-status-tag ${
-                      ag.status === "Concluído" ? "gestao-agendamentos-status-concluido" :
+                    <span className={`gestao-agendamentos-status-tag ${ag.status === "Concluído" ? "gestao-agendamentos-status-concluido" :
                       ag.status === "Pendente" ? "gestao-agendamentos-status-pendente" :
-                      ag.status === "Em Atendimento" ? "gestao-agendamentos-status-em-atendimento" :
-                      "gestao-agendamentos-status-cancelado"
-                    }`}>
+                        ag.status === "Em Atendimento" ? "gestao-agendamentos-status-em-atendimento" :
+                          "gestao-agendamentos-status-cancelado"
+                      }`}>
                       {ag.status}
                     </span>
                     {(ag.status === "Pendente" || ag.status === "Em Atendimento") && (
                       <button
-                        className={`gestao-agendamentos-btn-avancar ${
-                          ag.status === "Pendente" ? "gestao-agendamentos-btn-avancar-atendimento" :
+                        className={`gestao-agendamentos-btn-avancar ${ag.status === "Pendente" ? "gestao-agendamentos-btn-avancar-atendimento" :
                           "gestao-agendamentos-btn-avancar-concluido"
-                        }`}
+                          }`}
                         onClick={() => handleAvancarStatus(ag)}
                         title={`Avançar para ${getProximoStatus(ag.status)}`}
                       >
@@ -234,9 +229,6 @@ export default function GestaoAgendamentos() {
                 <div className="gestao-agendamentos-card-acoes">
                   <button className="gestao-agendamentos-btn-detalhes" onClick={() => handleDetalhes(ag)}>Detalhes</button>
                   <button className="gestao-agendamentos-btn-editar" onClick={() => handleEditar(ag)}>Editar</button>
-                  {/* {ag.status !== "Concluído" && (
-                    <button className="gestao-agendamentos-btn-cancelar" onClick={() => handleCancelAgendamento(ag.id)}>Cancelar</button>
-                  )} */}
                 </div>
               </div>
             </div>

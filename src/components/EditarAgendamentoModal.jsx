@@ -97,7 +97,7 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                     setPopupSucesso({ show: true, mensagem: "Agendamento cancelado com sucesso!" });
                 })
                 .catch(err => {
-                    console.error('Erro ao excluir:', err);
+                    console.error('Erro ao cancelar:', err);
                     setPopupErro({ show: true, mensagem: "Não foi possível cancelar o agendamento. Tente novamente." });
                 });
         }

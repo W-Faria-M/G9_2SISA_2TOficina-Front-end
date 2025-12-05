@@ -8,7 +8,6 @@ import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
 
 export default function AgendamentosFeitos({ onDetalhes }) {
-  const [searchTerm, setSearchTerm] = useState("");
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,6 +16,12 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const [agendamentoParaCancelar, setAgendamentoParaCancelar] = useState(null);
   const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
   const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
+
+  const [filtrosAtivos, setFiltrosAtivos] = useState({
+    search: "",
+    date: null,
+    status: null,
+  });
 
   useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
@@ -31,11 +36,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const fetchAgendamentos = async (usuarioId) => {
     try {
       const data = await apiRequest(`http://localhost:8080/agendamentos?usuarioId=${usuarioId}`);
-      // Se data for null, undefined ou array vazio, inicializa como array vazio
       setAgendamentos(Array.isArray(data) ? data : []);
     } catch (error) {
-      // Se o erro for porque não há agendamentos (status 404 ou similar), 
-      // não exibe erro, apenas inicializa lista vazia
       if (error.message.includes('404') || error.message.includes('não encontrado')) {
         setAgendamentos([]);
       } else {
@@ -47,18 +49,83 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     }
   };
 
+  const construirDataHora = (ag) => {
+    if (ag.dataAgendamento) {
+      const hasHora = ag.horaAgendamento && ag.horaAgendamento.trim() !== "";
+      const dateStr = hasHora ? `${ag.dataAgendamento}T${ag.horaAgendamento}` : ag.dataAgendamento;
+      const dt = new Date(dateStr);
+      if (isNaN(dt.getTime())) return new Date(0);
+      return dt;
+    }
+    return new Date(0);
+  };
+
+  const ordenarAgendamentos = (lista) => {
+    return [...lista].sort((a, b) => {
+      const statusOrder = {
+        "Em Atendimento": 0,
+        "Pendente": 1,
+        "Cancelado": 2,
+        "Concluído": 3
+      };
+
+      const statusA = statusOrder[a.status] ?? 999;
+      const statusB = statusOrder[b.status] ?? 999;
+
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+
+      const dataA = construirDataHora(a);
+      const dataB = construirDataHora(b);
+      return dataA - dataB;
+    });
+  };
+
+  const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
+
+  const filteredAgendamentos = agendamentosOrdenados.filter((ag) => {
+    const matchSearch =
+      ag.nomeVeiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.servicos?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.dataAgendamento?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
+
+    const matchDate = !filtrosAtivos.date || ag.dataAgendamento === filtrosAtivos.date;
+
+    const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
+
+    return matchSearch && matchDate && matchStatus;
+  });
+
   const handleCancelAgendamento = async () => {
     if (!agendamentoParaCancelar) return;
 
     try {
-      await apiRequest(
-        `http://localhost:8080/agendamentos/${agendamentoParaCancelar.agendamentoId}`,
-        "DELETE"
+      const payload = {
+        statusAgendamento: {
+          id: 4 // ID para status "Cancelado"
+        }
+      };
+
+      const response = await fetch(
+        `http://localhost:8080/agendamentos/atualizar-campo/${agendamentoParaCancelar.agendamentoId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        }
       );
 
-      // Remove o agendamento da lista local
-      setAgendamentos(agendamentos.filter(
-        (ag) => ag.agendamentoId !== agendamentoParaCancelar.agendamentoId
+      if (!response.ok) {
+        throw new Error('Erro ao cancelar agendamento');
+      }
+
+      setAgendamentos(agendamentos.map(ag =>
+        ag.agendamentoId === agendamentoParaCancelar.agendamentoId
+          ? { ...ag, status: "Cancelado" }
+          : ag
       ));
 
       setPopupSucesso({ show: true, mensagem: "Agendamento cancelado com sucesso!" });
@@ -74,70 +141,6 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     setAgendamentoParaCancelar(agendamento);
     setModalOpen(true);
   };
-
-  // Ordena agendamentos do mais recente para o mais antigo (considerando data + hora)
-  const ordenarAgendamentos = (lista) => {
-    return [...lista].sort((a, b) => {
-      // Ordem de prioridade: Em Atendimento → Pendente → Cancelado → Concluído
-      const statusOrder = {
-        "Em Atendimento": 0,
-        "Pendente": 1,
-        "Cancelado": 2,
-        "Concluído": 3
-      };
-
-      const statusA = statusOrder[a.status] ?? 999;
-      const statusB = statusOrder[b.status] ?? 999;
-
-      // Se status diferente, ordena por prioridade
-      if (statusA !== statusB) {
-        return statusA - statusB;
-      }
-
-      // Se mesmo status, ordena por data (mais antigos primeiro = primeira fila)
-      const dataA = construirDataHora(a);
-      const dataB = construirDataHora(b);
-      return dataA - dataB;
-    });
-  };
-
-  const construirDataHora = (ag) => {
-    // Tenta construir Date usando data + hora; se hora ausente, usa só a data
-    if (ag.dataAgendamento) {
-      const hasHora = ag.horaAgendamento && ag.horaAgendamento.trim() !== "";
-      const dateStr = hasHora ? `${ag.dataAgendamento}T${ag.horaAgendamento}` : ag.dataAgendamento;
-      const dt = new Date(dateStr);
-      // Se inválida, retorna epoch pra não quebrar sort
-      if (isNaN(dt.getTime())) return new Date(0);
-      return dt;
-    }
-    return new Date(0);
-  };
-
-  const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
-
-  const [filtrosAtivos, setFiltrosAtivos] = useState({
-    search: "",
-    date: null,
-    status: null,
-  });
-
-  const filteredAgendamentos = agendamentosOrdenados.filter((ag) => {
-    const matchSearch =
-      ag.nomeVeiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.servicos?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.dataAgendamento?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
-
-    const matchDate = !filtrosAtivos.date || ag.dataAgendamento === filtrosAtivos.date;
-
-    const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
-
-    return matchSearch && matchDate && matchStatus;
-  });
-
-  // const filteredAgendamentos = agendamentosOrdenados.filter((ag) =>
-  //   ag.dataAgendamento?.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
 
   if (loading) {
     return (
@@ -217,7 +220,6 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
               <div className="card-lateral">
                 <div className="card-status">
-
                   <span className={`status-tag ${ag.status === "Concluído" ? "status-concluido" :
                     ag.status === "Pendente" ? "status-pendente" :
                       ag.status === "Em Atendimento" ? "status-em-atendimento" :
@@ -259,8 +261,6 @@ export default function AgendamentosFeitos({ onDetalhes }) {
           darkMode={true}
         />
       )}
-
-      {/* Modal removido: agora redireciona diretamente para /realizar-agendamento */}
     </div>
   );
 }
