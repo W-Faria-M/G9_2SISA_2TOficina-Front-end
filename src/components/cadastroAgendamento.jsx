@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './cadastroAgendamento.css';
 import { validateForm, createFormChangeHandler, apiRequest } from "../helpers/utils";
+import PopupSucesso from './PopupSucesso';
+import PopupErro from './PopupErro';
 
 export default function CadastroAgendamento({ onSuccess }) {
   const [form, setForm] = useState({
@@ -13,6 +15,8 @@ export default function CadastroAgendamento({ onSuccess }) {
   const [loadingServicos, setLoadingServicos] = useState(true);
   const [errorServicos, setErrorServicos] = useState(null);
   const [errors, setErrors] = useState({});
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
   useEffect(() => {
     const fetchServicos = async () => {
@@ -46,7 +50,7 @@ export default function CadastroAgendamento({ onSuccess }) {
         status: 'Esperando Atendimento',
       };
       await apiRequest('http://localhost:3001/agendamentos', 'POST', newAgendamento);
-      alert('Agendamento realizado com sucesso!');
+      setPopupSucesso({ show: true, mensagem: "Agendamento realizado com sucesso!" });
       setForm({
         veiculo: '',
         data: '',
@@ -58,8 +62,8 @@ export default function CadastroAgendamento({ onSuccess }) {
         onSuccess();
       }
     } catch (error) {
-      alert('Erro ao cadastrar agendamento: ' + error.message);
       console.error('Erro ao cadastrar agendamento:', error);
+      setPopupErro({ show: true, mensagem: "Não foi possível realizar o agendamento. Tente novamente." });
     }
   };
 
@@ -132,6 +136,24 @@ export default function CadastroAgendamento({ onSuccess }) {
 
         <button type="submit">Agendar</button>
       </form>
+
+      {popupSucesso.show && (
+        <PopupSucesso
+          mensagem={popupSucesso.mensagem}
+          onClose={() => {
+            setPopupSucesso({ show: false, mensagem: "" });
+            if (onSuccess) onSuccess();
+          }}
+          darkMode={false}
+        />
+      )}
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={false}
+        />
+      )}
     </div>
   );
 }

@@ -5,6 +5,8 @@ import CategoriaCard from "../components/CategoriaCard";
 import PopupServico from "../components/PopupServico";
 import DetalhesServico from "../components/DetalhesServico";
 import PopupCategoria from "../components/PopupCategoria";
+import PopupSucesso from "../components/PopupSucesso";
+import PopupErro from "../components/PopupErro";
 import "./Servico.css";
 import { apiRequest } from "../helpers/utils";
 
@@ -22,6 +24,8 @@ export default function Servico() {
   const [selectedService, setSelectedService] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
   useEffect(() => {
     fetchData();
@@ -74,13 +78,13 @@ export default function Servico() {
       };
       
       await apiRequest("http://localhost:8080/servicos", "POST", serviceToAdd);
-      alert("Serviço adicionado com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Serviço adicionado com sucesso!" });
       setIsPopupAddServiceOpen(false);
       fetchData();
     } catch (error) {
       setError("Erro ao adicionar serviço: " + error.message);
       console.error("Erro ao adicionar serviço:", error);
-      alert("Erro ao adicionar serviço.");
+      setPopupErro({ show: true, mensagem: "Não foi possível adicionar o serviço. Tente novamente." });
     }
   };
 
@@ -102,41 +106,41 @@ export default function Servico() {
       };
       
       await apiRequest(`http://localhost:8080/servicos/atualizar-campo/${servicoEditado.id}`, "PATCH", serviceToUpdate);
-      alert("Serviço atualizado com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Serviço atualizado com sucesso!" });
       setIsPopupEditServiceOpen(false);
       setSelectedService(null);
       fetchData();
     } catch (error) {
       setError("Erro ao atualizar serviço: " + error.message);
       console.error("Erro ao atualizar serviço:", error);
-      alert("Erro ao atualizar serviço.");
+      setPopupErro({ show: true, mensagem: "Não foi possível atualizar o serviço. Tente novamente." });
     }
   };
 
   const handleAddCategory = async (newCategory) => {
     try {
       await apiRequest("http://localhost:8080/servicos/categorias", "POST", { nome: newCategory.nome });
-      alert("Categoria adicionada com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Categoria adicionada com sucesso!" });
       setIsPopupAddCategoryOpen(false);
       fetchData();
     } catch (error) {
       setError("Erro ao adicionar categoria: " + error.message);
       console.error("Erro ao adicionar categoria:", error);
-      alert("Erro ao adicionar categoria.");
+      setPopupErro({ show: true, mensagem: "Não foi possível adicionar a categoria. Tente novamente." });
     }
   };
 
   const handleEditCategory = async (editedCategory) => {
     try {
       await apiRequest(`http://localhost:8080/servicos/categorias/${editedCategory.id}`, "PUT", { nome: editedCategory.nome });
-      alert("Categoria atualizada com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Categoria atualizada com sucesso!" });
       setIsPopupEditCategoryOpen(false);
       setSelectedCategory(null);
       fetchData();
     } catch (error) {
       setError("Erro ao atualizar categoria: " + error.message);
       console.error("Erro ao atualizar categoria:", error);
-      alert("Erro ao atualizar categoria.");
+      setPopupErro({ show: true, mensagem: "Não foi possível atualizar a categoria. Tente novamente." });
     }
   };
 
@@ -306,6 +310,21 @@ export default function Servico() {
       servico={selectedService}
       onEditar={handleOpenEditService}
     />
+
+    {popupSucesso.show && (
+      <PopupSucesso
+        mensagem={popupSucesso.mensagem}
+        onClose={() => setPopupSucesso({ show: false, mensagem: "" })}
+        darkMode={false}
+      />
+    )}
+    {popupErro.show && (
+      <PopupErro
+        mensagem={popupErro.mensagem}
+        onClose={() => setPopupErro({ show: false, mensagem: "" })}
+        darkMode={false}
+      />
+    )}
     </div>
   );
 }

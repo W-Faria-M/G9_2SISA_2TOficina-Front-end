@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import PopupErro from './PopupErro';
 
 /**
  * Modal para remover veículo.
@@ -16,6 +17,7 @@ export default function RemoverVeiculoModal({ open, veiculos, onConfirm, onClose
 
   const [veiculoSelecionado, setVeiculoSelecionado] = useState('');
   const [confirmacao, setConfirmacao] = useState('');
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
   // Limpa seleção quando o modal fecha
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function RemoverVeiculoModal({ open, veiculos, onConfirm, onClose
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!veiculoSelecionado) {
-      alert('Selecione um veículo para remover.');
+      setPopupErro({ show: true, mensagem: "Selecione um veículo para remover." });
       return;
     }
     onConfirm(parseInt(veiculoSelecionado, 10));
@@ -77,9 +79,6 @@ export default function RemoverVeiculoModal({ open, veiculos, onConfirm, onClose
     <div
       ref={backdropRef}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 animate-fadeIn"
-      onClick={(e) => {
-        if (e.target === backdropRef.current && !isSubmitting) onClose();
-      }}
       aria-hidden={!open}
     >
       <div
@@ -115,7 +114,7 @@ export default function RemoverVeiculoModal({ open, veiculos, onConfirm, onClose
                 id="veiculo"
                 value={veiculoSelecionado}
                 onChange={(e) => setVeiculoSelecionado(e.target.value)}
-                className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 required
               >
                 <option value="">Escolha um veículo...</option>
@@ -153,7 +152,7 @@ export default function RemoverVeiculoModal({ open, veiculos, onConfirm, onClose
                   id="confirmacao"
                   value={confirmacao}
                   onChange={(e) => setConfirmacao(e.target.value.toUpperCase())}
-                  className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                   placeholder={`REMOVER - ${veiculoEscolhido.placa}`}
                 />
               </div>
@@ -183,6 +182,14 @@ export default function RemoverVeiculoModal({ open, veiculos, onConfirm, onClose
           </form>
         )}
       </div>
+
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
     </div>
   );
 }

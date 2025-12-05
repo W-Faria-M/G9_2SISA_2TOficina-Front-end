@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./EditarAgendamentoModal.css";
 import { Calendar, Settings, User } from "lucide-react";
+import PopupSucesso from "./PopupSucesso";
+import PopupErro from "./PopupErro";
 
 export default function EditarAgendamentoModal({ agendamento, onClose }) {
     const [formData, setFormData] = useState({
@@ -14,6 +16,8 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
         descricao: agendamento?.descricao || "",
         observacao: agendamento?.observacao || ""
     });
+    const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+    const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,12 +57,10 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                 throw new Error(`Erro ao atualizar: ${errorText}`);
             }
 
-            alert('Agendamento atualizado com sucesso!');
-            onClose();
-            window.location.reload();
+            setPopupSucesso({ show: true, mensagem: "Agendamento atualizado com sucesso!" });
         } catch (err) {
             console.error('Erro ao atualizar:', err);
-            alert('Erro ao atualizar agendamento: ' + err.message);
+            setPopupErro({ show: true, mensagem: "Não foi possível atualizar o agendamento. Tente novamente." });
         }
     };
 
@@ -83,13 +85,11 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                         const errorText = await response.text();
                         throw new Error(`Erro ao excluir agendamento: ${errorText}`);
                     }
-                    alert('Agendamento excluído com sucesso!');
-                    onClose();
-                    window.location.reload();
+                    setPopupSucesso({ show: true, mensagem: "Agendamento excluído com sucesso!" });
                 })
                 .catch(err => {
                     console.error('Erro ao excluir:', err);
-                    alert(err.message);
+                    setPopupErro({ show: true, mensagem: "Não foi possível excluir o agendamento. Tente novamente." });
                 });
         }
     };
@@ -97,8 +97,8 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
     if (!agendamento) return null;
 
     return (
-        <div className="editar-modal-overlay" onClick={onClose}>
-            <div className="editar-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="editar-modal-overlay">
+            <div className="editar-modal-content">
                 <button className="editar-modal-close" onClick={onClose}>✕</button>
 
                 <h2 className="editar-modal-titulo">Alterar informações</h2>
@@ -221,6 +221,27 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                     </div>
                 </form>
             </div>
+
+            {popupSucesso.show && (
+                <PopupSucesso
+                    mensagem={popupSucesso.mensagem}
+                    onClose={() => {
+                        setPopupSucesso({ show: false, mensagem: "" });
+                        setTimeout(() => {
+                            onClose();
+                            window.location.reload();
+                        }, 100);
+                    }}
+                    darkMode={false}
+                />
+            )}
+            {popupErro.show && (
+                <PopupErro
+                    mensagem={popupErro.mensagem}
+                    onClose={() => setPopupErro({ show: false, mensagem: "" })}
+                    darkMode={false}
+                />
+            )}
         </div>
     );
 }

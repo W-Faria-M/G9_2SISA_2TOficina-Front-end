@@ -34,18 +34,19 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  background: transparent;
-  border: none;
+  background: transparent !important;
+  border: none !important;
   font-size: 24px;
   color: #333;
   cursor: pointer;
-  padding: 5px;
+  padding: 5px !important;
   line-height: 1;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.2s !important;
 }
 
 .popup-close:hover {
   color: #f39c12;
+  transform: rotate(90deg);
 }
 
 .popup-form label {

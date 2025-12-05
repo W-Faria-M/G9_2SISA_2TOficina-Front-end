@@ -5,6 +5,8 @@ import EditarPerfilModal from "../components/EditarPerfilModal";
 import AdicionarVeiculoModal from "../components/AdicionarVeiculoModal";
 import RemoverVeiculoModal from "../components/RemoverVeiculoModal";
 import FotoPerfil from "../components/fotoPerfil.jsx";
+import PopupSucesso from "../components/PopupSucesso";
+import PopupErro from "../components/PopupErro";
 
 export default function Perfil() {
   const [usuario, setUsuario] = useState(null);
@@ -17,6 +19,8 @@ export default function Perfil() {
   const [isModalAdicionarOpen, setIsModalAdicionarOpen] = useState(false);
   const [isModalRemoverOpen, setIsModalRemoverOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
   const usuarioId = sessionStorage.getItem("usuarioId");
   const navigate = useNavigate();
 
@@ -83,7 +87,7 @@ export default function Perfil() {
       console.group('[Perfil] Atualização bem-sucedida');
       console.log('Dados enviados:', dadosAtualizados);
       console.groupEnd();
-      alert("Informações atualizadas com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Informações atualizadas com sucesso!" });
       setIsModalOpen(false);
       // Recarrega os dados do usuário
       const data = await apiRequest(`http://localhost:8080/usuarios?usuarioId=${usuarioId}`);
@@ -96,7 +100,7 @@ export default function Perfil() {
       console.group('[Perfil] Erro ao atualizar');
       console.error(error);
       console.groupEnd();
-      alert("Erro ao atualizar informações: " + (error.message || "Erro desconhecido"));
+      setPopupErro({ show: true, mensagem: "Não foi possível atualizar suas informações. Tente novamente." });
     } finally {
       setIsSubmitting(false);
     }
@@ -113,7 +117,7 @@ export default function Perfil() {
       console.group('[Perfil] Veículo adicionado');
       console.log('Dados enviados:', dadosVeiculo);
       console.groupEnd();
-      alert("Veículo adicionado com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Veículo adicionado com sucesso!" });
       setIsModalAdicionarOpen(false);
       // Recarrega a lista de veículos
       const data = await apiRequest(`http://localhost:8080/veiculos/perfil?usuarioId=${usuarioId}`);
@@ -124,7 +128,7 @@ export default function Perfil() {
       console.group('[Perfil] Erro ao adicionar veículo');
       console.error(error);
       console.groupEnd();
-      alert("Erro ao adicionar veículo: " + (error.message || "Erro desconhecido"));
+      setPopupErro({ show: true, mensagem: "Não foi possível adicionar o veículo. Verifique os dados e tente novamente." });
     } finally {
       setIsSubmitting(false);
     }
@@ -140,7 +144,7 @@ export default function Perfil() {
       console.group('[Perfil] Veículo removido');
       console.log('ID do veículo:', veiculoId);
       console.groupEnd();
-      alert("Veículo removido com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Veículo removido com sucesso!" });
       setIsModalRemoverOpen(false);
       // Recarrega a lista de veículos
       const data = await apiRequest(`http://localhost:8080/veiculos/perfil?usuarioId=${usuarioId}`);
@@ -151,7 +155,7 @@ export default function Perfil() {
       console.group('[Perfil] Erro ao remover veículo');
       console.error(error);
       console.groupEnd();
-      alert("Erro ao remover veículo: " + (error.message || "Erro desconhecido"));
+      setPopupErro({ show: true, mensagem: "Não foi possível remover o veículo. Tente novamente." });
     } finally {
       setIsSubmitting(false);
     }
@@ -215,7 +219,7 @@ export default function Perfil() {
             {/* Botão Editar */}
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="mt-6! w-40 h-8 bg-linear-to-b from-[#F27405] to-[#FFAB07] text-black flex items-center justify-center
+              className="mt-6! w-40 h-8 bg-white! text-orange-700 flex items-center justify-center
               font-semibold rounded-full! border! border-[#2B2B2B]/30! hover:border-[#2B2B2B]! shadow-md transition relative z-20"
             >
               EDITAR
@@ -233,7 +237,7 @@ export default function Perfil() {
                 </div>
                 <button
                   onClick={() => navigate('/agendamentos-feitos')}
-                  className="h-8! w-30! text-l flex items-center justify-center text-[#F4A100] bg-white! hover:brightness-95 transition">
+                  className="h-8! w-30! text-l flex items-center justify-center text-orange-700 bg-white! hover:brightness-95 transition">
                   Agendamentos
                 </button>
               </section>
@@ -319,6 +323,21 @@ export default function Perfil() {
         onClose={() => setIsModalRemoverOpen(false)}
         isSubmitting={isSubmitting}
       />
+
+      {popupSucesso.show && (
+        <PopupSucesso
+          mensagem={popupSucesso.mensagem}
+          onClose={() => setPopupSucesso({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
     </div>
   );
 }

@@ -74,7 +74,7 @@ html, body {
 .cadastro-cliente-form button {
     width: 70%;
     padding: 12px 0;
-    background: #137a5c;
+    background: #F27405;
     color: #fff;
     font-size: 1.4rem;
     border: none;
@@ -86,7 +86,7 @@ html, body {
 }
 
 .cadastro-cliente-form button:hover {
-    background: #0e5e47;
+    background: #d96404;
 }
 
 .cadastro-cliente-form p {

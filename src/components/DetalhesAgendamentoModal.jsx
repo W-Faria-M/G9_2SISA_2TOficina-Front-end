@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./DetalhesAgendamentoModal.css";
+import PopupSucesso from "./PopupSucesso";
+import PopupErro from "./PopupErro";
 
 export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdate }) {
     console.log("Agendamento completo:", agendamento);
@@ -11,6 +13,8 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
     const [loadingVeiculo, setLoadingVeiculo] = useState(true);
     const [error, setError] = useState("");
     const [veiculoId, setVeiculoId] = useState(null);
+    const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+    const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
     useEffect(() => {
         const buscarDadosVeiculo = async () => {
@@ -86,7 +90,7 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
             if (response.status === 200) {
                 setKmOriginal(kmNumber);
                 if (onUpdate) onUpdate({ ...agendamento, km: kmNumber });
-                alert("KM atualizado com sucesso!");
+                setPopupSucesso({ show: true, mensagem: "KM atualizado com sucesso!" });
             } else {
                 setError("Erro ao atualizar KM.");
             }
@@ -99,8 +103,8 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
     };
 
     return (
-        <div className="detalhes-modal-overlay" onClick={onClose}>
-            <div className="detalhes-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="detalhes-modal-overlay">
+            <div className="detalhes-modal-content">
                 <button className="detalhes-modal-close" onClick={onClose}>✕</button>
 
                 <h2 className="detalhes-modal-titulo">Detalhes</h2>
@@ -186,6 +190,21 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                     </div>
                 </div>
             </div>
+
+            {popupSucesso.show && (
+                <PopupSucesso
+                    mensagem={popupSucesso.mensagem}
+                    onClose={() => setPopupSucesso({ show: false, mensagem: "" })}
+                    darkMode={false}
+                />
+            )}
+            {popupErro.show && (
+                <PopupErro
+                    mensagem={popupErro.mensagem}
+                    onClose={() => setPopupErro({ show: false, mensagem: "" })}
+                    darkMode={false}
+                />
+            )}
         </div>
     );
 }

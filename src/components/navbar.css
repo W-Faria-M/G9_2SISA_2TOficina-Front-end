@@ -58,6 +58,11 @@
 .navbar__right a {
   text-decoration: none;
   color: white;
+  transition: color 0.3s ease;
+}
+
+.navbar__right a:hover {
+  color: orange;
 }
 
 .navbar__right a.active {
