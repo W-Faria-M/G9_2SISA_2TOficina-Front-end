@@ -1,0 +1,116 @@
+.popup-erro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 3000;
+  pointer-events: none;
+  padding-top: 80px;
+}
+
+.popup-erro-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 40px;
+  border-radius: 10px;
+  border: 3px solid;
+  max-width: 600px;
+  min-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-out;
+  pointer-events: auto;
+}
+
+/* Modo Light (para funcionários) */
+.popup-erro-content.light {
+  background: #fff;
+  border-color: #e74c3c;
+  color: #333;
+}
+
+.popup-erro-content.light .popup-erro-icone {
+  color: #e74c3c;
+}
+
+.popup-erro-content.light .popup-erro-titulo {
+  color: #e74c3c;
+}
+
+.popup-erro-content.light .popup-erro-mensagem {
+  color: #333;
+}
+
+/* Modo Dark (para clientes) */
+.popup-erro-content.dark {
+  background: #000;
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.popup-erro-content.dark .popup-erro-icone {
+  color: #e74c3c;
+}
+
+.popup-erro-content.dark .popup-erro-titulo {
+  color: #e74c3c;
+}
+
+.popup-erro-content.dark .popup-erro-mensagem {
+  color: #e74c3c;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.popup-erro-icone {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: shake 0.5s ease-in-out 0.2s;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+.popup-erro-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.popup-erro-titulo {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  font-family: "Share Tech", sans-serif;
+}
+
+.popup-erro-mensagem {
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  font-family: "Share Tech", sans-serif;
+}

@@ -81,9 +81,6 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
     <div
       ref={backdropRef}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fadeIn"
-      onClick={(e) => {
-        if (e.target === backdropRef.current && !isSubmitting) onClose();
-      }}
       aria-hidden={!open}
     >
       <div
@@ -108,7 +105,7 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               id="nome"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="Digite seu nome"
               required
             />
@@ -123,7 +120,7 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               id="sobrenome"
               value={sobrenome}
               onChange={(e) => setSobrenome(e.target.value)}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="Digite seu sobrenome"
               required
             />
@@ -138,7 +135,7 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               id="telefone"
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="(11) 99999-9999"
               required
             />
@@ -153,7 +150,7 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="seu@email.com"
               required
             />
@@ -168,7 +165,7 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               id="dataNascimento"
               value={dataNascimento}
               onChange={(e) => setDataNascimento(e.target.value)}
-              className="w-full px-3! py-2! border bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
 

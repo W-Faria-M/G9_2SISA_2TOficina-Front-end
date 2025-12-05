@@ -82,21 +82,118 @@
   align-items: flex-end;
 }
 
+.gestao-agendamentos-status-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .gestao-agendamentos-status-tag {
   padding: 6px 18px;
   border-radius: 8px;
+  background: #fff;
   font-weight: 600;
   font-size: 0.95rem;
+  border: 2px solid;
+}
+
+.gestao-agendamentos-btn-avancar {
+  min-width: 34px;
+  min-height: 34px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: background 0.3s ease, color 0.3s ease;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.gestao-agendamentos-btn-avancar::before {
+  content: '→';
+  position: absolute;
+  transition: opacity 0.2s ease;
+}
+
+.gestao-agendamentos-btn-avancar:hover::before {
+  opacity: 0;
+}
+
+.gestao-agendamentos-btn-avancar:hover {
+  background: var(--hover-bg);
+  color: #fff;
+}
+
+.gestao-agendamentos-btn-avancar:hover::after {
+  content: '→';
+  position: absolute;
+  animation: arrow-cycle 1s ease-in-out forwards;
+}
+
+@keyframes arrow-cycle {
+  0% {
+    transform: translateX(-35px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(35px);
+    opacity: 0;
+  }
+  51% {
+    transform: translateX(-35px);
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.gestao-agendamentos-btn-avancar-atendimento {
+  color: #3b82f6;
+  border-color: #3b82f6;
+  --hover-bg: #3b82f6;
+}
+
+.gestao-agendamentos-btn-avancar-concluido {
+  color: #27ae60;
+  border-color: #27ae60;
+  --hover-bg: #27ae60;
 }
 
 .gestao-agendamentos-status-pendente {
-  background-color: #f39c12;
-  color: #fff;
+  color: #f39c12;
+  border-color: #f39c12;
+}
+
+.gestao-agendamentos-status-em-atendimento {
+  color: #3b82f6;
+  border-color: #3b82f6;
 }
 
 .gestao-agendamentos-status-concluido {
-  background-color: #27ae60;
-  color: #fff;
+  color: #27ae60;
+  border-color: #27ae60;
+}
+
+.gestao-agendamentos-status-cancelado {
+  color: #e74c3c;
+  border-color: #e74c3c;
 }
 
 .gestao-agendamentos-card-servico {

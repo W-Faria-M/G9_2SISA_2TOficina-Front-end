@@ -1,7 +1,7 @@
 .detalhes-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(148, 143, 143, 0.541);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,11 +22,17 @@
   position: absolute;
   top: 24px;
   right: 24px;
-  background: none;
+  background: transparent;
   border: none;
-  font-size: 2rem;
-  color: #f02c1a;
+  font-size: 28px;
+  color: #fff;
   cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.detalhes-close:hover {
+  color: #ff6b6b;
+  transform: rotate(90deg);
 }
 
 .detalhes-titulo {

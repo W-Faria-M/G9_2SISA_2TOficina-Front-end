@@ -3,6 +3,9 @@ import "./GestaoAgendamentos.css";
 import FilterBar from "../components/filterBar";
 import DetalhesAgendamentoModal from "../components/DetalhesAgendamentoModal";
 import EditarAgendamentoModal from "../components/EditarAgendamentoModal";
+import ModalAvancarStatus from "../components/ModalAvancarStatus";
+import PopupSucesso from "../components/PopupSucesso";
+import PopupErro from "../components/PopupErro";
 
 
 export default function GestaoAgendamentos() {
@@ -13,68 +16,31 @@ export default function GestaoAgendamentos() {
   const [searchTerm, setSearchTerm] = useState("");
   const [detalheSelecionado, setDetalheSelecionado] = useState(null);
   const [editarSelecionado, setEditarSelecionado] = useState(null);
+  const [modalAvancarStatus, setModalAvancarStatus] = useState({ show: false, agendamento: null, proximoStatus: "" });
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
   const [filtrosAtivos, setFiltrosAtivos] = useState({
     search: "",
-    dateFrom: null,
-    dateTo: null,
+    date: null,
     status: null,
   });
 
   const filteredAgendamentos = agendamentos.filter((ag) => {
     // Filtro de busca
-    const q = (filtrosAtivos.search || "").toLowerCase();
     const matchSearch =
-      (ag.veiculo || "").toLowerCase().includes(q) ||
-      (ag.servico || "").toLowerCase().includes(q) ||
-      (ag.username || "").toLowerCase().includes(q);
+      ag.veiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.servico?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
+      ag.username?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
 
-    // Filtro de data por intervalo
-    const matchDate = (() => {
-      if (!filtrosAtivos.dateFrom && !filtrosAtivos.dateTo) return true;
-      if (!ag.data) return false;
-      const agDt = new Date(ag.data);
-      if (isNaN(agDt)) return false;
-
-      if (filtrosAtivos.dateFrom) {
-        const from = new Date(filtrosAtivos.dateFrom);
-        from.setHours(0, 0, 0, 0);
-        if (agDt < from) return false;
-      }
-      if (filtrosAtivos.dateTo) {
-        const to = new Date(filtrosAtivos.dateTo);
-        to.setHours(23, 59, 59, 999);
-        if (agDt > to) return false;
-      }
-      return true;
-    })();
+    // Filtro de data
+    const matchDate = !filtrosAtivos.date || ag.data === filtrosAtivos.date;
 
     // Filtro de status
     const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
 
     return matchSearch && matchDate && matchStatus;
-  })
-
-    .sort((a, b) => {
-      // Ordem de prioridade: Em Atendimento → Pendente → Cancelado → Concluído
-      const statusOrder = {
-        "Em Atendimento": 0,
-        "Pendente": 1,
-        "Cancelado": 2,
-        "Concluído": 3
-      };
-
-      const statusA = statusOrder[a.status] ?? 999;
-      const statusB = statusOrder[b.status] ?? 999;
-
-      // Se status diferente, ordena por prioridade
-      if (statusA !== statusB) {
-        return statusA - statusB;
-      }
-
-      // Se mesmo status, ordena por data (mais antigos primeiro = primeira fila)
-      return new Date(a.data) - new Date(b.data);
-    });
+  });
 
   useEffect(() => {
     fetchAgendamentos();
@@ -141,15 +107,32 @@ export default function GestaoAgendamentos() {
       if (!response.ok) throw new Error('Erro ao excluir agendamento');
 
       await fetchAgendamentos();
-      alert('Agendamento excluído com sucesso!');
+      setPopupSucesso({ show: true, mensagem: "Agendamento excluído com sucesso!" });
     } catch (err) {
       console.error('Erro ao excluir:', err);
-      alert('Erro ao excluir agendamento');
+      setPopupErro({ show: true, mensagem: "Não foi possível excluir o agendamento. Tente novamente." });
     }
   };
 
   const handleAgendamentoSuccess = () => {
     setIsModalOpen(false);
+    fetchAgendamentos();
+  };
+
+  const getProximoStatus = (statusAtual) => {
+    if (statusAtual === "Pendente") return "Em Atendimento";
+    if (statusAtual === "Em Atendimento") return "Concluído";
+    return null;
+  };
+
+  const handleAvancarStatus = (agendamento) => {
+    const proximoStatus = getProximoStatus(agendamento.status);
+    if (proximoStatus) {
+      setModalAvancarStatus({ show: true, agendamento, proximoStatus });
+    }
+  };
+
+  const handleSuccessAvancoStatus = () => {
     fetchAgendamentos();
   };
 
@@ -178,7 +161,7 @@ export default function GestaoAgendamentos() {
 
   return (
     <div className="gestao-agendamentos-page">
-      <h1 className="gestao-agendamentos-titulo">Gestão de agendamentos</h1>
+      <h1 className="gestao-agendamentos-titulo">Agendamentos</h1>
 
       {/* <FilterBar
         onSearch={(value) => setSearchTerm(value)}
@@ -191,7 +174,7 @@ export default function GestaoAgendamentos() {
         onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
         onFilter={(filtros) => {
           console.log("Filtros aplicados:", filtros);
-          setFiltrosAtivos(prev => ({ ...prev, ...filtros }));
+          setFiltrosAtivos(filtros);
         }}
         acaoText="+ Agendar"
         onOpenAgendarModal={() => setIsModalOpen(true)}
@@ -225,9 +208,27 @@ export default function GestaoAgendamentos() {
 
               <div className="gestao-agendamentos-card-lateral">
                 <div className="gestao-agendamentos-card-status">
-                  <span className={`gestao-agendamentos-status-tag ${ag.status === "Concluído" ? "gestao-agendamentos-status-concluido" : "gestao-agendamentos-status-pendente"}`}>
-                    {ag.status}
-                  </span>
+                  <div className="gestao-agendamentos-status-container">
+                    <span className={`gestao-agendamentos-status-tag ${
+                      ag.status === "Concluído" ? "gestao-agendamentos-status-concluido" :
+                      ag.status === "Pendente" ? "gestao-agendamentos-status-pendente" :
+                      ag.status === "Em Atendimento" ? "gestao-agendamentos-status-em-atendimento" :
+                      "gestao-agendamentos-status-cancelado"
+                    }`}>
+                      {ag.status}
+                    </span>
+                    {(ag.status === "Pendente" || ag.status === "Em Atendimento") && (
+                      <button
+                        className={`gestao-agendamentos-btn-avancar ${
+                          ag.status === "Pendente" ? "gestao-agendamentos-btn-avancar-atendimento" :
+                          "gestao-agendamentos-btn-avancar-concluido"
+                        }`}
+                        onClick={() => handleAvancarStatus(ag)}
+                        title={`Avançar para ${getProximoStatus(ag.status)}`}
+                      >
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <span className="gestao-agendamentos-card-servico">Serviço: {ag.servico}</span>
                 <div className="gestao-agendamentos-card-acoes">
@@ -263,6 +264,30 @@ export default function GestaoAgendamentos() {
         <EditarAgendamentoModal
           agendamento={editarSelecionado}
           onClose={() => setEditarSelecionado(null)}
+        />
+      )}
+
+      {modalAvancarStatus.show && (
+        <ModalAvancarStatus
+          agendamento={modalAvancarStatus.agendamento}
+          proximoStatus={modalAvancarStatus.proximoStatus}
+          onClose={() => setModalAvancarStatus({ show: false, agendamento: null, proximoStatus: "" })}
+          onSuccess={handleSuccessAvancoStatus}
+        />
+      )}
+
+      {popupSucesso.show && (
+        <PopupSucesso
+          mensagem={popupSucesso.mensagem}
+          onClose={() => setPopupSucesso({ show: false, mensagem: "" })}
+          darkMode={false}
+        />
+      )}
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={false}
         />
       )}
     </div>

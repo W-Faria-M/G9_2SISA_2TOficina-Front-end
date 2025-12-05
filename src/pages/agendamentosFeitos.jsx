@@ -4,6 +4,8 @@ import FilterBarClient from "../components/filterBarClient";
 import "./agendamentosFeitos.css";
 import { apiRequest, formatarData, formatarHora } from "../helpers/utils";
 import { ModalCancelar } from "../components/ModalCancelar";
+import PopupSucesso from "../components/PopupSucesso";
+import PopupErro from "../components/PopupErro";
 
 export default function AgendamentosFeitos({ onDetalhes }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +15,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [agendamentoParaCancelar, setAgendamentoParaCancelar] = useState(null);
+  const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
+  const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
 
   useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
@@ -57,13 +61,12 @@ export default function AgendamentosFeitos({ onDetalhes }) {
         (ag) => ag.agendamentoId !== agendamentoParaCancelar.agendamentoId
       ));
 
-      alert("Agendamento cancelado com sucesso!");
+      setPopupSucesso({ show: true, mensagem: "Agendamento cancelado com sucesso!" });
       setModalOpen(false);
       setAgendamentoParaCancelar(null);
     } catch (error) {
-      setError("Erro ao cancelar agendamento: " + error.message);
       console.error("Erro ao cancelar agendamento:", error);
-      alert("Erro ao cancelar agendamento.");
+      setPopupErro({ show: true, mensagem: "Não foi possível cancelar o agendamento. Tente novamente." });
     }
   };
 
@@ -241,6 +244,21 @@ export default function AgendamentosFeitos({ onDetalhes }) {
           ))
         )}
       </div>
+
+      {popupSucesso.show && (
+        <PopupSucesso
+          mensagem={popupSucesso.mensagem}
+          onClose={() => setPopupSucesso({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
+      {popupErro.show && (
+        <PopupErro
+          mensagem={popupErro.mensagem}
+          onClose={() => setPopupErro({ show: false, mensagem: "" })}
+          darkMode={true}
+        />
+      )}
 
       {/* Modal removido: agora redireciona diretamente para /realizar-agendamento */}
     </div>

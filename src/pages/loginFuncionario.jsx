@@ -5,12 +5,14 @@ import logoImage from '../assets/logo2T.jpg';
 import axios from 'axios';
 import { createFormChangeHandler, validateField } from "../helpers/utils";
 import ModalRedefSenha from '../components/ModalRedefSenha';
+import ModalTransicao from '../components/ModalTransicao';
 
 const LoginFuncionario = () => {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [isResetOpen, setIsResetOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChange = createFormChangeHandler(form, setForm, () => setError(""));
 
@@ -39,10 +41,13 @@ const LoginFuncionario = () => {
 
       const data = response.data;
       if (data && data.logado) {
-        alert("Login realizado com sucesso!");
-        // Armazenamos o objeto de resposta. Se precisar do usuário completo, buscar depois por ID.
         localStorage.setItem("funcionarioLogado", JSON.stringify(data));
-        navigate("/gestao-agendamentos");
+        setIsModalOpen(true);
+        
+        setTimeout(() => {
+          setIsModalOpen(false);
+          navigate("/gestao-agendamentos");
+        }, 3000);
       } else {
         setError("Email ou senha inválidos.");
       }
@@ -111,6 +116,11 @@ const LoginFuncionario = () => {
         onClose={() => setIsResetOpen(false)}
         apiPath="http://localhost:8080/usuarios/reset-password"
         defaultEmail={form.email}
+      />
+      <ModalTransicao
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        tipo="login"
       />
     </div>
   );

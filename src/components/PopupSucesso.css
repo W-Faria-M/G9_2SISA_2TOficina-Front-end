@@ -1,0 +1,116 @@
+.popup-sucesso-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 3000;
+  pointer-events: none;
+  padding-top: 80px;
+}
+
+.popup-sucesso-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 40px;
+  border-radius: 10px;
+  border: 3px solid;
+  max-width: 600px;
+  min-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-out;
+  pointer-events: auto;
+}
+
+/* Modo Light (para funcionários) */
+.popup-sucesso-content.light {
+  background: #fff;
+  border-color: #f57c00;
+  color: #333;
+}
+
+.popup-sucesso-content.light .popup-sucesso-icone {
+  color: #f57c00;
+}
+
+.popup-sucesso-content.light .popup-sucesso-titulo {
+  color: #f57c00;
+}
+
+.popup-sucesso-content.light .popup-sucesso-mensagem {
+  color: #333;
+}
+
+/* Modo Dark (para clientes) */
+.popup-sucesso-content.dark {
+  background: #000;
+  border-color: #f57c00;
+  color: #f57c00;
+}
+
+.popup-sucesso-content.dark .popup-sucesso-icone {
+  color: #f57c00;
+}
+
+.popup-sucesso-content.dark .popup-sucesso-titulo {
+  color: #f57c00;
+}
+
+.popup-sucesso-content.dark .popup-sucesso-mensagem {
+  color: #f57c00;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.popup-sucesso-icone {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkmark 0.5s ease-in-out 0.2s;
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.popup-sucesso-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.popup-sucesso-titulo {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  font-family: "Share Tech", sans-serif;
+}
+
+.popup-sucesso-mensagem {
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  font-family: "Share Tech", sans-serif;
+}

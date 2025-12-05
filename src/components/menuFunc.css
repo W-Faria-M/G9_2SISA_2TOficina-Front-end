@@ -1,6 +1,6 @@
 /* Botão hamburguer */
 .hamburger-func {
-  background: #f39c12;
+  background: #F27405;
   border: none;
   cursor: pointer;
   position: fixed;
@@ -21,7 +21,7 @@
 }
 
 .hamburger-func:hover {
-  background: #e67e22;
+  background: #d96404;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 

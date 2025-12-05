@@ -40,11 +40,12 @@
   cursor: pointer;
   padding: 5px;
   line-height: 1;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.2s;
 }
 
 .editar-modal-close:hover {
   color: #f39c12;
+  transform: rotate(90deg);
 }
 
 .editar-modal-titulo {
