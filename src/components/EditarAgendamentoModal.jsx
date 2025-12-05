@@ -94,21 +94,11 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                         const errorText = await response.text();
                         throw new Error(`Erro ao cancelar agendamento: ${errorText}`);
                     }
-<<<<<<< HEAD
-                    alert('Agendamento cancelado com sucesso!');
-                    onClose();
-                    window.location.reload();
-                })
-                .catch(err => {
-                    console.error('Erro ao cancelar:', err);
-                    alert(err.message);
-=======
-                    setPopupSucesso({ show: true, mensagem: "Agendamento excluído com sucesso!" });
+                    setPopupSucesso({ show: true, mensagem: "Agendamento cancelado com sucesso!" });
                 })
                 .catch(err => {
                     console.error('Erro ao excluir:', err);
-                    setPopupErro({ show: true, mensagem: "Não foi possível excluir o agendamento. Tente novamente." });
->>>>>>> 3d8a35e3ea8c582fa6200dff0eff533e52fced0b
+                    setPopupErro({ show: true, mensagem: "Não foi possível cancelar o agendamento. Tente novamente." });
                 });
         }
     };
