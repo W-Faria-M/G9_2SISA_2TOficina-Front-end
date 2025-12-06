@@ -158,8 +158,9 @@ export default function Grafico2() {
 	return (
 		<>
 		<div className='GF2'>
+			<h2 className='GF2-title'>SERVIÇOS REALIZADOS NOS MESES SELECIONADOS:</h2>
 			<Filtros1 onChange={setRange} />
-			<div style={{ width: '100%', height: 280 }}>
+			<div style={{ width: '100%', height: 250 }}>
 				<Bar data={{ labels, datasets }} options={options} />
 			</div>
 		</div>

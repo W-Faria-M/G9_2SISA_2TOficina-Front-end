@@ -170,8 +170,9 @@ export default function Grafico1() {
 	return (
 		<>
 				<div className='GF2'>
+					<h2 className='GF2-title'>SERVIÇOS AGENDADOS, REALIZADOS E CANCELADOS:</h2>
 					<Filtros1 onChange={setRange} />
-					<div style={{ width: '100%', height: 280 }}>
+					<div style={{ width: '100%', height: 250 }}>
 					<Bar options={options} data={chartData} />
 					</div>
 				</div>

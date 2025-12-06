@@ -131,8 +131,9 @@ export default function Grafico3() {
 	return (
 		<>
 			<div className='GF2'>
+				<h2 className='GF2-title'>QUANTIDADE DE MOTOS QUE FICARAM NA 2T OFICINA:</h2>
 				<Filtros1 onChange={setRange} />
-				<div style={{ width: '100%', height: 280 }}>
+				<div style={{ width: '100%', height: 250 }}>
 					<Line options={options} data={data} />
 				</div>
 			</div>
