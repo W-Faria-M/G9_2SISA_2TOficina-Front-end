@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ModalTransicao from "../components/ModalTransicao";
+import EmailVerificationModal from "../components/EmailVerificationModal";
 import "./cadastroCliente.css";
 import {
     createFormChangeHandler,
@@ -19,6 +20,11 @@ export default function CadastroCliente() {
     });
     const [error, setError] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isVerificationOpen, setIsVerificationOpen] = useState(false);
+    const [pendingForm, setPendingForm] = useState(null);
+    const [sendingCode, setSendingCode] = useState(false);
+
+    const inputStyle = { color: '#000' };
 
 
     const fieldsToValidate = [
@@ -34,51 +40,36 @@ export default function CadastroCliente() {
 
     const onSubmitCallback = async (formState) => {
         try {
+            // generate a numeric verification code, send it to the verification API
+            setSendingCode(true);
+            const generateCode = () => {
+                // 6-digit numeric code
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            };
 
-            console.log("Enviando dados para cadastro:", {
-                tipoUsuario: { id: 1 },
-                nome: formState.nome,
-                sobrenome: formState.sobrenome,
-                telefone: formState.telefone,
-                email: formState.email,
-                senha: formState.senha
+            const verificationCode = generateCode();
+
+            const sendResp = await fetch('http://localhost:5000/send-verification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: formState.email, name: `${formState.nome} ${formState.sobrenome}`, code: verificationCode }),
             });
-
-            const data = await apiRequest("http://localhost:8080/usuarios", "POST", {
-                tipoUsuario: { id: 1 },
-                nome: formState.nome,
-                sobrenome: formState.sobrenome,
-                telefone: formState.telefone,
-                email: formState.email,
-                senha: formState.senha
-            });
-
-            console.log("Resposta da API:", data);
-            setIsModalOpen(true);
-
-            setForm({
-                nome: "",
-                sobrenome: "",
-                telefone: "",
-                email: "",
-                senha: "",
-                confirmarSenha: ""
-            });
-
-            setTimeout(() => {
-                window.location.href = "/login-cliente";
-            }, 3000);
-
-            setError({});
-        } catch (error) {
-            console.error("Erro capturado:", error);
-            console.error("Erro message:", error.message);
-            console.error("Erro response:", error.response?.data);
-            if (error.message.includes("400")) {
-                setError({ email: "Email já cadastrado." });
-            } else {
-                console.error("Erro ao cadastrar cliente:", error);
+            const sendData = await sendResp.json().catch(() => ({}));
+            if (!sendResp.ok || !sendData.success) {
+                const msg = sendData.error || sendData.message || 'Falha ao enviar código de verificação.';
+                setError({ general: String(msg) });
+                setSendingCode(false);
+                return;
             }
+
+            // open verification modal and keep form data pending until verification
+            setPendingForm({ ...formState, verificationCode });
+            setIsVerificationOpen(true);
+            setSendingCode(false);
+        } catch (error) {
+            console.error('Erro ao solicitar código de verificação:', error);
+            setError({ general: 'Erro de rede ao solicitar código. Tente novamente.' });
+            setSendingCode(false);
         }
     };
 
@@ -96,6 +87,7 @@ export default function CadastroCliente() {
                         placeholder="Nome"
                         value={form.nome}
                         onChange={handleChange}
+                        style={inputStyle}
                     />
                     {error.nome && <span style={{ color: "orange" }}>{error.nome}</span>}
                     <input
@@ -104,6 +96,7 @@ export default function CadastroCliente() {
                         placeholder="Sobrenome"
                         value={form.sobrenome}
                         onChange={handleChange}
+                        style={inputStyle}
                     />
                     {error.sobrenome && <span style={{ color: "orange" }}>{error.sobrenome}</span>}
                     <input
@@ -112,6 +105,7 @@ export default function CadastroCliente() {
                         placeholder="Telefone"
                         value={form.telefone}
                         onChange={handleChange}
+                        style={inputStyle}
                     />
                     {error.telefone && <span style={{ color: "orange" }}>{error.telefone}</span>}
                     <input
@@ -120,6 +114,7 @@ export default function CadastroCliente() {
                         placeholder="Email"
                         value={form.email}
                         onChange={handleChange}
+                        style={inputStyle}
                     />
                     {error.email && <span style={{ color: "orange" }}>{error.email}</span>}
                     <input
@@ -128,6 +123,7 @@ export default function CadastroCliente() {
                         placeholder="Senha"
                         value={form.senha}
                         onChange={handleChange}
+                        style={inputStyle}
                     />
                     {error.senha && <span style={{ color: "orange" }}>{error.senha}</span>}
                     <input
@@ -136,6 +132,7 @@ export default function CadastroCliente() {
                         placeholder="Confirmar Senha"
                         value={form.confirmarSenha}
                         onChange={handleChange}
+                        style={inputStyle}
                     />
                     {error.confirmarSenha && <span style={{ color: "orange" }}>{error.confirmarSenha}</span>}
                 </div>
@@ -152,6 +149,38 @@ export default function CadastroCliente() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 tipo="cadastro"
+            />
+            <EmailVerificationModal
+                isOpen={isVerificationOpen}
+                onClose={() => { setIsVerificationOpen(false); setPendingForm(null); }}
+                email={form.email}
+                name={`${form.nome} ${form.sobrenome}`}
+                expectedCode={pendingForm?.verificationCode}
+                sendUrl={'http://localhost:5000/send-verification'}
+                onSent={async (data) => {
+                    // when verification succeeded, create the user with pendingForm
+                    try {
+                        if (!pendingForm) return;
+                        const create = await apiRequest('http://localhost:8080/usuarios', 'POST', {
+                            tipoUsuario: { id: 1 },
+                            nome: pendingForm.nome,
+                            sobrenome: pendingForm.sobrenome,
+                            telefone: pendingForm.telefone,
+                            email: pendingForm.email,
+                            senha: pendingForm.senha
+                        });
+                        console.log('Usuário criado:', create);
+                        // clear and show transition then redirect
+                        setForm({ nome: '', sobrenome: '', telefone: '', email: '', senha: '', confirmarSenha: '' });
+                        setPendingForm(null);
+                        setIsVerificationOpen(false);
+                        setIsModalOpen(true);
+                        setTimeout(() => { window.location.href = '/login-cliente'; }, 2000);
+                    } catch (err) {
+                        console.error('Erro ao criar usuário após verificação:', err);
+                        setError({ general: 'Erro ao criar usuário após verificação.' });
+                    }
+                }}
             />
         </div>
     );
