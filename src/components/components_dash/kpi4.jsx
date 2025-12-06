@@ -5,19 +5,19 @@ const diasSemana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 const capacidadeDia = 5;
 const statusColors = {
     "Concluído": "#008000", // verde
-    "Em Atendimento": "#FFA500", // laranja
-    "Cancelado": "#FF4500", // vermelho
-    "Pendente": "#FFD700", // amarelo
-    "Aguardando": "#87CEEB", // azul claro
+    "Cancelado": "#E11D48", // vermelho
+    "Aguardando": "#FFD700", // amarelo
+    "Em Atendimento": "#3B82F6", // azul
+    "Pendente": "#FFD700", // amarelo (fallback)
     "default": "#d3d3d3" // cinza
 };
 
 function getStatusColor(status) {
     if (status === "Concluído") return statusColors["Concluído"];
-    if (status === "Em Atendimento") return statusColors["Em Atendimento"];
     if (status === "Cancelado") return statusColors["Cancelado"];
-    if (status === "Pendente") return statusColors["Pendente"];
+    if (status === "Em Atendimento") return statusColors["Em Atendimento"];
     if (status === "Aguardando") return statusColors["Aguardando"];
+    if (status === "Pendente") return statusColors["Pendente"];
     return statusColors["default"];
 }
 
