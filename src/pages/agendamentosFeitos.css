@@ -39,7 +39,7 @@
 }
 
 .card-agendamento {
-  background-color: #0D0D0D;
+  background-color: #1a1a1a;
   border-radius: 12px;
   padding: 24px 32px;
   margin: 12px 0;
@@ -50,8 +50,12 @@
   width: 95%;           
   margin-left: 60px;    
   min-width: 350px;     
-  box-sizing: border-box;     
-  
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+}
+
+.card-agendamento:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .card-topo {
   flex: 1;
@@ -91,26 +95,30 @@
 .status-tag {
   padding: 6px 18px;
   border-radius: 8px;
-  background: #fff;
-  color: #f97316;
+  background: #000;
+  border: 2px solid;
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .status-pendente {
   color: #f97316;
+  border-color: #f97316;
 }
 
 .status-em-atendimento {
   color: #3b82f6;
+  border-color: #3b82f6;
 }
 
 .status-concluido {
   color: #22c55e;
+  border-color: #22c55e;
 }
 
 .status-cancelado {
   color: #e53e3e;
+  border-color: #e53e3e;
 }
 
 .card-servico {

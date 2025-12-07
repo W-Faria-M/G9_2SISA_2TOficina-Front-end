@@ -4,11 +4,11 @@ import { apiRequest, validateField, generateUniqueId } from "../helpers/utils";
 import ResumoAgendamentoModal from "../components/ResumoAgendamentoModal";
 import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
-import trocaDeOleo from "../assets/Gemini_Generated_Image_xd1a8qxd1a8qxd1a.png";
-import revisaoFiltros from "../assets/Gemini_Generated_Image_lnyfj8lnyfj8lnyf.png";
-import reparoFreio from "../assets/Gemini_Generated_Image_sqig5csqig5csqig.png";
-import revisaoKm from "../assets/Gemini_Generated_Image_w3b4ohw3b4ohw3b4.png";
-import imgGenerica from "../assets/Gemini_Generated_Image_e7rhh2e7rhh2e7rh.png";
+import trocaDeOleo from "../assets/iconesServicos/Gemini_Generated_Image_8jh94k8jh94k8jh9.png";
+import revisaoFiltro from "../assets/iconesServicos/Gemini_Generated_Image_dcm1cddcm1cddcm1.png";
+import reparoFreio from "../assets/iconesServicos/Gemini_Generated_Image_6vidxe6vidxe6vid.png";
+import revisaoKm from "../assets/iconesServicos/Gemini_Generated_Image_h5mjzsh5mjzsh5mj.png";
+import revisaoEletrica from "../assets/iconesServicos/Gemini_Generated_Image_3v1z043v1z043v1z.png";
 
 export default function RealizarAgendamento() {
   const navigate = useNavigate();
@@ -307,34 +307,36 @@ export default function RealizarAgendamento() {
                       role="button"
                       aria-pressed={isSelecionado(s.servicoId)}
                       onClick={() => toggleServico(s.servicoId)}
-                      className={`relative w-47 h-28 cursor-pointer group rounded-md overflow-hidden border border-white/40 transition-all duration-200
+                      className={`relative w-47 h-28 cursor-pointer group rounded-md overflow-hidden border border-white/40 transition-all duration-200 flex flex-col
                       ${
                         isSelecionado(s.servicoId)
                           ? "ring-2 ring-orange-500 border-orange-500"
                           : "border-transparent hover:border-orange-400"
                       }`}
                     >
-                      <img
-                        src={
-                          s.nomeServico === "Troca de Óleo"
-                            ? imgGenerica
-                            : s.nomeServico === "Revisão de Filtros"
-                            ? imgGenerica
-                            : s.nomeServico === "Reparo no Freio"
-                            ? imgGenerica
-                            : s.nomeServico === "Revisão Periódica 10.000km"
-                            ? imgGenerica
-                            : imgGenerica
-                        }
-                        alt={s.nomeServico}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                      />
+                      <div className="flex-1 relative overflow-hidden">
+                        <img
+                          src={
+                            s.nomeServico === "Troca de Óleo"
+                              ? trocaDeOleo
+                              : s.nomeServico === "Revisão de Filtros"
+                              ? revisaoFiltro
+                              : s.nomeServico === "Reparo no Freio"
+                              ? reparoFreio
+                              : s.nomeServico === "Revisão Periódica 10.000km"
+                              ? revisaoKm
+                              : revisaoEletrica
+                          }
+                          alt={s.nomeServico}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        />
+                      </div>
                       <span
-                        className={`absolute bottom-0 left-0 w-full text-center text-l font-medium tracking-wide px-2 py-1
+                        className={`text-center text-sm font-medium tracking-wide px-2 py-1.5
                         ${
                           isSelecionado(s.servicoId)
-                            ? "bg-orange-600/80"
-                            : "bg-black group-hover:bg-black"
+                            ? "bg-orange-600/90"
+                            : "bg-black/80 group-hover:bg-black/90"
                         } text-white`}
                       >
                         {s.nomeServico}
