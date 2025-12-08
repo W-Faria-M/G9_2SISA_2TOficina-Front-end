@@ -21,11 +21,11 @@ const SobreAgendamento = () => {
           <div className="agendar-content">
             <div className="agendar-text">
               <p>
-                Para agendar seu atendimento, o primeiro passo é fazer login em
-                nossa plataforma. Se ainda não possui uma conta, o cadastro é rápido
-                e gratuito. Após acessar sua conta, você poderá escolher o serviço
-                desejado, selecionar data e horário de sua preferência e finalizar
-                agendamento com poucos cliques.
+                Para agendar seu atendimento, siga estes passos simples:
+Primeiro, faça login em nossa plataforma. Caso ainda não tenha uma conta, o cadastro é rápido e gratuito. Após o acesso, você poderá escolher o serviço desejado, selecionar a data e o horário conforme a disponibilidade do sistema, informar o modelo da sua moto, descrever o problema e confirmar o agendamento com apenas alguns cliques.
+
+Se quiser, posso adaptar esse texto para diferentes canais, como e-mail, redes sociais ou site. É só me dizer!
+
               </p>
               <Link to="/login-cliente" className="btn-agendar">
                 AGENDAR
@@ -36,25 +36,27 @@ const SobreAgendamento = () => {
                 <div className="passo-placeholder">
                   <img src="src/assets/formulário-login.png" alt="Formulário de Login" />
                 </div>
-                <span>PASSO 1 - FAÇA LOGIN</span>
+                <span>PASSO 1 - Realize o Login</span>
               </div>
               <div className="passo-item">
                 <div className="passo-placeholder">
-                  <img src="src\assets\foto_oficina.png" alt="" />
+                  <img src="src\assets\Tela Home.png" alt="" />
                 </div>
-                <span>PASSO 2 - ESCOLHA O SERVIÇO</span>
+                <span>PASSO 2 - Selecione a tela de agendamentos</span>
               </div>
               <div className="passo-item">
                 <div className="passo-placeholder">
+                  <img src="src\assets\Agendamentos2.png" alt="" />
                   {/* Placeholder para próxima imagem */}
                 </div>
-                <span>PASSO 3 - SELECIONE DATA</span>
+                <span>PASSO 3 - Preencha todos os Campos</span>
               </div>
               <div className="passo-item">
                 <div className="passo-placeholder">
+                  <img src="src\assets\Agendamentos3.png" alt="" />
                   {/* Placeholder para próxima imagem */}
                 </div>
-                <span>PASSO 4 - CONFIRME</span>
+                <span>PASSO 4 - Confirme o Agendamento</span>
               </div>
             </div>
           </div>
