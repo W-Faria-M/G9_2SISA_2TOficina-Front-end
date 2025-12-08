@@ -6,6 +6,7 @@ import EditarAgendamentoModal from "../components/EditarAgendamentoModal";
 import ModalAvancarStatus from "../components/ModalAvancarStatus";
 import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
+import CadastroAgendamento from "../components/CadastroAgendamento";
 
 
 export default function GestaoAgendamentos() {
@@ -21,7 +22,8 @@ export default function GestaoAgendamentos() {
 
   const [filtrosAtivos, setFiltrosAtivos] = useState({
     search: "",
-    date: null,
+    dateFrom: null,
+    dateTo: null,
     status: null,
   });
 
@@ -98,13 +100,34 @@ export default function GestaoAgendamentos() {
 
   const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
 
+  // FILTRO COM INTERVALO DE DATAS (dateFrom e dateTo)
   const filteredAgendamentos = agendamentosOrdenados.filter((ag) => {
+    const q = (filtrosAtivos.search || "").toLowerCase();
     const matchSearch =
-      ag.veiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.servico?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.username?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
+      (ag.veiculo || "").toLowerCase().includes(q) ||
+      (ag.servico || "").toLowerCase().includes(q) ||
+      (ag.username || "").toLowerCase().includes(q);
 
-    const matchDate = !filtrosAtivos.date || ag.data === filtrosAtivos.date;
+    // Filtro de intervalo de datas
+    const matchDate = (() => {
+      if (!filtrosAtivos.dateFrom && !filtrosAtivos.dateTo) return true;
+      if (!ag.data) return false;
+
+      const agDate = new Date(ag.data);
+      if (isNaN(agDate)) return false;
+
+      if (filtrosAtivos.dateFrom) {
+        const from = new Date(filtrosAtivos.dateFrom);
+        from.setHours(0, 0, 0, 0);
+        if (agDate < from) return false;
+      }
+      if (filtrosAtivos.dateTo) {
+        const to = new Date(filtrosAtivos.dateTo);
+        to.setHours(23, 59, 59, 999);
+        if (agDate > to) return false;
+      }
+      return true;
+    })();
 
     const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
 
@@ -171,8 +194,8 @@ export default function GestaoAgendamentos() {
       <FilterBar
         onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
         onFilter={(filtros) => {
-          console.log("Filtros aplicados:", filtros);
-          setFiltrosAtivos(filtros);
+          console.log("GestaoAgendamentos: Filtros recebidos", filtros);
+          setFiltrosAtivos(prev => ({ ...prev, ...filtros }));
         }}
         acaoText="+ Agendar"
         onOpenAgendarModal={() => setIsModalOpen(true)}
@@ -188,8 +211,8 @@ export default function GestaoAgendamentos() {
             </div>
           ) : (
             <div className="gestao-sem-resultados">
-              <p>Nenhum agendamento encontrado para a pesquisa.</p>
-              <p>Tente pesquisar com termos diferentes ou ajuste os filtros.</p>
+              <p>Nenhum agendamento encontrado para os filtros aplicados.</p>
+              <p>Tente ajustar a pesquisa ou o intervalo de datas.</p>
             </div>
           )
         ) : (
