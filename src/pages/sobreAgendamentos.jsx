@@ -23,10 +23,7 @@ const SobreAgendamento = () => {
               <p>
                 Para agendar seu atendimento, siga estes passos simples:
 Primeiro, faça login em nossa plataforma. Caso ainda não tenha uma conta, o cadastro é rápido e gratuito. Após o acesso, você poderá escolher o serviço desejado, selecionar a data e o horário conforme a disponibilidade do sistema, informar o modelo da sua moto, descrever o problema e confirmar o agendamento com apenas alguns cliques.
-
-Se quiser, posso adaptar esse texto para diferentes canais, como e-mail, redes sociais ou site. É só me dizer!
-
-              </p>
+ </p>
               <Link to="/login-cliente" className="btn-agendar">
                 AGENDAR
               </Link>
