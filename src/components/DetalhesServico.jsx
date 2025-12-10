@@ -1,7 +1,34 @@
+import { useState, useEffect } from "react";
 import "./DetalhesServico.css";
 import { booleanToYesNo } from "../helpers/utils";
+import ModalUploadImagem from "./ModalUploadImagem";
+import axios from "axios";
 
-export default function DetalhesServico({ isOpen, onClose, servico, onEditar }) {
+export default function DetalhesServico({ isOpen, onClose, servico, onEditar, onGerenciarImagem }) {
+  const [imagemUrl, setImagemUrl] = useState(null);
+  
+  const API_IMAGENS = "http://localhost:3001";
+
+  useEffect(() => {
+    if (isOpen && servico) {
+      verificarImagem();
+    }
+  }, [isOpen, servico]);
+
+  const verificarImagem = async () => {
+    try {
+      const response = await axios.get(`${API_IMAGENS}/servico/${servico.id}/tem-imagem`);
+      if (response.data.temImagem) {
+        setImagemUrl(response.data.url);
+      } else {
+        setImagemUrl(null);
+      }
+    } catch (error) {
+      console.error("Erro ao verificar imagem:", error);
+      setImagemUrl(null);
+    }
+  };
+
   if (!isOpen || !servico) return null;
 
   return (
@@ -10,7 +37,18 @@ export default function DetalhesServico({ isOpen, onClose, servico, onEditar }) 
         <button className="popup-close" onClick={onClose}>✕</button>
         <h2 className="popup-title">Detalhes</h2>
 
-        <p><strong>Serviço:</strong> {servico.nome}</p>
+          {/* Preview da Imagem */}
+          {imagemUrl && (
+            <div className="detalhes-imagem-container">
+              <img 
+                src={`${API_IMAGENS}${imagemUrl}`}
+                alt={servico.nome}
+                className="detalhes-imagem-preview"
+              />
+            </div>
+          )}
+
+          <p><strong>Serviço:</strong> {servico.nome}</p>
 
         <div className="status-linha">
           <span><strong>Status:</strong></span>
@@ -26,7 +64,13 @@ export default function DetalhesServico({ isOpen, onClose, servico, onEditar }) 
           {servico.descricao}
         </div>
 
-        <div style={{ marginTop: '16px', textAlign: 'right' }}>
+        <div style={{ marginTop: '16px', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+          <button 
+            className="btn-detalhes btn-imagem" 
+            onClick={() => onGerenciarImagem(servico, imagemUrl)}
+          >
+            🖼️ {imagemUrl ? 'ALTERAR' : 'ADICIONAR'} IMAGEM
+          </button>
           <button className="btn-detalhes" onClick={() => onEditar(servico)}>
             EDITAR
           </button>

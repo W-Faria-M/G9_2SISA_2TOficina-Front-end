@@ -134,7 +134,7 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                                             className="detalhes-save-icon"
                                             onClick={handleSaveKm}
                                             disabled={loading || loadingVeiculo}
-                                            title="Salvar KM"
+                                            title="Atualizar Quilometragem"
                                         >
                                             {loading ? "..." : "✓"}
                                         </button>
@@ -175,7 +175,12 @@ export default function DetalhesAgendamentoModal({ agendamento, onClose, onUpdat
                         </div>
 
                         <div className="detalhes-modal-info">
-                            <p className="detalhes-status-label">Status: <span className="detalhes-status-valor">{agendamento.status ?? "Não informado"}</span></p>
+                            <p className="detalhes-status-label">Status: <span className={`detalhes-status-valor ${
+                                agendamento.status === "Concluído" ? "status-concluido" :
+                                agendamento.status === "Pendente" ? "status-pendente" :
+                                agendamento.status === "Em Atendimento" ? "status-em-atendimento" :
+                                "status-cancelado"
+                            }`}>{agendamento.status ?? "Não informado"}</span></p>
                         </div>
 
                         <div className="detalhes-modal-info">

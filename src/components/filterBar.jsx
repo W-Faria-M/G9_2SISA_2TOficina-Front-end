@@ -34,25 +34,30 @@ export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acao
     const clearDates = () => {
         setDateFrom("");
         setDateTo("");
-        if (onFilter) onFilter({ search: search.trim(), dateFrom: null, dateTo: null, status: status || null });
+        setStatus("");
+        setSearch("");
+        if (onFilter) onFilter({ search: "", dateFrom: null, dateTo: null, status: null });
+        if (onSearch) onSearch("");
     }
-
-    {/* <div className="search-container">
-                    <Search className="search-icon" size={20} />
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={handleSearch}
-                        placeholder="Pesquisar"
-                        className="search-input"
-                    />
-                </div> */}
 
     return (
         <div className="filter-wrapper">
             <h3 className="title-filter">Filtros</h3>
 
             <div className="filter-bar">
+                <div className="filter-group">
+                    <label className="filter-label">Pesquisar</label>
+                    <div className="search-container">
+                        <Search className="search-icon" size={20} />
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={handleSearch}
+                            placeholder="Cliente, veículo, placa..."
+                            className="search-input"
+                        />
+                    </div>
+                </div>
 
                 <div className="filter-group">
                     <label className="filter-label">Buscar por status</label>

@@ -4,11 +4,7 @@ import { apiRequest, validateField, generateUniqueId } from "../helpers/utils";
 import ResumoAgendamentoModal from "../components/ResumoAgendamentoModal";
 import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
-import trocaDeOleo from "../assets/iconesServicos/Gemini_Generated_Image_8jh94k8jh94k8jh9.png";
-import revisaoFiltro from "../assets/iconesServicos/Gemini_Generated_Image_dcm1cddcm1cddcm1.png";
-import reparoFreio from "../assets/iconesServicos/Gemini_Generated_Image_6vidxe6vidxe6vid.png";
-import revisaoKm from "../assets/iconesServicos/Gemini_Generated_Image_h5mjzsh5mjzsh5mj.png";
-import revisaoEletrica from "../assets/iconesServicos/Gemini_Generated_Image_3v1z043v1z043v1z.png";
+import placeholderServico from "../assets/placeholder-servico.svg";
 
 export default function RealizarAgendamento() {
   const navigate = useNavigate();
@@ -300,14 +296,14 @@ export default function RealizarAgendamento() {
                 O que a sua moto precisa? Selecione os serviços abaixo.
               </span>
               <div className="w-full h-98.5 bg-[rgba(0,0,0,0.5)] rounded-md flex flex-col gap-4 p-4! scroll-mb-2 overflow-y-auto">
-                <ul className="flex flex-wrap justify-center gap-5">
+                <ul className="grid grid-cols-3 gap-5">
                   {servicos.map((s) => (
                     <li
                       key={s.servicoId}
                       role="button"
                       aria-pressed={isSelecionado(s.servicoId)}
                       onClick={() => toggleServico(s.servicoId)}
-                      className={`relative w-47 h-28 cursor-pointer group rounded-md overflow-hidden border border-white/40 transition-all duration-200 flex flex-col
+                      className={`relative w-full h-28 cursor-pointer group rounded-md overflow-hidden border border-white/40 transition-all duration-200 flex flex-col
                       ${
                         isSelecionado(s.servicoId)
                           ? "ring-2 ring-orange-500 border-orange-500"
@@ -316,18 +312,11 @@ export default function RealizarAgendamento() {
                     >
                       <div className="flex-1 relative overflow-hidden">
                         <img
-                          src={
-                            s.nomeServico === "Troca de Óleo"
-                              ? trocaDeOleo
-                              : s.nomeServico === "Revisão de Filtros"
-                              ? revisaoFiltro
-                              : s.nomeServico === "Reparo no Freio"
-                              ? reparoFreio
-                              : s.nomeServico === "Revisão Periódica 10.000km"
-                              ? revisaoKm
-                              : revisaoEletrica
-                          }
+                          src={`http://localhost:3001/servico/${s.servicoId}/imagem`}
                           alt={s.nomeServico}
+                          onError={(e) => {
+                            e.target.src = placeholderServico;
+                          }}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </div>

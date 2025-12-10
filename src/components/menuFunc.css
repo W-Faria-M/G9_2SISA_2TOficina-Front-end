@@ -127,20 +127,14 @@
 
 /* Botão sair */
 .logout-func {
-  background: #fff;
+  background: red;
   border: none;
-  padding: 12px 20px;
+  padding: 10px;
   font-size: 16px;
-  font-weight: 600;
-  color: #e74c3c;
+  font-weight: bold;
+  color: white;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-top: auto;
   width: 100%;
-  transition: all 0.3s ease;
-}
-
-.logout-func:hover {
-  background: #e74c3c;
-  color: #fff;
 }

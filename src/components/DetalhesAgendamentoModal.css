@@ -104,8 +104,23 @@
 }
 
 .detalhes-status-valor {
-  color: #f39c12;
   font-weight: bold;
+}
+
+.detalhes-status-valor.status-pendente {
+  color: #f97316;
+}
+
+.detalhes-status-valor.status-em-atendimento {
+  color: #3b82f6;
+}
+
+.detalhes-status-valor.status-concluido {
+  color: #22c55e;
+}
+
+.detalhes-status-valor.status-cancelado {
+  color: #e53e3e;
 }
 
 .detalhes-modal-descricao {
@@ -151,24 +166,40 @@
   color: #999;
 }
 
+/* Remove as setas do input number */
+.detalhes-km-input::-webkit-outer-spin-button,
+.detalhes-km-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.detalhes-km-input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .detalhes-save-icon {
-  background: #4caf50;
-  color: white;
-  border: none;
+  background: #fff;
+  color: #4caf50;
+  border: 2px solid #4caf50;
   border-radius: 50%;
   width: 28px;
   height: 28px;
+  min-width: 28px;
+  min-height: 28px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  padding: 0;
 }
 
 .detalhes-save-icon:hover:not(:disabled) {
-  background: #45a049;
-  transform: scale(1.1);
+  background: #4caf50;
+  color: #fff;
+  transform: scale(1.05);
 }
 
 .detalhes-save-icon:disabled {

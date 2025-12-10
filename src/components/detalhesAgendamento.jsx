@@ -24,7 +24,6 @@ export default function DetalhesAgendamento({ agendamento, onClose }) {
                     agendamento.status === "Em Atendimento" ? "status-em-atendimento" :
                       "status-cancelado"
                 }`}>
-                <span style={{ color: "black" }}>Status: </span>
                 {agendamento.status}
               </span>
             </div>

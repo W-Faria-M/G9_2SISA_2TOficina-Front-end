@@ -24,42 +24,75 @@ function getStatusColor(status) {
 export default function KPI4() {
     const [agendamentos, setAgendamentos] = useState([]);
     const [selectedAgendamento, setSelectedAgendamento] = useState(null);
+    const [loadingDetalhes, setLoadingDetalhes] = useState(false);
 
-    // normalize agendamento object to ensure modal finds a usable usuarioId
-    const normalizeAg = (ag) => {
-        if (!ag) return ag;
-        const usuarioId = ag.usuarioId ?? ag.usuario?.id ?? ag.clienteId ?? ag.cliente ?? ag.userId ?? ag.user?.id ?? ag.usuario?.usuarioId ?? null;
-        const normalized = { ...ag, usuarioId };
-        if (!usuarioId) console.warn('KPI4: usuário não encontrado no agendamento ao abrir modal', ag);
-        return normalized;
+    // Busca TODOS os agendamentos do endpoint principal e filtra o desejado
+    const buscarAgendamentoCompleto = async (agendamentoId) => {
+        try {
+            setLoadingDetalhes(true);
+            const response = await fetch('http://localhost:8080/agendamentos');
+            if (!response.ok) throw new Error('Erro ao buscar agendamentos');
+            
+            const data = await response.json();
+            console.log('[KPI4] Total de agendamentos do backend:', data.length);
+            
+            // Encontra o agendamento específico pelo ID
+            const agendamentoEncontrado = data.find(ag => 
+                ag.agendamentoId === agendamentoId || ag.id === agendamentoId
+            );
+            
+            if (!agendamentoEncontrado) {
+                console.error('[KPI4] Agendamento não encontrado com ID:', agendamentoId);
+                return null;
+            }
+            
+            console.log('[KPI4] Agendamento encontrado do backend:', agendamentoEncontrado);
+            
+            // Mapear EXATAMENTE igual ao GestaoAgendamentos
+            const agendamentoMapeado = {
+                id: agendamentoEncontrado.agendamentoId,
+                agendamentoId: agendamentoEncontrado.agendamentoId,
+                veiculo: agendamentoEncontrado.nomeVeiculo,
+                nomeVeiculo: agendamentoEncontrado.nomeVeiculo,
+                username: agendamentoEncontrado.nomeCliente,
+                nomeCliente: agendamentoEncontrado.nomeCliente,
+                usuarioId: agendamentoEncontrado.usuarioId,  // ← CRÍTICO: mapeia corretamente
+                data: agendamentoEncontrado.dataAgendamento,
+                dataAgendamento: agendamentoEncontrado.dataAgendamento,
+                hora: agendamentoEncontrado.horaAgendamento,
+                horaAgendamento: agendamentoEncontrado.horaAgendamento,
+                horaRetirada: agendamentoEncontrado.horaRetirada,
+                status: agendamentoEncontrado.status,
+                servico: agendamentoEncontrado.servicos,
+                servicos: agendamentoEncontrado.servicos,
+                descricao: agendamentoEncontrado.descricao,
+                observacao: agendamentoEncontrado.observacao
+            };
+            
+            console.log('[KPI4] Agendamento mapeado com usuarioId:', agendamentoMapeado.usuarioId);
+            return agendamentoMapeado;
+        } catch (err) {
+            console.error('[KPI4] Erro ao buscar agendamento completo:', err);
+            return null;
+        } finally {
+            setLoadingDetalhes(false);
+        }
     };
 
-    // map backend shape to the modal's expected shape
-    const mapToModalShape = (ag) => {
-        if (!ag) return ag;
-        const usuarioId = ag.usuarioId ?? ag.usuario?.id ?? ag.clienteId ?? ag.cliente ?? ag.userId ?? ag.user?.id ?? null;
-        const agendamentoId = ag.agendamentoId ?? ag.id ?? ag.codigo ?? null;
-        // backend now provides `usuarioNome`, `veiculo`, `servico`, `data`, `hora`
-        const nomeVeiculo = ag.nomeVeiculo ?? ag.veiculo ?? ag.veiculoNome ?? '';
-        const nomeCliente = ag.nomeCliente ?? ag.usuarioNome ?? ag.username ?? ag.clienteNome ?? ag.cliente ?? '';
-        const dataAgendamento = ag.data ?? ag.dataAgendamento ?? '';
-        const horaAgendamento = ag.hora ?? ag.horaAgendamento ?? '';
-        const horaRetirada = ag.horaRetirada ?? '';
-        const servicos = ag.servicos ?? ag.servico ?? '';
-        const status = ag.status ?? 'Aguardando';
-
-        return {
-            ...ag,
-            usuarioId,
-            agendamentoId,
-            nomeVeiculo,
-            nomeCliente,
-            dataAgendamento,
-            horaAgendamento,
-            horaRetirada,
-            servicos,
-            status,
-        };
+    const handleAbrirDetalhes = async (ag) => {
+        if (!ag) return;
+        
+        const agendamentoId = ag.agendamentoId ?? ag.id;
+        console.log('[KPI4] Abrindo detalhes do agendamento:', agendamentoId);
+        
+        // Busca o agendamento completo do endpoint principal
+        const agendamentoCompleto = await buscarAgendamentoCompleto(agendamentoId);
+        
+        if (agendamentoCompleto) {
+            setSelectedAgendamento(agendamentoCompleto);
+        } else {
+            console.error('[KPI4] Não foi possível carregar o agendamento completo');
+        }
     };
 
     useEffect(() => {
@@ -100,7 +133,7 @@ export default function KPI4() {
                                     key={i}
                                     className="kpi4-circle"
                                     style={{ background: color, ...cursorStyle }}
-                                    onClick={() => ag && setSelectedAgendamento(mapToModalShape(normalizeAg(ag)))}
+                                    onClick={() => ag && handleAbrirDetalhes(ag)}
                                     title={ag ? `Ver detalhes: ${vehicleName}` : ''}
                                 ></span>
                             );

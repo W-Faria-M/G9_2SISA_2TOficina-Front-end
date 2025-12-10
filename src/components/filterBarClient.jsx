@@ -34,23 +34,15 @@ export default function FilterBar({ onSearch, onFilter, onOpenAgendarModal, acao
     const clearDates = () => {
         setDateFrom("");
         setDateTo("");
-        if (onFilter) onFilter({ search: search.trim(), dateFrom: null, dateTo: null, status: status || null });
+        setStatus("");
+        setSearch("");
+        if (onFilter) onFilter({ search: "", dateFrom: null, dateTo: null, status: null });
+        if (onSearch) onSearch("");
     }
 
     return (
         <div className="filterbarclient-wrapper">
             <div className="filterbarclient-container">
-                {/* <div className="filterbarclient-search-box">
-                    <Search className="filterbarclient-search-icon" size={20} />
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={handleSearch}
-                        placeholder="Pesquisar"
-                        className="filterbarclient-search-field"
-                    />
-                </div> */}
-
                 <div className="filterbarclient-filter-group">
                     <label className="filterbarclient-filter-label">Buscar por status</label>
                     <div className="filterbarclient-status-indicators">

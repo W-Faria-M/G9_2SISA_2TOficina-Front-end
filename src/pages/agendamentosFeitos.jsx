@@ -16,6 +16,7 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const [agendamentoParaCancelar, setAgendamentoParaCancelar] = useState(null);
   const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
   const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [filtrosAtivos, setFiltrosAtivos] = useState({
     search: "",
@@ -146,6 +147,22 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     return matchSearch && matchDate && matchStatus;
   });
 
+  // const filteredAgendamentos = agendamentosOrdenados.filter((ag) =>
+  //   ag.dataAgendamento?.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  // Lógica de paginação
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(filteredAgendamentos.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedAgendamentos = filteredAgendamentos.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (loading) {
     return (
       <div className="agendamentos-page">
@@ -210,7 +227,21 @@ export default function AgendamentosFeitos({ onDetalhes }) {
             </div>
           )
         ) : (
-          filteredAgendamentos.map((ag) => (
+          <>
+            {totalPages > 1 && (
+              <div className="pagination-dots">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className={`pagination-dot ${currentPage === page ? 'active' : ''}`}
+                    onClick={() => handlePageChange(page)}
+                    aria-label={`Página ${page}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {paginatedAgendamentos.map((ag, index) => (
             <div key={ag.agendamentoId} className="card-agendamento">
               <div className="card-topo">
                 <p className="card-veiculo">Veículo: {ag.nomeVeiculo}</p>
@@ -236,10 +267,10 @@ export default function AgendamentosFeitos({ onDetalhes }) {
                 </div>
                 <span className="card-servico">Serviços: {ag.servicos}</span>
                 <div className="card-acoes">
-                  <button className="btn-detalhes" onClick={() => onDetalhes(ag)}>Detalhes</button>
-                  {ag.status !== "Concluído" && (
+                  <button className="agendamentos-btn-detalhes" onClick={(() => onDetalhes(ag))}>Detalhes</button>
+                  {ag.status !== "Concluído" && ag.status !== "Cancelado" && (
                     <button
-                      className="btn-cancelar"
+                      className="agendamentos-btn-cancelar"
                       onClick={() => abrirModalCancelar(ag)}
                     >
                       Cancelar
@@ -248,7 +279,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
                 </div>
               </div>
             </div>
-          ))
+          ))}
+          </>
         )}
       </div>
 

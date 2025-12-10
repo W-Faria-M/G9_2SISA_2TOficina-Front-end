@@ -48,22 +48,41 @@
 
 .gestao-agendamentos-card-topo {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .gestao-agendamentos-card-topo p {
-  margin: 0 0 22px 0;
+  margin: 0;
+  line-height: 1.4;
 }
 
-.gestao-agendamentos-card-veiculo {
-  font-size: 1.1rem;
+.gestao-agendamentos-card-cliente {
+  font-size: 1.3rem;
   font-weight: 600;
   color: #333;
 }
 
-.gestao-agendamentos-card-cliente,
+.gestao-agendamentos-card-cliente strong {
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 4px;
+  color: #f27405;
+  font-weight: 600;
+}
+
+.gestao-agendamentos-card-veiculo,
 .gestao-agendamentos-card-data-inicio {
   font-size: 0.95rem;
   color: #555;
+}
+
+.gestao-agendamentos-card-veiculo strong,
+.gestao-agendamentos-card-data-inicio strong {
+  color: #f27405;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .gestao-agendamentos-card-lateral {
@@ -348,6 +367,41 @@
   color: #f39c12;
   font-weight: 500;
   margin-bottom: 0;
+}
+
+/* Paginação com Bolinhas */
+.gestao-pagination-dots {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  padding: 0;
+}
+
+.gestao-pagination-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ccc;
+  border: 2px solid #999;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.gestao-pagination-dot:hover {
+  transform: scale(1.2);
+  background: #f97316;
+  border-color: #f97316;
+}
+
+.gestao-pagination-dot.active {
+  width: 16px;
+  height: 16px;
+  background: #f97316;
+  border-color: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
 }
 
 @media (max-width: 768px) {
