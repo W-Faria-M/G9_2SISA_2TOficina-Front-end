@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import PopupSucesso from './PopupSucesso';
 import PopupErro from './PopupErro';
 
@@ -34,10 +34,61 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
   const [CLOTHE_COLORS, setClotheColors] = useState(["PastelOrange", "Blue01", "Gray02", "Black"]);
   const [EYE_TYPES, setEyeTypes] = useState(["Default", "Happy", "Wink", "Surprised"]);
   const [EYEBROW_TYPES, setEyebrowTypes] = useState(["Default", "RaisedExcited", "SadConcerned"]);
-  const [MOUTH_TYPES, setMouthTypes] = useState(["Default", "Smile", "Serious", "Twinkle"]);
-  const [SKIN_COLORS, setSkinColors] = useState(["Light", "Tanned", "Brown", "DarkBrown", "Pale"]);
+  const [MOUTH_TYPES, setMouthTypes] = useState(["Default", "Smile", "Serious", "Twinkle"]);
+  const [SKIN_COLORS, setSkinColors] = useState(["Light", "Tanned", "Brown", "DarkBrown", "Pale"]);
 
-  const avatarUrl = `https://avataaars.io/?avatarStyle=Transparent&topType=${encodeURIComponent(
+  // Traduções para português
+  const traducoes = {
+    // Cabelo
+    "NoHair": "Sem Cabelo",
+    "Hat": "Chapéu",
+    "ShortHairShortFlat": "Cabelo Curto Reto",
+    "LongHairStraight": "Cabelo Longo Liso",
+    "Hijab": "Hijab",
+    // Acessórios
+    "Blank": "Nenhum",
+    "Sunglasses": "Óculos de Sol",
+    "Prescription02": "Óculos de Grau",
+    "Kurt": "Kurt",
+    // Cores de Cabelo
+    "Black": "Preto",
+    "BrownDark": "Castanho Escuro",
+    "Brown": "Castanho",
+    "Blonde": "Loiro",
+    "Red": "Ruivo",
+    // Barba
+    "BeardLight": "Barba Leve",
+    "BeardMagestic": "Barba Majestosa",
+    "MoustacheFancy": "Bigode Estiloso",
+    // Roupas
+    "Hoodie": "Moletom",
+    "BlazerShirt": "Blazer",
+    "ShirtCrewNeck": "Camiseta",
+    "Overall": "Macacão",
+    // Cores de Roupa
+    "PastelOrange": "Laranja Pastel",
+    "Blue01": "Azul",
+    "Gray02": "Cinza",
+    // Olhos
+    "Default": "Padrão",
+    "Happy": "Feliz",
+    "Wink": "Piscada",
+    "Surprised": "Surpreso",
+    // Sobrancelhas
+    "RaisedExcited": "Animado",
+    "SadConcerned": "Preocupado",
+    // Boca
+    "Smile": "Sorriso",
+    "Serious": "Sério",
+    "Twinkle": "Brilhante",
+    // Tom de Pele
+    "Light": "Clara",
+    "Tanned": "Bronzeada",
+    "DarkBrown": "Marrom Escura",
+    "Pale": "Pálida"
+  };
+
+  const avatarUrl = `https://avataaars.io/?avatarStyle=Transparent&topType=${encodeURIComponent(
     topType
   )}&accessoriesType=${encodeURIComponent(accessoriesType)}&hairColor=${encodeURIComponent(
     hairColor
@@ -114,20 +165,20 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
           }
 
           // apply values to state if present
-          if (values.id) { setAvatarId(values.id); applied = true; }
-          if (values.usuarioId) { /* usuarioId comes from prop; nothing to override */ applied = true; }
-          if (values.topType) { setTopType(values.topType); applied = true; }
-          if (values.accessoriesType) { setAccessoriesType(values.accessoriesType); applied = true; }
-          if (values.hairColor) { setHairColor(values.hairColor); applied = true; }
-          if (values.facialHairType) { setFacialHairType(values.facialHairType); applied = true; }
-          if (values.facialHairColor) { setFacialHairColor(values.facialHairColor); applied = true; }
-          if (values.clotheType) { setClotheType(values.clotheType); applied = true; }
-          if (values.clotheColor) { setClotheColor(values.clotheColor); applied = true; }
-          if (values.eyeType) { setEyeType(values.eyeType); applied = true; }
-          if (values.eyebrowType) { setEyebrowType(values.eyebrowType); applied = true; }
-          if (values.mouthType) { setMouthType(values.mouthType); applied = true; }
-          if (values.skinColor) { setSkinColor(values.skinColor); applied = true; }
-          if (values.avatarUrl) { setServerAvatarUrl(values.avatarUrl); applied = true; }
+          if (values.id !== undefined) { setAvatarId(values.id); applied = true; }
+          if (values.usuarioId !== undefined) { /* usuarioId comes from prop; nothing to override */ applied = true; }
+          if (values.topType !== undefined) { setTopType(values.topType); applied = true; }
+          if (values.accessoriesType !== undefined) { setAccessoriesType(values.accessoriesType); applied = true; }
+          if (values.hairColor !== undefined) { setHairColor(values.hairColor); applied = true; console.debug('[fotoPerfil]  SET hairColor:', values.hairColor); }
+          if (values.facialHairType !== undefined) { setFacialHairType(values.facialHairType); applied = true; }
+          if (values.facialHairColor !== undefined) { setFacialHairColor(values.facialHairColor); applied = true; console.debug('[fotoPerfil]  SET facialHairColor:', values.facialHairColor); }
+          if (values.clotheType !== undefined) { setClotheType(values.clotheType); applied = true; }
+          if (values.clotheColor !== undefined) { setClotheColor(values.clotheColor); applied = true; console.debug('[fotoPerfil]  SET clotheColor:', values.clotheColor); }
+          if (values.eyeType !== undefined) { setEyeType(values.eyeType); applied = true; }
+          if (values.eyebrowType !== undefined) { setEyebrowType(values.eyebrowType); applied = true; }
+          if (values.mouthType !== undefined) { setMouthType(values.mouthType); applied = true; }
+          if (values.skinColor !== undefined) { setSkinColor(values.skinColor); applied = true; }
+          if (values.avatarUrl !== undefined) { setServerAvatarUrl(values.avatarUrl); applied = true; }
           if (applied) setLoaded(true);
           console.debug('[fotoPerfil] applied avatar values', values, 'from raw:', raw);
         } catch (e) {
@@ -168,17 +219,17 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
           if (!mounted) return;
           if (!applied) {
             // previous behavior: try to set fields directly if keys exist
-            setTopType(d.topType || d.top_type || d.top || topType);
-            setAccessoriesType(d.accessoriesType || d.accessories_type || d.accessories || accessoriesType);
-            setHairColor(d.hairColor || d.hair_color || d.hair || hairColor);
-            setFacialHairType(d.facialHairType || d.facial_hair_type || d.facialHair || facialHairType);
-            setFacialHairColor(d.facialHairColor || d.facial_hair_color || facialHairColor);
-            setClotheType(d.clotheType || d.clothe_type || d.clothe || clotheType);
-            setClotheColor(d.clotheColor || d.clothe_color || clotheColor);
-            setEyeType(d.eyeType || d.eye_type || d.eyes || eyeType);
-            setEyebrowType(d.eyebrowType || d.eyebrow_type || eyebrowType);
-            setMouthType(d.mouthType || d.mouth_type || mouthType);
-            setSkinColor(d.skinColor || d.skin_color || d.skinTone || skinColor);
+            if (d.topType || d.top_type || d.top) setTopType(d.topType || d.top_type || d.top);
+            if (d.accessoriesType || d.accessories_type || d.accessories) setAccessoriesType(d.accessoriesType || d.accessories_type || d.accessories);
+            if (d.hairColor || d.hair_color) setHairColor(d.hairColor || d.hair_color);
+            if (d.facialHairType || d.facial_hair_type || d.facialHair) setFacialHairType(d.facialHairType || d.facial_hair_type || d.facialHair);
+            if (d.facialHairColor || d.facial_hair_color) setFacialHairColor(d.facialHairColor || d.facial_hair_color);
+            if (d.clotheType || d.clothe_type || d.clothe) setClotheType(d.clotheType || d.clothe_type || d.clothe);
+            if (d.clotheColor || d.clothe_color) setClotheColor(d.clotheColor || d.clothe_color);
+            if (d.eyeType || d.eye_type || d.eyes) setEyeType(d.eyeType || d.eye_type || d.eyes);
+            if (d.eyebrowType || d.eyebrow_type) setEyebrowType(d.eyebrowType || d.eyebrow_type);
+            if (d.mouthType || d.mouth_type) setMouthType(d.mouthType || d.mouth_type);
+            if (d.skinColor || d.skin_color || d.skinTone) setSkinColor(d.skinColor || d.skin_color || d.skinTone);
             setLoaded(true);
           }
           setLoading(false);
@@ -203,17 +254,17 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
               if (!appliedLocal) {
                 if (d.avatarUrl || d.url) setServerAvatarUrl(d.avatarUrl || d.url);
                 if (!mounted) return;
-                setTopType(d.topType || d.top_type || d.top || topType);
-                setAccessoriesType(d.accessoriesType || d.accessories_type || d.accessories || accessoriesType);
-                setHairColor(d.hairColor || d.hair_color || d.hair || hairColor);
-                setFacialHairType(d.facialHairType || d.facial_hair_type || d.facialHair || facialHairType);
-                setFacialHairColor(d.facialHairColor || d.facial_hair_color || facialHairColor);
-                setClotheType(d.clotheType || d.clothe_type || d.clothe || clotheType);
-                setClotheColor(d.clotheColor || d.clothe_color || clotheColor);
-                setEyeType(d.eyeType || d.eye_type || d.eyes || eyeType);
-                setEyebrowType(d.eyebrowType || d.eyebrow_type || eyebrowType);
-                setMouthType(d.mouthType || d.mouth_type || mouthType);
-                setSkinColor(d.skinColor || d.skin_color || d.skinTone || skinColor);
+                if (d.topType || d.top_type || d.top) setTopType(d.topType || d.top_type || d.top);
+                if (d.accessoriesType || d.accessories_type || d.accessories) setAccessoriesType(d.accessoriesType || d.accessories_type || d.accessories);
+                if (d.hairColor || d.hair_color) setHairColor(d.hairColor || d.hair_color);
+                if (d.facialHairType || d.facial_hair_type || d.facialHair) setFacialHairType(d.facialHairType || d.facial_hair_type || d.facialHair);
+                if (d.facialHairColor || d.facial_hair_color) setFacialHairColor(d.facialHairColor || d.facial_hair_color);
+                if (d.clotheType || d.clothe_type || d.clothe) setClotheType(d.clotheType || d.clothe_type || d.clothe);
+                if (d.clotheColor || d.clothe_color) setClotheColor(d.clotheColor || d.clothe_color);
+                if (d.eyeType || d.eye_type || d.eyes) setEyeType(d.eyeType || d.eye_type || d.eyes);
+                if (d.eyebrowType || d.eyebrow_type) setEyebrowType(d.eyebrowType || d.eyebrow_type);
+                if (d.mouthType || d.mouth_type) setMouthType(d.mouthType || d.mouth_type);
+                if (d.skinColor || d.skin_color || d.skinTone) setSkinColor(d.skinColor || d.skin_color || d.skinTone);
               }
               setLoaded(true);
             }
@@ -332,6 +383,29 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
           setServerAvatarUrl(resp.avatarUrl || resp.url);
           console.debug('[fotoPerfil] server provided avatarUrl', resp.avatarUrl || resp.url);
         }
+        
+        // Reaplicar os dados retornados pelo servidor para garantir sincronização
+        // CRUCIAL: Sem isso, as cores não são persistidas corretamente
+        if (resp) {
+          console.debug('[fotoPerfil] reaplying saved data from server response:', resp);
+          
+          // Aplicar TODOS os campos retornados pelo servidor
+          if (resp.id !== undefined) setAvatarId(resp.id);
+          if (resp.avatarId !== undefined) setAvatarId(resp.avatarId);
+          if (resp.topType !== undefined) setTopType(resp.topType);
+          if (resp.accessoriesType !== undefined) setAccessoriesType(resp.accessoriesType);
+          if (resp.hairColor !== undefined) setHairColor(resp.hairColor);
+          if (resp.facialHairType !== undefined) setFacialHairType(resp.facialHairType);
+          if (resp.facialHairColor !== undefined) setFacialHairColor(resp.facialHairColor);
+          if (resp.clotheType !== undefined) setClotheType(resp.clotheType);
+          if (resp.clotheColor !== undefined) setClotheColor(resp.clotheColor);
+          if (resp.eyeType !== undefined) setEyeType(resp.eyeType);
+          if (resp.eyebrowType !== undefined) setEyebrowType(resp.eyebrowType);
+          if (resp.mouthType !== undefined) setMouthType(resp.mouthType);
+          if (resp.skinColor !== undefined) setSkinColor(resp.skinColor);
+          
+          console.debug('[fotoPerfil] CORES REAPLICADAS - hairColor:', resp.hairColor, 'clotheColor:', resp.clotheColor, 'facialHairColor:', resp.facialHairColor);
+        }
         saved = true;
         break;
       } catch (err) {
@@ -366,128 +440,121 @@ export default function FotoPerfil({ usuarioId, apiBase = 'http://localhost:8080
         </button>
       </div>
 
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90">
-            <div className="bg-[#0b0b0b] rounded-lg w-[95%] max-w-4xl p-8 border-l-4 border-[#F27405] shadow-xl max-h-[85vh] overflow-auto ">
-            <h3 className="text-2xl font-semibold mb-4 text-[#F27405] text-center">Redefinir avatar</h3>
-                {/* Preview do avatar */}
-								<div className="flex justify-center mb-4">
-									<div className="w-40 h-40 rounded-full overflow-hidden border-2 border-[#F27405] bg-[#2B2B2B] p-1">
-										<img src={serverAvatarUrl || avatarUrl} alt="Preview avatar" className="w-full h-full object-cover" />
-									</div>
-								</div>
-            <div className="grid grid-cols-2 gap-4 max-h-[60vh] overflow-auto text-white">
-              <label className="block">
-                Top Type
-								<select value={topType} onChange={(e) => setTopType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {TOP_OPTIONS.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fadeIn">
+            <div className="bg-black/75 rounded-xl w-[95%] max-w-5xl p-6! shadow-2xl animate-scaleIn">
+            <h3 className="text-2xl font-semibold mb-4! text-white">Editar Avatar</h3>
+            
+            {/* Layout: Avatar à esquerda, opções à direita */}
+            <div className="flex gap-6 items-center">
+              {/* Preview do avatar - Esquerda */}
+              <div className="flex flex-col items-center">
+                <div className="w-64 h-64 rounded-full overflow-hidden border-2 border-[#F27405] bg-[#2B2B2B] p-1">
+                  <img src={serverAvatarUrl || avatarUrl} alt="Preview avatar" className="w-full h-full object-cover" />
+                </div>
+              </div>
 
-              <label className="block">
-                Accessories
-								<select value={accessoriesType} onChange={(e) => setAccessoriesType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {ACCESSORIES_OPTIONS.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
+              {/* Opções - Direita em grid 3 colunas */}
+              <div className="flex-1 grid grid-cols-3 gap-4 text-white">
+              <label className="block text-sm font-medium text-white mb-1!">
+                Cabelo
+								<select value={topType} onChange={(e) => setTopType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {TOP_OPTIONS.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Acessórios
+								<select value={accessoriesType} onChange={(e) => setAccessoriesType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {ACCESSORIES_OPTIONS.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Cor do Cabelo
+								<select value={hairColor} onChange={(e) => setHairColor(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {HAIR_COLORS.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Barba
+								<select value={facialHairType} onChange={(e) => setFacialHairType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {FACIAL_HAIR.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Cor da Barba
+								<select value={facialHairColor} onChange={(e) => setFacialHairColor(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {FACIAL_HAIR_COLORS.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Tipo de Roupa
+								<select value={clotheType} onChange={(e) => setClotheType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {CLOTHE_TYPES.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Cor da Roupa
+								<select value={clotheColor} onChange={(e) => setClotheColor(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {CLOTHE_COLORS.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Olhos
+								<select value={eyeType} onChange={(e) => setEyeType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {EYE_TYPES.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Sobrancelhas
+								<select value={eyebrowType} onChange={(e) => setEyebrowType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {EYEBROW_TYPES.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>              <label className="block text-sm font-medium text-white mb-1!">
+                Boca
+								<select value={mouthType} onChange={(e) => setMouthType(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {MOUTH_TYPES.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="block text-sm font-medium text-white mb-1!">
+                Tom de Pele
+								<select value={skinColor} onChange={(e) => setSkinColor(e.target.value)} className="w-full mt-1! px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                  {SKIN_COLORS.map((o) => (
+                    <option key={o} value={o}>{traducoes[o] || o}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            </div>
 
-              <label className="block">
-                Hair Color
-								<select value={hairColor} onChange={(e) => setHairColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {HAIR_COLORS.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Facial Hair
-								<select value={facialHairType} onChange={(e) => setFacialHairType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {FACIAL_HAIR.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Facial Hair Color
-								<select value={facialHairColor} onChange={(e) => setFacialHairColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {FACIAL_HAIR_COLORS.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Clothe Type
-								<select value={clotheType} onChange={(e) => setClotheType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {CLOTHE_TYPES.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Clothe Color
-								<select value={clotheColor} onChange={(e) => setClotheColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {CLOTHE_COLORS.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Eye Type
-								<select value={eyeType} onChange={(e) => setEyeType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {EYE_TYPES.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Eyebrow
-								<select value={eyebrowType} onChange={(e) => setEyebrowType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {EYEBROW_TYPES.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Mouth
-								<select value={mouthType} onChange={(e) => setMouthType(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {MOUTH_TYPES.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                Skin
-								<select value={skinColor} onChange={(e) => setSkinColor(e.target.value)} className="w-full mt-1 bg-[#f7fafc] rounded-md border-2 border-[#F27405] px-2 py-1 text-sm text-black">
-                  {SKIN_COLORS.map((o) => (
-                    <option key={o} value={o} className="text-black">{o}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <div className="mt-4 flex justify-end gap-3">
-              <button className="px-4 py-2 border border-[#F27405] text-[#F27405] rounded" onClick={cancelModal}>
+            {/* Botões */}
+            <div className="mt-6! flex justify-end gap-3">
+              <button type="button" className="px-4! py-2! rounded-md! bg-gray-100! hover:bg-gray-400! text-gray-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed" onClick={cancelModal} disabled={saving}>
                 Cancelar
               </button>
                <button
-                 className="px-4 py-2 border border-[#10B981] text-[#10B981] rounded bg-transparent disabled:opacity-50"
-                 onClick={saveModal}
-                 disabled={saving}
-               >
-                 Salvar
-               </button>
+                type="button"
+                onClick={saveModal}
+                disabled={saving}
+                className={`px-4! py-2! rounded-md! text-sm font-medium focus:outline-none! focus:ring-2 focus:ring-green-600 transition-colors ${
+                  saving 
+                    ? 'bg-green-400! cursor-not-allowed' 
+                    : 'bg-green-500! hover:bg-green-600! text-white'
+                }`}
+               >
+                 {saving ? 'Salvando...' : 'Salvar'}
+               </button>
             </div>
           </div>
         </div>

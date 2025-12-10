@@ -225,13 +225,15 @@ export default function EditarAgendamentoModal({ agendamento, onClose }) {
                     </div>
 
                     <div className="editar-modal-actions">
-                        <button
-                            type="button"
-                            className="editar-btn editar-btn-excluir"
-                            onClick={handleCancelar}
-                        >
-                            Cancelar Agendamento
-                        </button>
+                        {agendamento.status !== "Cancelado" && agendamento.status !== "Concluído" && (
+                            <button
+                                type="button"
+                                className="editar-btn editar-btn-excluir"
+                                onClick={handleCancelar}
+                            >
+                                Cancelar Agendamento
+                            </button>
+                        )}
                         <button
                             type="submit"
                             className="editar-btn editar-btn-salvar"

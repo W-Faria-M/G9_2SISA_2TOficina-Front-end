@@ -1,0 +1,141 @@
+.ctn-logout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.card-logout {
+    width: 450px;
+    min-height: 220px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    padding: 30px;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.card-logout.dark {
+    background-color: #111;
+}
+
+.card-logout.light {
+    background-color: white;
+}
+
+.card-logout p {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.card-logout.light p {
+    color: #111;
+}
+
+.card-logout h2 {
+    color: #F27405;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.card-logout.light h2 {
+    color: #F27405;
+}
+
+.header-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.header-logout h2 {
+    text-align: center;
+}
+
+.buttons-logout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-cancelar-logout,
+.btn-confirmar-logout {
+    width: 130px;
+    height: 45px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancelar-logout {
+    background-color: #666;
+    color: white;
+}
+
+.btn-cancelar-logout:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-confirmar-logout {
+    background-color: #F27405;
+    color: white;
+}
+
+.btn-confirmar-logout:hover {
+    background-color: #d96404;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(242, 116, 5, 0.4);
+}
+
+.card-logout.light .btn-confirmar-logout {
+    background-color: #F27405;
+    color: white;
+}
+
+.card-logout.light .btn-confirmar-logout:hover {
+    background-color: #d96404;
+    box-shadow: 0 4px 8px rgba(242, 116, 5, 0.4);
+}
+
+.text-logout {
+    margin: 10px 0;
+}
+
+@media (max-width: 600px) {
+    .card-logout {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .buttons-logout {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-cancelar-logout,
+    .btn-confirmar-logout {
+        width: 100%;
+    }
+}

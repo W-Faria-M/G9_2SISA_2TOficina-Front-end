@@ -29,6 +29,7 @@
   margin: 0 auto;
   padding: 0 16px;
   padding-top: 35px;
+  padding-bottom: 25px;
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
@@ -132,8 +133,8 @@
   margin-top: 0;
 }
 
-.btn-detalhes,
-.btn-cancelar {
+.agendamentos-btn-detalhes,
+.agendamentos-btn-cancelar {
   padding: 8px 24px;
   min-height: 38.4px;
   border-radius: 10px;
@@ -144,23 +145,23 @@
   transition: background 0.2s, color 0.2s;
 }
 
-.btn-detalhes {
+.agendamentos-btn-detalhes {
   background: #f97316;
   color: #fff;
 }
 
-.btn-detalhes:hover {
-  background: #f97316;
+.agendamentos-btn-detalhes:hover {
+  background: #cd6115;
   color: #fff;
 }
 
-.btn-cancelar {
-  background: #fff;
-  color: #e53e3e;
-}
-
-.btn-cancelar:hover {
+.agendamentos-btn-cancelar {
   background: #e53e3e;
+  color: #fff;
+}
+
+.agendamentos-btn-cancelar:hover {
+  background: #bb3333;
   color: #fff;
 }
 
@@ -193,4 +194,39 @@
   color: #f97316;
   font-weight: 500;
   margin-bottom: 0;
+}
+
+/* Paginação com Bolinhas */
+.pagination-dots {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  padding: 0;
+}
+
+.pagination-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4a4a4a;
+  border: 2px solid #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.pagination-dot:hover {
+  transform: scale(1.2);
+  background: #f97316;
+  border-color: #f97316;
+}
+
+.pagination-dot.active {
+  width: 16px;
+  height: 16px;
+  background: #f97316;
+  border-color: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
 }

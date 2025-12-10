@@ -6,6 +6,7 @@ import EditarAgendamentoModal from "../components/EditarAgendamentoModal";
 import ModalAvancarStatus from "../components/ModalAvancarStatus";
 import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
+import { formatarData, formatarHora } from "../helpers/utils";
 
 
 export default function GestaoAgendamentos() {
@@ -18,6 +19,7 @@ export default function GestaoAgendamentos() {
   const [modalAvancarStatus, setModalAvancarStatus] = useState({ show: false, agendamento: null, proximoStatus: "" });
   const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
   const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [filtrosAtivos, setFiltrosAtivos] = useState({
     search: "",
@@ -141,6 +143,18 @@ export default function GestaoAgendamentos() {
     fetchAgendamentos();
   };
 
+  // Lógica de paginação
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(filteredAgendamentos.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedAgendamentos = filteredAgendamentos.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (loading) {
     return (
       <div className="gestao-agendamentos-page">
@@ -193,13 +207,27 @@ export default function GestaoAgendamentos() {
             </div>
           )
         ) : (
-          filteredAgendamentos.map((ag) => (
+          <>
+            {totalPages > 1 && (
+              <div className="gestao-pagination-dots">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className={`gestao-pagination-dot ${currentPage === page ? 'active' : ''}`}
+                    onClick={() => handlePageChange(page)}
+                    aria-label={`Página ${page}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {paginatedAgendamentos.map((ag, index) => (
             <div key={ag.id} className="gestao-agendamentos-card">
               <div className="gestao-agendamentos-card-topo">
-                <p className="gestao-agendamentos-card-veiculo">Veículo: {ag.veiculo}</p>
-                <p className="gestao-agendamentos-card-cliente">Cliente: {ag.username || 'Não informado'}</p>
+                <p className="gestao-agendamentos-card-cliente"><strong>Cliente:</strong> {ag.username || 'Não informado'}</p>
+                <p className="gestao-agendamentos-card-veiculo"><strong>Veículo:</strong> {ag.veiculo}</p>
                 <p className="gestao-agendamentos-card-data-inicio">
-                  Data de início: {ag.data} - {ag.hora}
+                  <strong>Data de início:</strong> {formatarData(ag.data)} - {formatarHora(ag.hora)}
                 </p>
               </div>
 
@@ -232,7 +260,8 @@ export default function GestaoAgendamentos() {
                 </div>
               </div>
             </div>
-          ))
+          ))}
+          </>
         )}
       </div>
 

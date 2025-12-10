@@ -2,34 +2,41 @@ import React, { useState } from "react";
 import "./menuFunc.css";
 import logo from "../assets/logo2T.jpg";
 import { apiRequest } from "../helpers/utils";
+import { ModalLogout } from "./ModalLogout";
 
 const MenuHamburguer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = async () => {
-    if (window.confirm("Tem certeza que deseja sair?")) {
-      try {
-        const usuarioId = sessionStorage.getItem("usuarioId");
-        
-        if (usuarioId) {
-          await apiRequest(`http://localhost:8080/usuarios/logoff?usuarioId=${usuarioId}`, "POST");
-        }
-        sessionStorage.removeItem("usuarioId");
-        sessionStorage.clear(); 
-        window.location.href = "/login-funcionario";
-      } catch (error) {
-        console.error("Erro ao fazer logout:", error);
-        
-        sessionStorage.removeItem("usuarioId");
-        sessionStorage.clear();
-        window.location.href = "/login-funcionario";
-        console.log("Logout realizado localmente. Houve um problema na comunicação com o servidor.");
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutConfirm = async () => {
+    try {
+      const usuarioId = sessionStorage.getItem("usuarioId");
+      
+      if (usuarioId) {
+        await apiRequest(`http://localhost:8080/usuarios/logoff?usuarioId=${usuarioId}`, "POST");
       }
+      sessionStorage.removeItem("usuarioId");
+      sessionStorage.clear();
+      window.location.href = "/login-funcionario";
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+      sessionStorage.removeItem("usuarioId");
+      sessionStorage.clear();
+      window.location.href = "/login-funcionario";
+      console.log("Logout realizado localmente. Houve um problema na comunicação com o servidor.");
     }
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -53,8 +60,15 @@ const MenuHamburguer = () => {
           <li><a href="/servico">Serviços</a></li>
         </ul>
 
-        <button className="logout-func" onClick={handleLogout}>SAIR</button>
+        <button className="logout-func" onClick={handleLogoutClick}>SAIR</button>
       </div>
+
+      <ModalLogout
+        isOpen={showLogoutModal}
+        onClose={handleLogoutCancel}
+        onConfirm={handleLogoutConfirm}
+        theme="light"
+      />
     </>
   );
 };

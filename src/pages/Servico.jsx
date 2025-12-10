@@ -7,6 +7,7 @@ import DetalhesServico from "../components/DetalhesServico";
 import PopupCategoria from "../components/PopupCategoria";
 import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
+import ModalUploadImagem from "../components/ModalUploadImagem";
 import "./Servico.css";
 import { apiRequest } from "../helpers/utils";
 
@@ -21,15 +22,23 @@ export default function Servico() {
   const [isPopupEditServiceOpen, setIsPopupEditServiceOpen] = useState(false); // Novo estado para edição de serviço
   const [isPopupEditCategoryOpen, setIsPopupEditCategoryOpen] = useState(false); // Novo estado para edição de categoria
   const [isDetalhesServiceOpen, setIsDetalhesServiceOpen] = useState(false); // Novo estado para detalhes de serviço
+  const [isModalUploadOpen, setIsModalUploadOpen] = useState(false); // Novo estado para modal de upload
   const [selectedService, setSelectedService] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [imagemAtualUrl, setImagemAtualUrl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
   const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Resetar página ao mudar de aba ou termo de busca
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, searchTerm]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -154,6 +163,20 @@ export default function Servico() {
     category.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Lógica de paginação
+  const itemsPerPage = 2;
+  const totalPagesServicos = Math.ceil(filteredServices.length / itemsPerPage);
+  const totalPagesCategorias = Math.ceil(filteredCategories.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedServices = filteredServices.slice(startIndex, endIndex);
+  const paginatedCategories = filteredCategories.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleOpenEditService = (service) => {
     setSelectedService(service);
     setIsPopupEditServiceOpen(true);
@@ -169,6 +192,20 @@ export default function Servico() {
   const handleOpenEditCategory = (category) => {
     setSelectedCategory(category);
     setIsPopupEditCategoryOpen(true);
+  };
+
+  const handleOpenGerenciarImagem = (service, imagemUrl) => {
+    setSelectedService(service);
+    setImagemAtualUrl(imagemUrl);
+    setIsModalUploadOpen(true);
+    setIsDetalhesServiceOpen(false); // Fecha o modal de detalhes
+  };
+
+  const handleUploadSucesso = () => {
+    setIsModalUploadOpen(false);
+    setSelectedService(null);
+    setImagemAtualUrl(null);
+    fetchData(); // Recarrega os dados
   };
 
   if (loading) {
@@ -235,14 +272,29 @@ export default function Servico() {
               </div>
             )
           ) : (
-            filteredServices.map((s) => (
-              <ServiceCard
-                key={s.id}
-                nome={s.nome}
-                categoria={s.categoria}
-                onDetalhes={() => handleOpenDetalhesService(s)}
-              />
-            ))
+            <>
+              {totalPagesServicos > 1 && (
+                <div className="servico-pagination-dots">
+                  {Array.from({ length: totalPagesServicos }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      className={`servico-pagination-dot ${currentPage === page ? 'active' : ''}`}
+                      onClick={() => handlePageChange(page)}
+                      aria-label={`Página ${page}`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {paginatedServices.map((s) => (
+                <ServiceCard
+                  key={s.id}
+                  nome={s.nome}
+                  categoria={s.categoria}
+                  onDetalhes={() => handleOpenDetalhesService(s)}
+                />
+              ))}
+            </>
           )
         )}
 
@@ -261,9 +313,24 @@ export default function Servico() {
               </div>
             )
           ) : (
-            filteredCategories.map((cat) => (
-              <CategoriaCard key={cat.id} nome={cat.nome} onEditar={() => handleOpenEditCategory(cat)} />
-            ))
+            <>
+              {totalPagesCategorias > 1 && (
+                <div className="servico-pagination-dots">
+                  {Array.from({ length: totalPagesCategorias }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      className={`servico-pagination-dot ${currentPage === page ? 'active' : ''}`}
+                      onClick={() => handlePageChange(page)}
+                      aria-label={`Página ${page}`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {paginatedCategories.map((cat) => (
+                <CategoriaCard key={cat.id} nome={cat.nome} onEditar={() => handleOpenEditCategory(cat)} />
+              ))}
+            </>
           )
         )}
       </div>
@@ -309,6 +376,17 @@ export default function Servico() {
       onClose={() => { setIsDetalhesServiceOpen(false); setSelectedService(null); }}
       servico={selectedService}
       onEditar={handleOpenEditService}
+      onGerenciarImagem={handleOpenGerenciarImagem}
+    />
+
+    {/* Modal de upload de imagem */}
+    <ModalUploadImagem
+      isOpen={isModalUploadOpen}
+      onClose={() => { setIsModalUploadOpen(false); setSelectedService(null); setImagemAtualUrl(null); }}
+      servicoId={selectedService?.id}
+      servicoNome={selectedService?.nome}
+      imagemAtual={imagemAtualUrl}
+      onUploadSucesso={handleUploadSucesso}
     />
 
     {popupSucesso.show && (
