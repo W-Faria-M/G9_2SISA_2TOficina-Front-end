@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
  * Modal para editar informações pessoais do usuário.
  * Props:
  * - open: boolean controla exibição
- * - dadosUsuario: { nome, sobrenome, telefone, email, dataNascimento }
+ * - dadosUsuario: { nome, sobrenome, telefone, email }
  * - onConfirm: function(dadosAtualizados) chamada ao confirmar
  * - onClose: function para fechar sem confirmar
  * - isSubmitting: boolean para estado de envio
@@ -19,7 +19,6 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
   const [sobrenome, setSobrenome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
 
   // Inicializa campos com dados atuais quando o modal abre
   useEffect(() => {
@@ -28,7 +27,6 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
       setSobrenome(dadosUsuario.sobrenome || '');
       setTelefone(dadosUsuario.telefone || '');
       setEmail(dadosUsuario.email || '');
-      setDataNascimento(dadosUsuario.dataNascimento || '');
     }
   }, [open, dadosUsuario]);
 
@@ -72,7 +70,6 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
       sobrenome: sobrenome.trim(),
       telefone: telefone.trim(),
       email: email.trim(),
-      dataNascimento: dataNascimento || null,
     };
     onConfirm(dadosAtualizados);
   };
@@ -153,19 +150,6 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="seu@email.com"
               required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="dataNascimento" className="block text-sm font-medium text-white mb-1!">
-              Data de Nascimento
-            </label>
-            <input
-              type="date"
-              id="dataNascimento"
-              value={dataNascimento}
-              onChange={(e) => setDataNascimento(e.target.value)}
-              className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
 
