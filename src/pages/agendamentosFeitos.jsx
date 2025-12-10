@@ -8,7 +8,6 @@ import PopupSucesso from "../components/PopupSucesso";
 import PopupErro from "../components/PopupErro";
 
 export default function AgendamentosFeitos({ onDetalhes }) {
-  const [searchTerm, setSearchTerm] = useState("");
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +17,13 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const [popupSucesso, setPopupSucesso] = useState({ show: false, mensagem: "" });
   const [popupErro, setPopupErro] = useState({ show: false, mensagem: "" });
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [filtrosAtivos, setFiltrosAtivos] = useState({
+    search: "",
+    dateFrom: null,
+    dateTo: null,
+    status: null,
+  });
 
   useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
@@ -32,11 +38,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   const fetchAgendamentos = async (usuarioId) => {
     try {
       const data = await apiRequest(`http://localhost:8080/agendamentos?usuarioId=${usuarioId}`);
-      // Se data for null, undefined ou array vazio, inicializa como array vazio
       setAgendamentos(Array.isArray(data) ? data : []);
     } catch (error) {
-      // Se o erro for porque não há agendamentos (status 404 ou similar), 
-      // não exibe erro, apenas inicializa lista vazia
       if (error.message.includes('404') || error.message.includes('não encontrado')) {
         setAgendamentos([]);
       } else {
@@ -57,7 +60,6 @@ export default function AgendamentosFeitos({ onDetalhes }) {
         "DELETE"
       );
 
-      // Remove o agendamento da lista local
       setAgendamentos(agendamentos.filter(
         (ag) => ag.agendamentoId !== agendamentoParaCancelar.agendamentoId
       ));
@@ -76,10 +78,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     setModalOpen(true);
   };
 
-  // Ordena agendamentos do mais recente para o mais antigo (considerando data + hora)
   const ordenarAgendamentos = (lista) => {
     return [...lista].sort((a, b) => {
-      // Ordem de prioridade: Em Atendimento → Pendente → Cancelado → Concluído
       const statusOrder = {
         "Em Atendimento": 0,
         "Pendente": 1,
@@ -90,12 +90,10 @@ export default function AgendamentosFeitos({ onDetalhes }) {
       const statusA = statusOrder[a.status] ?? 999;
       const statusB = statusOrder[b.status] ?? 999;
 
-      // Se status diferente, ordena por prioridade
       if (statusA !== statusB) {
         return statusA - statusB;
       }
 
-      // Se mesmo status, ordena por data (mais antigos primeiro = primeira fila)
       const dataA = construirDataHora(a);
       const dataB = construirDataHora(b);
       return dataA - dataB;
@@ -103,12 +101,10 @@ export default function AgendamentosFeitos({ onDetalhes }) {
   };
 
   const construirDataHora = (ag) => {
-    // Tenta construir Date usando data + hora; se hora ausente, usa só a data
     if (ag.dataAgendamento) {
       const hasHora = ag.horaAgendamento && ag.horaAgendamento.trim() !== "";
       const dateStr = hasHora ? `${ag.dataAgendamento}T${ag.horaAgendamento}` : ag.dataAgendamento;
       const dt = new Date(dateStr);
-      // Se inválida, retorna epoch pra não quebrar sort
       if (isNaN(dt.getTime())) return new Date(0);
       return dt;
     }
@@ -117,19 +113,34 @@ export default function AgendamentosFeitos({ onDetalhes }) {
 
   const agendamentosOrdenados = ordenarAgendamentos(agendamentos);
 
-  const [filtrosAtivos, setFiltrosAtivos] = useState({
-    search: "",
-    date: null,
-    status: null,
-  });
-
+  // FILTRO COM INTERVALO DE DATAS (dateFrom e dateTo)
   const filteredAgendamentos = agendamentosOrdenados.filter((ag) => {
+    const q = (filtrosAtivos.search || "").toLowerCase();
     const matchSearch =
-      ag.nomeVeiculo?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.servicos?.toLowerCase().includes(filtrosAtivos.search.toLowerCase()) ||
-      ag.dataAgendamento?.toLowerCase().includes(filtrosAtivos.search.toLowerCase());
+      (ag.nomeVeiculo || "").toLowerCase().includes(q) ||
+      (ag.servicos || "").toLowerCase().includes(q) ||
+      (ag.dataAgendamento || "").toLowerCase().includes(q);
 
-    const matchDate = !filtrosAtivos.date || ag.dataAgendamento === filtrosAtivos.date;
+    // Filtro de intervalo de datas
+    const matchDate = (() => {
+      if (!filtrosAtivos.dateFrom && !filtrosAtivos.dateTo) return true;
+      if (!ag.dataAgendamento) return false;
+
+      const agDate = new Date(ag.dataAgendamento);
+      if (isNaN(agDate)) return false;
+
+      if (filtrosAtivos.dateFrom) {
+        const from = new Date(filtrosAtivos.dateFrom);
+        from.setHours(0, 0, 0, 0);
+        if (agDate < from) return false;
+      }
+      if (filtrosAtivos.dateTo) {
+        const to = new Date(filtrosAtivos.dateTo);
+        to.setHours(23, 59, 59, 999);
+        if (agDate > to) return false;
+      }
+      return true;
+    })();
 
     const matchStatus = !filtrosAtivos.status || ag.status === filtrosAtivos.status;
 
@@ -194,8 +205,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
       <FilterBarClient
         onSearch={(value) => setFiltrosAtivos(prev => ({ ...prev, search: value }))}
         onFilter={(filtros) => {
-          console.log("Filtros aplicados:", filtros);
-          setFiltrosAtivos(filtros);
+          console.log("agendamentosFeitos: Filtros recebidos", filtros);
+          setFiltrosAtivos(prev => ({ ...prev, ...filtros }));
         }}
         acaoText="+ Agendar"
         onOpenAgendarModal={() => navigate("/realizar-agendamento")}
@@ -211,8 +222,8 @@ export default function AgendamentosFeitos({ onDetalhes }) {
             </div>
           ) : (
             <div className="sem-agendamentos">
-              <p>Nenhum agendamento encontrado para a pesquisa.</p>
-              <p>Tente pesquisar por uma data diferente ou limpe o filtro de pesquisa.</p>
+              <p>Nenhum agendamento encontrado para os filtros aplicados.</p>
+              <p>Tente ajustar a pesquisa ou o intervalo de datas.</p>
             </div>
           )
         ) : (
@@ -287,8 +298,6 @@ export default function AgendamentosFeitos({ onDetalhes }) {
           darkMode={true}
         />
       )}
-
-      {/* Modal removido: agora redireciona diretamente para /realizar-agendamento */}
     </div>
   );
 }
