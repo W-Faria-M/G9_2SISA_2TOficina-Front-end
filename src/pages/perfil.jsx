@@ -174,7 +174,6 @@ export default function Perfil() {
       sobrenome,
       telefone: usuario.telefone || '',
       email: usuario.email || '',
-      dataNascimento: usuario.dataNascimento || '',
     };
   };
 
