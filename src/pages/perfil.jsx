@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiRequest } from "../helpers/utils";
+import { apiRequest, formatarTelefone } from "../helpers/utils";
 import EditarPerfilModal from "../components/EditarPerfilModal";
 import AdicionarVeiculoModal from "../components/AdicionarVeiculoModal";
 import RemoverVeiculoModal from "../components/RemoverVeiculoModal";
@@ -79,10 +79,15 @@ export default function Perfil() {
   const handleAtualizarPerfil = async (dadosAtualizados) => {
     setIsSubmitting(true);
     try {
+      // Remove formatação do telefone antes de enviar
+      const dadosParaEnviar = {
+        ...dadosAtualizados,
+        telefone: dadosAtualizados.telefone ? dadosAtualizados.telefone.replace(/\D/g, '') : ''
+      };
       await apiRequest(
         `http://localhost:8080/usuarios/atualizar-campo/${usuarioId}`,
         "PATCH",
-        dadosAtualizados
+        dadosParaEnviar
       );
       console.group('[Perfil] Atualização bem-sucedida');
       console.log('Dados enviados:', dadosAtualizados);
@@ -172,7 +177,7 @@ export default function Perfil() {
     return {
       nome,
       sobrenome,
-      telefone: usuario.telefone || '',
+      telefone: formatarTelefone(usuario.telefone || ''),
       email: usuario.email || '',
     };
   };
@@ -212,7 +217,7 @@ export default function Perfil() {
             <div className="flex flex-col items-center text-sm text-black gap-1 relative z-20">
               <p className="font-medium">{usuario.nomeCompleto || 'Nome não informado'}</p>
               <p>{usuario.email || 'Email não informado'}</p>
-              <p>Telefone: {usuario.telefone || '—'}</p>
+              <p>Telefone: {usuario.telefone ? formatarTelefone(usuario.telefone) : '—'}</p>
             </div>
 
             {/* Botão Editar */}
