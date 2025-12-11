@@ -163,6 +163,50 @@ export default function AgendamentosFeitos({ onDetalhes }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Função para calcular quais páginas mostrar
+  const getPageNumbers = () => {
+    const maxPagesToShow = 7; // Número máximo de botões de página a mostrar
+    const pages = [];
+
+    if (totalPages <= maxPagesToShow) {
+      // Se tiver poucas páginas, mostra todas
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Lógica para mostrar páginas com reticências
+      const leftOffset = Math.floor(maxPagesToShow / 2);
+      const rightOffset = maxPagesToShow - leftOffset - 1;
+
+      if (currentPage <= leftOffset + 1) {
+        // Está no início
+        for (let i = 1; i <= maxPagesToShow - 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - rightOffset) {
+        // Está no final
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - (maxPagesToShow - 2); i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Está no meio
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - leftOffset + 2; i <= currentPage + rightOffset - 2; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
   if (loading) {
     return (
       <div className="agendamentos-page">
@@ -229,15 +273,39 @@ export default function AgendamentosFeitos({ onDetalhes }) {
         ) : (
           <>
             {totalPages > 1 && (
-              <div className="pagination-dots">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    className={`pagination-dot ${currentPage === page ? 'active' : ''}`}
-                    onClick={() => handlePageChange(page)}
-                    aria-label={`Página ${page}`}
-                  />
-                ))}
+              <div className="pagination-controls">
+                <button
+                  className="pagination-arrow"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  aria-label="Página anterior"
+                >
+                  ‹
+                </button>
+                <div className="pagination-dots">
+                  {getPageNumbers().map((page, index) => (
+                    page === '...' ? (
+                      <span key={`ellipsis-${index}`} className="pagination-ellipsis">...</span>
+                    ) : (
+                      <button
+                        key={page}
+                        className={`pagination-dot ${currentPage === page ? 'active' : ''}`}
+                        onClick={() => handlePageChange(page)}
+                        aria-label={`Página ${page}`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  ))}
+                </div>
+                <button
+                  className="pagination-arrow"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  aria-label="Próxima página"
+                >
+                  ›
+                </button>
               </div>
             )}
 
