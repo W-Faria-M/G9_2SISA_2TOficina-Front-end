@@ -63,7 +63,9 @@ export default function CadastroCliente() {
             }
 
             // open verification modal and keep form data pending until verification
-            setPendingForm({ ...formState, verificationCode });
+            // Remove formatação do telefone antes de enviar
+            const telefoneNumerico = formState.telefone.replace(/\D/g, '');
+            setPendingForm({ ...formState, telefone: telefoneNumerico, verificationCode });
             setIsVerificationOpen(true);
             setSendingCode(false);
         } catch (error) {
@@ -81,60 +83,72 @@ export default function CadastroCliente() {
                 <h1>2T Oficina</h1>
                 <h2>Cadastre-se e acelere seu atendimento!</h2>
                 <div className="formCad">
-                    <input
-                        type="text"
-                        name="nome"
-                        placeholder="Nome"
-                        value={form.nome}
-                        onChange={handleChange}
-                        style={inputStyle}
-                    />
-                    {error.nome && <span style={{ color: "orange" }}>{error.nome}</span>}
-                    <input
-                        type="text"
-                        name="sobrenome"
-                        placeholder="Sobrenome"
-                        value={form.sobrenome}
-                        onChange={handleChange}
-                        style={inputStyle}
-                    />
-                    {error.sobrenome && <span style={{ color: "orange" }}>{error.sobrenome}</span>}
-                    <input
-                        type="text"
-                        name="telefone"
-                        placeholder="Telefone"
-                        value={form.telefone}
-                        onChange={handleChange}
-                        style={inputStyle}
-                    />
-                    {error.telefone && <span style={{ color: "orange" }}>{error.telefone}</span>}
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        style={inputStyle}
-                    />
-                    {error.email && <span style={{ color: "orange" }}>{error.email}</span>}
-                    <input
-                        type="password"
-                        name="senha"
-                        placeholder="Senha"
-                        value={form.senha}
-                        onChange={handleChange}
-                        style={inputStyle}
-                    />
-                    {error.senha && <span style={{ color: "orange" }}>{error.senha}</span>}
-                    <input
-                        type="password"
-                        name="confirmarSenha"
-                        placeholder="Confirmar Senha"
-                        value={form.confirmarSenha}
-                        onChange={handleChange}
-                        style={inputStyle}
-                    />
-                    {error.confirmarSenha && <span style={{ color: "orange" }}>{error.confirmarSenha}</span>}
+                    <div className="input-wrapper-cad">
+                        <input
+                            type="text"
+                            name="nome"
+                            placeholder="Nome"
+                            value={form.nome}
+                            onChange={handleChange}
+                            style={inputStyle}
+                        />
+                        {error.nome && <span className="error-message-cad">{error.nome}</span>}
+                    </div>
+                    <div className="input-wrapper-cad">
+                        <input
+                            type="text"
+                            name="sobrenome"
+                            placeholder="Sobrenome"
+                            value={form.sobrenome}
+                            onChange={handleChange}
+                            style={inputStyle}
+                        />
+                        {error.sobrenome && <span className="error-message-cad">{error.sobrenome}</span>}
+                    </div>
+                    <div className="input-wrapper-cad input-wrapper-full">
+                        <input
+                            type="text"
+                            name="telefone"
+                            placeholder="Telefone"
+                            value={form.telefone}
+                            onChange={handleChange}
+                            style={inputStyle}
+                        />
+                        {error.telefone && <span className="error-message-cad">{error.telefone}</span>}
+                    </div>
+                    <div className="input-wrapper-cad input-wrapper-full">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={form.email}
+                            onChange={handleChange}
+                            style={inputStyle}
+                        />
+                        {error.email && <span className="error-message-cad">{error.email}</span>}
+                    </div>
+                    <div className="input-wrapper-cad input-wrapper-full">
+                        <input
+                            type="password"
+                            name="senha"
+                            placeholder="Senha"
+                            value={form.senha}
+                            onChange={handleChange}
+                            style={inputStyle}
+                        />
+                        {error.senha && <span className="error-message-cad">{error.senha}</span>}
+                    </div>
+                    <div className="input-wrapper-cad input-wrapper-full">
+                        <input
+                            type="password"
+                            name="confirmarSenha"
+                            placeholder="Confirmar Senha"
+                            value={form.confirmarSenha}
+                            onChange={handleChange}
+                            style={inputStyle}
+                        />
+                        {error.confirmarSenha && <span className="error-message-cad">{error.confirmarSenha}</span>}
+                    </div>
                 </div>
                 <button type="submit">CADASTRAR</button><br /><br />
                 <p>

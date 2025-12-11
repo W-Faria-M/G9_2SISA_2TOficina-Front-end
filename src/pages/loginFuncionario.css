@@ -73,6 +73,22 @@
   border-color: rgba(167, 139, 250);
 }
 
+.error-wrapper-func {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+}
+
+.error-message-func {
+  position: absolute;
+  left: 0;
+  right: 0;
+  color: orange;
+  text-align: center;
+  font-size: 1rem;
+}
+
 .forgot {
   display: flex;
   justify-content: flex-end;

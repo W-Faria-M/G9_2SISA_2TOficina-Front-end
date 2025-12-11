@@ -101,11 +101,13 @@ const LoginFuncionario = () => {
               </p>
             </div>
           </div>
-          {error && (
-            <div style={{ color: "orange", textAlign: "center", marginTop: "10px" }}>
-              {error}
-            </div>
-          )}
+          <div className="error-wrapper-func">
+            {error && (
+              <div className="error-message-func">
+                {error}
+              </div>
+            )}
+          </div>
           <div className="botao-cadastro">
             <button type="submit" className="sign">LOGIN</button>
           </div>

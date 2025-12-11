@@ -16,26 +16,27 @@ export const validateField = (fieldName, value, form = {}) => {
     case "sobrenome":
     case "nomeServico": // Nome do serviço
     case "nomeCategoria": // Nome da categoria
-      if (!value.trim()) return "Opa, esse campo é obrigatório!";
+      if (!value.trim()) return "Este campo é obrigatório.";
       break;
     case "email":
-      if (!value.trim()) return "E-mail é obrigatório, né?";
-      if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) return "E-mail inválido. Confere aí!";
+      if (!value.trim()) return "O e-mail é obrigatório.";
+      if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) return "Por favor, insira um e-mail válido.";
       break;
     case "telefone":
-      if (!value.trim()) return "Telefone é obrigatório.";
-      if (!/^\d{8,}$/.test(value)) return "Telefone inválido. Pelo menos 8 dígitos.";
+      if (!value.trim()) return "O telefone é obrigatório.";
+      const apenasNumeros = value.replace(/\D/g, '');
+      if (apenasNumeros.length < 10) return "Telefone inválido. Digite ao menos 10 dígitos.";
       break;
     case "senha":
-      if (!value) return "Senha é obrigatória.";
-      if (value.length < 4) return "Senha muito curta, precisa de pelo menos 4 caracteres.";
+      if (!value) return "A senha é obrigatória.";
+      if (value.length < 4) return "A senha deve ter no mínimo 4 caracteres.";
       break;
     case "confirmarSenha":
-      if (!value) return "Confirma a senha, por favor.";
-      if (value !== form.senha) return "As senhas não batem, hein!";
+      if (!value) return "Por favor, confirme sua senha.";
+      if (value !== form.senha) return "As senhas não coincidem.";
       break;
     case "veiculo": // Campo de agendamento
-      if (!value.trim()) return "Qual veículo vai ser agendado?";
+      if (!value.trim()) return "Selecione o veículo a ser agendado.";
       break;
     case "data": // Campo de agendamento
       if (!value.trim()) return "A data do agendamento é obrigatória.";
@@ -53,14 +54,14 @@ export const validateField = (fieldName, value, form = {}) => {
       break;
     case "servico": // Campo de agendamento
     case "categoria": // Campo de serviço
-      if (!value.trim()) return "Escolha uma opção, por favor.";
+      if (!value.trim()) return "Por favor, selecione uma opção.";
       break;
     case "descricao": // Campo de serviço
       if (!value.trim()) return "A descrição do serviço é obrigatória.";
       break;
     case "preco": // Campo de serviço (assumindo que existe)
       if (!value) return "O preço é obrigatório.";
-      if (isNaN(value) || parseFloat(value) <= 0) return "Preço inválido. Tem que ser um número maior que zero.";
+      if (isNaN(value) || parseFloat(value) <= 0) return "Digite um valor válido maior que zero.";
       break;
     default:
       break;
@@ -190,6 +191,40 @@ export const generateUniqueId = () => {
 };
 
 /**
+ * Formata um número de telefone no padrão (11) 95786-9174
+ * @param {string} value - O valor do telefone (pode conter ou não formatação)
+ * @returns {string} O telefone formatado
+ */
+export const formatarTelefone = (value) => {
+  if (!value) return '';
+  // Remove tudo que não é número
+  const apenasNumeros = value.replace(/\D/g, '');
+  // Limita a 11 dígitos
+  const limitado = apenasNumeros.slice(0, 11);
+  
+  // Aplica a formatação progressiva
+  if (limitado.length === 0) {
+    return '';
+  } else if (limitado.length <= 2) {
+    return `(${limitado}`;
+  } else if (limitado.length <= 7) {
+    return `(${limitado.slice(0, 2)}) ${limitado.slice(2)}`;
+  } else {
+    return `(${limitado.slice(0, 2)}) ${limitado.slice(2, 7)}-${limitado.slice(7)}`;
+  }
+};
+
+/**
+ * Remove a formatação do telefone, retornando apenas os números
+ * @param {string} value - O telefone formatado
+ * @returns {string} Apenas os números do telefone
+ */
+export const desformatarTelefone = (value) => {
+  if (!value) return '';
+  return value.replace(/\D/g, '');
+};
+
+/**
  * Ajuda a lidar com o que o usuário digita nos formulários. Atualiza o estado do formulário e limpa os erros daquele campo.
  * @param {object} currentFormState - Como o formulário tá agora.
  * @param {function} setFormState - A função pra atualizar o formulário.
@@ -198,7 +233,9 @@ export const generateUniqueId = () => {
  */
 export const createFormChangeHandler = (currentFormState, setFormState, setErrorsState) => (e) => {
   const { name, value } = e.target;
-  setFormState({ ...currentFormState, [name]: value });
+  // Aplica formatação de telefone se o campo for telefone
+  const valorFinal = name === 'telefone' ? formatarTelefone(value) : value;
+  setFormState({ ...currentFormState, [name]: valorFinal });
   setErrorsState(prevErrors => ({ ...prevErrors, [name]: undefined }));
 };
 

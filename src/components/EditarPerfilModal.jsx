@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { formatarTelefone } from '../helpers/utils';
 
 /**
  * Modal para editar informações pessoais do usuário.
@@ -131,9 +132,9 @@ export default function EditarPerfilModal({ open, dadosUsuario, onConfirm, onClo
               type="tel"
               id="telefone"
               value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
+              onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
               className="w-full px-3! py-2! border border-gray-300 bg-gray-200 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-              placeholder="(11) 99999-9999"
+              placeholder="(11) 95786-9174"
               required
             />
           </div>
